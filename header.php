@@ -34,17 +34,20 @@ $container = get_theme_mod( 'understrap_container_type' );
 
 		<a class="skip-link screen-reader-text sr-only" href="#content"><?php esc_html_e( 'Skip to content', 'understrap' ); ?></a>
 
-			<div class="" >
+			<div class=" container-fluid" >
 				<div class="header__inner">
+				<div class="header__circle header__circle--primary"></div>
+				<div class="header__circle header__circle--accent"></div>
+				<div class="header__circle header__circle--dark"></div>
 
 				<a href="<?php echo get_home_url(); ?>" id="site-logo" class="header__logo">
 
-					<img class="logo logo--white" src="<?php bloginfo('template_directory'); ?>/img/logo--white.svg" alt="New Life">
-					<img class="logo logo--black" src="<?php bloginfo('template_directory'); ?>/img/logo--black.svg" alt="New Life">
+					<img class="logo logo--white" src="<?php bloginfo('template_directory'); ?>/img/logo.svg" alt="New Life">
 
 				</a>
 
 				<a id="toggleMenu" class="toggle-menu">
+						<span class="line"></span>
 						<span class="line"></span>
 						<span class="line"></span>
 				</a>
