@@ -16082,7 +16082,9 @@ hr.short {
 .header__logo {
   display: block;
   width: 150px;
-  z-index: 5; }
+  z-index: 5;
+  position: absolute;
+  top: 2rem; }
   @media (max-width: 767.98px) {
     .header__logo {
       width: 100px; } }
@@ -16143,7 +16145,8 @@ hr.short {
   width: 1.375rem;
   right: 2em;
   margin-right: 2rem;
-  z-index: 2; }
+  z-index: 2;
+  top: 6rem; }
   .toggle-menu:before {
     content: "";
     background-color: #fff;
@@ -16249,6 +16252,51 @@ hr.short {
 
 .footer__logo {
   width: 150px; }
+
+.preloader-wrap {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  top: 0;
+  background-color: white; }
+
+.preloader__inner {
+  position: absolute;
+  left: 50%;
+  width: 4em;
+  top: 50%;
+  -webkit-transform: translateY(-50%, -50%);
+          transform: translateY(-50%, -50%);
+  height: 4em;
+  background: #00BBC3;
+  border-radius: 100%;
+  border-right: 0px;
+  -webkit-animation-name: loader;
+          animation-name: loader;
+  -webkit-animation-duration: 1200ms;
+          animation-duration: 1200ms;
+  -webkit-animation-iteration-count: infinite;
+          animation-iteration-count: infinite; }
+
+@-webkit-keyframes loader {
+  from {
+    -webkit-transform: scale(0);
+            transform: scale(0); }
+  to {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+    opacity: 0; } }
+
+@keyframes loader {
+  from {
+    -webkit-transform: scale(0);
+            transform: scale(0); }
+  to {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+    opacity: 0; } }
 
 .feature-column {
   margin: 15px 0; }
