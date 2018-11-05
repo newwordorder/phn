@@ -35,19 +35,19 @@
 <?php wp_footer(); ?>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 
-<script src="<?php echo get_template_directory_uri(); ?>/js/header.js"></script>
+<script src="<?php echo get_template_directory_uri(); ?>/js/header-min.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/flickity.min.js"></script>
-<script src="<?php echo get_template_directory_uri(); ?>/js/fontawesome-all.js"></script>
-<script src="<?php echo get_template_directory_uri(); ?>/js/parallax.js"></script>
+<script src="<?php echo get_template_directory_uri(); ?>/js/fontawesome-all-min.js"></script>
+<script src="<?php echo get_template_directory_uri(); ?>/js/parallax-min.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/typed.min.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/smooth-scroll.min.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/ytplayer.min.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/aos.js"></script>
-<script src="<?php echo get_template_directory_uri(); ?>/js/scripts.js"></script>
-<script src="<?php echo get_template_directory_uri(); ?>/js/easings.js"></script>
-<script src="<?php echo get_template_directory_uri(); ?>/js/parallax_perspective.js"></script>
-<script src="<?php echo get_template_directory_uri(); ?>/js/menuoverlay.js"></script>
-<script src="<?php echo get_template_directory_uri(); ?>/js/onload.js"></script>
+<script src="<?php echo get_template_directory_uri(); ?>/js/scripts-min.js"></script>
+<script src="<?php echo get_template_directory_uri(); ?>/js/easings-min.js"></script>
+<script src="<?php echo get_template_directory_uri(); ?>/js/parallax_perspective-min.js"></script>
+<script src="<?php echo get_template_directory_uri(); ?>/js/menuoverlay-min.js"></script>
+<script src="<?php echo get_template_directory_uri(); ?>/js/onload-min.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/TweenMax.min.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/TimelineMax.min.js"></script>
 
