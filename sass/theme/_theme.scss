@@ -154,7 +154,7 @@ section {
 .btn {
   font-size: 0.825em;
   font-weight: 700;
-  font-family: $font-sans;
+  font-family: $font-bold;
   text-transform: uppercase;
   color: $primary;
   padding: 0.8em 1.6em;
@@ -205,7 +205,7 @@ section {
   color: $primary;
   font-size: 0.825em;
   font-weight: 700;
-  font-family: $font-sans;
+  font-family: $font-bold;
   text-transform: uppercase;
 
   &:hover {
@@ -237,8 +237,7 @@ section {
 .page-header {
 
   &--home {
-    padding: 200px 0;
-    height: 80vh;
+    padding: 200px 0 200px;
     max-height: 800px;
     min-height: 400px;
     position: relative;
@@ -435,6 +434,29 @@ section {
   }
 }
 
+.image {
+
+  position: relative;
+  height: 0;
+  overflow: hidden;
+
+  &--square {
+    padding-top: 100%;
+  }
+
+  &--landscape {
+    padding-top: calc((2 / 3) * 100%);
+  }
+
+  &--portrait {
+    padding-top: calc((3 / 2) * 100%);
+  }
+
+  &__caption {
+    margin: 1em 0;
+  }
+}
+
 
 //
 // Sizing
@@ -446,4 +468,24 @@ section {
 
 .pagination-sm {
   @include pagination-size($pagination-padding-y-sm, $pagination-padding-x-sm, $font-size-sm, $line-height-sm, $border-radius-sm);
+}
+
+
+.scroll-down {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+
+    &:before {
+      position: absolute;
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      content: "";
+      display: block;
+      height: 80px;
+      width: 2px;
+      background-color: rgba($white,0.5);
+    }
 }
