@@ -497,3 +497,12 @@ section {
     padding: 0;
   }
 }
+
+.back-to-top {
+  background-color: $primary;
+  color: $white;
+  border: 0;
+  right: 2rem;
+  bottom: 3rem;
+  padding-top: 1rem;
+}

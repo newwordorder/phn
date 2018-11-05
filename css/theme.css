@@ -16045,13 +16045,8 @@ hr.short {
   top: 0;
   left: 0;
   width: 100%;
-<<<<<<< HEAD
-  padding: 1rem;
-  z-index: 1020;
-=======
   padding: 40px 15px;
   z-index: 15;
->>>>>>> master
   color: #fff;
   /* animation */
   opacity: 1;
@@ -16648,6 +16643,14 @@ section.bg-effect--ken-burns {
   @media (max-width: 991.98px) {
     .story-wrap {
       padding: 0; } }
+
+.back-to-top {
+  background-color: #00BBC3;
+  color: #fff;
+  border: 0;
+  right: 2rem;
+  bottom: 3rem;
+  padding-top: 1rem; }
 
 /*
 * Use existing Bootstrap 4 classes and
