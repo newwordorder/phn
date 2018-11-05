@@ -22,7 +22,11 @@
 </footer>
 
 
+		
 
+<a class="back-to-top  inner-link " href="#header">
+	<i class="far fa-arrow-up"></i>
+</a>
 
 
 <?php wp_footer(); ?>

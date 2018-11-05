@@ -202,14 +202,27 @@ section {
 
 .link {
   background: transparent;
-  color: $primary;
+  color: $heading-color;
   font-size: 0.825em;
   font-weight: 700;
   font-family: $font-bold;
-  text-transform: uppercase;
+  text-decoration: none;
+  transition: 0.2s;  
+  display: inline-block;   
+  
+
+  svg {
+    color: $primary;
+    transition: 0.2s; 
+    margin-left: 0.5rem;
+  }
 
   &:hover {
-    color: darken($primary, 10%);
+    color: $heading-color;
+
+    svg {
+      transform: translateX(0.5rem);
+    }
   }
 
   &:focus {
@@ -235,11 +248,16 @@ section {
 }
 
 .page-header {
+  padding: 200px 0 100px;
+  background-color: $dark;
+
+  @include media-breakpoint-down(sm) {
+    padding: 150px 0 50px;
+  }
+
 
   &--home {
-    padding: 200px 0 200px;
-    max-height: 800px;
-    min-height: 400px;
+    padding: 200px 0;
     position: relative;
 
     & .pos-vertical-center {
@@ -249,9 +267,6 @@ section {
 
   &--page {
     padding: 200px 0;
-    height: 50vh;
-    max-height: 800px;
-    min-height: 400px;
     position: relative;
 
     & .pos-vertical-center {
@@ -259,12 +274,9 @@ section {
     }
   }
 
-  padding: 200px 0 100px;
-  background-color: $dark;
 
-  @include media-breakpoint-down(sm) {
-    padding: 150px 0 50px;
-  }
+
+
 }
 
 .work-tiles {
@@ -488,4 +500,26 @@ section {
       width: 2px;
       background-color: rgba($white,0.5);
     }
+}
+
+
+.story-wrap {
+  padding: 0 3rem;
+
+  @include media-breakpoint-down(md) {
+    padding: 0;
+  }
+}
+
+.back-to-top {
+  background-color: $primary;
+  color: $white;
+  border: 0;
+  right: 2rem;
+  bottom: 3rem;
+  padding-top: 1rem;
+  box-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.2);
+  &:hover {
+    color: $white;
+  }
 }
