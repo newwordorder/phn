@@ -1,6 +1,18 @@
-$font-serif: 'Frank Ruhl Libre', serif;
-$font-sans: 'Libre Franklin', sans-serif;
 
+
+
+@font-face {
+  font-family: "Glober Bold";
+  src: url('../fonts/GloberBold.otf');
+}
+
+@font-face{
+font-family: "Glober Book";
+src: url('../fonts/GloberBook.otf');
+}
+
+$font-bold: 'Glober Bold', serif;
+$font-regular: 'Glober Book', sans-serif;
 
 
 html {
@@ -22,22 +34,23 @@ body {
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6, p {
   margin-bottom: 20px;
   color: $heading-color;
-  font-family: $font-serif;
+  font-family: $font-bold;
 }
 
 h6, .h6 {
-  font-family: $font-sans;
+  font-family: $font-bold;
   font-weight: 700;
   text-transform: uppercase;
+  font-size: 0.875em;
+  color: $primary;
 }
 
 p {
   color: $body-color;
-  font-family: $font-sans;
+  font-family: $font-regular;
 }
 
 .lead {
-  color: $heading-color;
 }
 
 .page-title {
@@ -52,7 +65,7 @@ p:last-of-type {
 
 
 ul, ol {
-  font-family: $font-sans;
+  font-family: $font-regular;
 }
 
 hr {

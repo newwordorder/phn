@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="30px" viewBox="0 0 16 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.2 (67145) - http://www.bohemiancoding.com/sketch -->
+    <title>Group</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M3.6475,0.3525 L3.6475,0.3525 C3.4527686,0.547231401 3.45262729,0.862909779 3.64718428,1.05781544 L6.085,3.5 L0.5,3.5 C0.223857625,3.5 -2.93437055e-14,3.72385763 -2.93098879e-14,4 L-2.93098879e-14,4 C-2.92760702e-14,4.27614237 0.223857625,4.5 0.5,4.5 L6.085,4.5 L3.64718428,6.94218456 C3.45262729,7.13709022 3.4527686,7.4527686 3.6475,7.6475 L3.6475,7.6475 C3.84218037,7.84218037 4.15781963,7.84218037 4.3525,7.6475 L8,4 L4.3525,0.3525 C4.15781963,0.157819626 3.84218037,0.157819626 3.6475,0.3525 Z" id="path-1"></path>
+    </defs>
+    <g id="Year-in-review" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Homepage-A" transform="translate(-712.000000, -526.000000)">
+            <g id="Group" transform="translate(712.000000, 526.000000)">
+                <rect id="Rectangle" stroke="#FFFFFF" fill-rule="nonzero" x="0.5" y="0.5" width="15" height="29" rx="7.5"></rect>
+                <g id="Arrow-right" transform="translate(8.000000, 11.000000) scale(1, -1) rotate(90.000000) translate(-8.000000, -11.000000) translate(4.000000, 7.000000)">
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <use id="Mask" fill="#FFFFFF" transform="translate(4.000000, 4.000000) rotate(180.000000) translate(-4.000000, -4.000000) " xlink:href="#path-1"></use>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
