@@ -105,5 +105,9 @@ jQuery( document ).ready(function() {
 });
 
 $(".toggle-menu").click(function () {
+    if(/MSIE \d|Trident.*rv:/.test(navigator.userAgent)){
+        console.log('IE')
+    }else{
     $(".toggle-menu,.header-nav").toggleClass("is-active");
+    }
 });

@@ -139,7 +139,11 @@ jQuery(document).ready(function () {
   });
 });
 $(".toggle-menu").click(function () {
-  $(".toggle-menu,.header-nav").toggleClass("is-active");
+  if (/MSIE \d|Trident.*rv:/.test(navigator.userAgent)) {
+    console.log('IE');
+  } else {
+    $(".toggle-menu,.header-nav").toggleClass("is-active");
+  }
 });
 
 //# sourceMappingURL=onload-min.js.map
