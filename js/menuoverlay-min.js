@@ -111,31 +111,63 @@ function () {
   return ShapeOverlays;
 }();
 
+function containsClass(classList, className) {
+  return classList.contains(className);
+}
+
 (function () {
   var elmHamburger = document.querySelector('.hamburger');
   var gNavItems = document.querySelectorAll('.global-menu__item');
   var elmOverlay = document.querySelector('.shape-overlays');
   var overlay = new ShapeOverlays(elmOverlay);
   elmHamburger.addEventListener('click', function () {
-    elmHamburger.classList.toggle("is-active");
+    if (/MSIE \d|Trident.*rv:/.test(navigator.userAgent)) {
+      if (containsClass(elmHamburger.className, 'is-active')) {
+        elmHamburger.className -= ' is-active';
+      } else {
+        elmHamburger.className += ' is-active';
+      }
 
-    if (overlay.isAnimating) {
-      return false;
-    }
+      if (overlay.isAnimating) {
+        return false;
+      }
 
-    overlay.toggle();
+      overlay.toggle();
 
-    if (overlay.isOpened === true) {
-      elmHamburger.classList.add('is-opened-navi');
+      if (overlay.isOpened === true) {
+        elmHamburger.className += ' is-opened-navi';
 
-      for (var i = 0; i < gNavItems.length; i++) {
-        gNavItems[i].classList.add('is-opened');
+        for (var i = 0; i < gNavItems.length; i++) {
+          gNavItems[i].className += ' is-opened';
+        }
+      } else {
+        elmHamburger.className -= ' is-opened-navi';
+
+        for (var i = 0; i < gNavItems.length; i++) {
+          gNavItems[i].className -= ' is-opened';
+        }
       }
     } else {
-      elmHamburger.classList.remove('is-opened-navi');
+      elmHamburger.classList.toggle("is-active");
 
-      for (var i = 0; i < gNavItems.length; i++) {
-        gNavItems[i].classList.remove('is-opened');
+      if (overlay.isAnimating) {
+        return false;
+      }
+
+      overlay.toggle();
+
+      if (overlay.isOpened === true) {
+        elmHamburger.classList.add('is-opened-navi');
+
+        for (var i = 0; i < gNavItems.length; i++) {
+          gNavItems[i].classList.add('is-opened');
+        }
+      } else {
+        elmHamburger.classList.remove('is-opened-navi');
+
+        for (var i = 0; i < gNavItems.length; i++) {
+          gNavItems[i].classList.remove('is-opened');
+        }
       }
     }
   });

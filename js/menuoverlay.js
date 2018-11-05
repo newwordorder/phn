@@ -76,6 +76,10 @@ class ShapeOverlays {
   }
 }
 
+function containsClass(classList, className){
+  return classList.contains(className);
+}
+
 (function() {
   const elmHamburger = document.querySelector('.hamburger');
   const gNavItems = document.querySelectorAll('.global-menu__item');
@@ -83,6 +87,31 @@ class ShapeOverlays {
   const overlay = new ShapeOverlays(elmOverlay);
 
   elmHamburger.addEventListener('click', () => {
+
+    if(/MSIE \d|Trident.*rv:/.test(navigator.userAgent)){
+      if(containsClass(elmHamburger.className, 'is-active')){
+        elmHamburger.className -= ' is-active';
+      }else{
+        elmHamburger.className += ' is-active';
+      }
+
+      if (overlay.isAnimating) {
+        return false;
+      }
+      overlay.toggle();
+      if (overlay.isOpened === true) {
+        elmHamburger.className += ' is-opened-navi';
+        for (var i = 0; i < gNavItems.length; i++) {
+          gNavItems[i].className += ' is-opened';
+        }
+      } else {
+        elmHamburger.className -= ' is-opened-navi';
+        for (var i = 0; i < gNavItems.length; i++) {
+          gNavItems[i].className -= ' is-opened';
+        }
+      }
+
+    }else{
 
     elmHamburger.classList.toggle("is-active");
 
@@ -101,5 +130,7 @@ class ShapeOverlays {
         gNavItems[i].classList.remove('is-opened');
       }
     }
+  }
+
   });
 }());
