@@ -88,30 +88,7 @@ function containsClass(classList, className){
 
   elmHamburger.addEventListener('click', () => {
 
-    if(/MSIE \d|Trident.*rv:/.test(navigator.userAgent)){
-      if(containsClass(elmHamburger.className, 'is-active')){
-        elmHamburger.className -= ' is-active';
-      }else{
-        elmHamburger.className += ' is-active';
-      }
 
-      if (overlay.isAnimating) {
-        return false;
-      }
-      overlay.toggle();
-      if (overlay.isOpened === true) {
-        elmHamburger.className += ' is-opened-navi';
-        for (var i = 0; i < gNavItems.length; i++) {
-          gNavItems[i].className += ' is-opened';
-        }
-      } else {
-        elmHamburger.className -= ' is-opened-navi';
-        for (var i = 0; i < gNavItems.length; i++) {
-          gNavItems[i].className -= ' is-opened';
-        }
-      }
-
-    }else{
 
     elmHamburger.classList.toggle("is-active");
 
@@ -130,7 +107,7 @@ function containsClass(classList, className){
         gNavItems[i].classList.remove('is-opened');
       }
     }
-  }
+  
 
   });
 }());
