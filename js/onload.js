@@ -108,8 +108,7 @@ $(".toggle-menu").click(function () {
     if(/MSIE \d|Trident.*rv:/.test(navigator.userAgent)){
         console.log('IE');
         document.querySelector('.toggle-menu').classList.toggle('is-active');
-        document.querySelector('.header-nav').classList.toggle('is-active');
     }else{
-    $(".toggle-menu,.header-nav").toggleClass("is-active");
+    $(".toggle-menu").toggleClass("is-active");
     }
 });
