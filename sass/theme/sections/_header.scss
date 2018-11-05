@@ -7,7 +7,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  padding: 40px 15px;
+  padding: 1rem;
   z-index: 1020;
   color: #fff;
   /* animation */
@@ -23,7 +23,6 @@
   @include media-breakpoint-down(sm) {
     margin-left: 0px;
     padding: 0px;
-    background: $white;
   }
 
   .header__navigation {
@@ -62,27 +61,7 @@
     z-index:3;
   }
 
-  .logo--white {
-    display: block;
-    @include media-breakpoint-down(sm) {
-      display: none;
-    }
-  }
-  .logo--black {
-    display: none;
-    @include media-breakpoint-down(sm) {
-      display: block;
-    }
-  }
-
-  &.-white {
-    .logo--white {
-      display: none;
-    }
-    .logo--black {
-      display: block;
-    }
-  }
+ 
 }
 
 .header__logo {
@@ -159,67 +138,7 @@
   /* margins */
 }
 
-#header.-white {
-  padding: 10px 15px;
-  color: #2f353e;
-  background: #fff !important;
-  box-shadow: 0 0 2px rgba(6, 8, 8, 0.15);
-  transition-delay: 0s;
-  transition-duration: 0.4s;
 
-  @include media-breakpoint-down(sm) {
-    padding: 0px;
-  }
-
-  .header__navigation {
-
-    .active > .nav-link {
-      color: rgba($dark,1);
-    }
-  }
-
-  a {
-    color: rgba($dark,.7);
-    transition: 0.2s;
-    padding: 0;
-
-    &:hover {
-      color: rgba($dark,1);
-    }
-  }
-
-
-}
-#header.-white .menu h3 i {
-  background-position: -100px 0;
-  width: 67px;
-  height: 32px;
-  margin: -1px 0 0 -1px;
-}
-#header.-white .menu .menu-item:hover,
-#header.-white .menu .menu-item:focus {
-  background: #fafafb !important;
-}
-#header.-white .menu .menu-item.-active:after {
-  content: "";
-  display: block;
-  background: #00dab4;
-  height: 3px;
-  left: 15px;
-  right: 15px;
-  position: absolute;
-  bottom: 0;
-}
-#header.-white .menu .menu-item .count {
-  background: #cbccce;
-}
-#acf-christmas-hat {
-  position: absolute;
-  width: 30px;
-  height: auto;
-  top: 12px;
-  left: 19px;
-}
 
 
 .toggle-menu {

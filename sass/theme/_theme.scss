@@ -235,11 +235,16 @@ section {
 }
 
 .page-header {
+  padding: 200px 0 100px;
+  background-color: $dark;
+
+  @include media-breakpoint-down(sm) {
+    padding: 150px 0 50px;
+  }
+
 
   &--home {
-    padding: 200px 0 200px;
-    max-height: 800px;
-    min-height: 400px;
+    padding: 200px 0;
     position: relative;
 
     & .pos-vertical-center {
@@ -249,9 +254,6 @@ section {
 
   &--page {
     padding: 200px 0;
-    height: 50vh;
-    max-height: 800px;
-    min-height: 400px;
     position: relative;
 
     & .pos-vertical-center {
@@ -259,12 +261,9 @@ section {
     }
   }
 
-  padding: 200px 0 100px;
-  background-color: $dark;
 
-  @include media-breakpoint-down(sm) {
-    padding: 150px 0 50px;
-  }
+
+
 }
 
 .work-tiles {
@@ -488,4 +487,13 @@ section {
       width: 2px;
       background-color: rgba($white,0.5);
     }
+}
+
+
+.story-wrap {
+  padding: 0 3rem;
+
+  @include media-breakpoint-down(md) {
+    padding: 0;
+  }
 }
