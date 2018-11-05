@@ -8,7 +8,7 @@
   left: 0;
   width: 100%;
   padding: 40px 15px;
-  z-index: 1020;
+  z-index: 15;
   color: #fff;
   /* animation */
   opacity: 1;
@@ -227,6 +227,7 @@
     height: 0.875rem;
     width: 1.375rem;
     margin-right:2rem;
+    z-index:2;
 
     &:before{
       content:"";
@@ -299,7 +300,22 @@
     background-color:$dark;
     width:188.3125rem;
     height:188.3125rem;
-    top:-180.0625rem;
+    top:-178.875rem;
     right:-94.156265rem;
   }
 }
+
+.shape-overlays {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0; 
+  left: 0;
+  z-index:-2;
+}
+
+
+.shape-overlays path:nth-of-type(1) { fill: $dark; }
+.shape-overlays path:nth-of-type(2) { fill: $primary; }
+.shape-overlays path:nth-of-type(3) { fill: $accent; }
+.shape-overlays path:nth-of-type(4) { fill: #efefef; }
