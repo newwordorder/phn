@@ -2219,7 +2219,7 @@ mr = (function (mr, $, window, document){
             }
         });
 
-        $('.notification .').on('click', function(){
+        $('.notification .inner-link').on('click', function(){
             var notificationLink = jQuery(this).closest('.notification').attr('data-notification-link');
             mr.notifications.closeNotification(notificationLink);
         });
@@ -2531,7 +2531,7 @@ mr = (function (mr, $, window, document){
 
 
 
-        $('a.').each(function(){
+        $('a.inner-link').each(function(){
             var sectionObject = {},
                 link          = $(this),
                 href          = link.attr('href'),
@@ -2559,11 +2559,11 @@ mr = (function (mr, $, window, document){
         mr.smoothscroll.sections.forEach(function(section){
             if(mr.scroll.y >= section.top && mr.scroll.y < (section.top + section.height)){
                 if(section.active === false){
-                    section.link.classList.add("--active");
+                    section.link.classList.add("inner-link--active");
                     section.active = true;
                 }
             }else{
-                section.link.classList.remove("--active");
+                section.link.classList.remove("inner-link--active");
                 section.active = false;
             }
         });
@@ -2573,10 +2573,10 @@ mr = (function (mr, $, window, document){
 
     mr.smoothscroll.documentReady = function($){
         // Smooth scroll to inner links
-        var innerLinks = $('a.'), offset, themeDefaults, ao = {};
+        var innerLinks = $('a.inner-link'), offset, themeDefaults, ao = {};
 
         themeDefaults = {
-            selector: '.',
+            selector: '.inner-link',
             selectorHeader: null,
             speed: 750,
             easing: 'easeInOutCubic',
@@ -2588,7 +2588,7 @@ mr = (function (mr, $, window, document){
                 var link          = $(this),
                     href          = link.attr('href');
                 if(href.charAt(0) !== "#"){
-                    link.removeClass('');
+                    link.removeClass('inner-link');
                 }
             });
 
