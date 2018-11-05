@@ -75,15 +75,4 @@ $container = get_theme_mod( 'understrap_container_type' );
 	</svg>
 	</div><!-- #header -->
 
-
-<script>
-
-(function($) {
-		$(".toggle-menu").click(function () {
-			$(".toggle-menu,.header-nav").toggleClass("is-active");
-	});
-})( jQuery );
-</script>
-
-
 	<div class="page">

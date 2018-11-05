@@ -103,3 +103,7 @@ jQuery( document ).ready(function() {
     .set('.preloader-wrap',{display:'none'})
 
 });
+
+$(".toggle-menu").click(function () {
+    $(".toggle-menu,.header-nav").toggleClass("is-active");
+});

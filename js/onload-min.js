@@ -138,5 +138,8 @@ jQuery(document).ready(function () {
     display: 'none'
   });
 });
+$(".toggle-menu").click(function () {
+  $(".toggle-menu,.header-nav").toggleClass("is-active");
+});
 
 //# sourceMappingURL=onload-min.js.map
