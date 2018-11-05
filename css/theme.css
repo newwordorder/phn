@@ -16281,7 +16281,8 @@ hr.short {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: -2; }
+  z-index: -2;
+  pointer-events: none; }
 
 .shape-overlays path:nth-of-type(1) {
   fill: #003E6A; }
