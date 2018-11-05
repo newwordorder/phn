@@ -3,7 +3,7 @@
   background: transparent;
   padding: 0;
   margin: 0;
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -142,9 +142,10 @@
 
 
 .toggle-menu {
-    position: relative;
+    position: fixed;
     height: 0.875rem;
     width: 1.375rem;
+    right:2em;
     margin-right:2rem;
     z-index:2;
 
@@ -183,7 +184,7 @@
         display: block;
     }
 
-    &.is-active .line {
+    &.is-opened-navi .line {
         transform: rotate(135deg);
         top: 50%;
         &:nth-of-type(2) {
@@ -231,6 +232,7 @@
   top: 0; 
   left: 0;
   z-index:-2;
+  pointer-events:none;
 }
 
 
