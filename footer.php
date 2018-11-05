@@ -8,6 +8,9 @@
  */
 
 ?>
+<div class="preloader-wrap">
+	<div class="preloader__inner"></div>
+</div>
 
 <footer id="footer">
 		<div class="container text-center">
@@ -26,8 +29,8 @@
 
 
 <?php wp_footer(); ?>
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
 <script src="<?php echo get_template_directory_uri(); ?>/js/header.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/flickity.min.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/fontawesome-all.js"></script>
@@ -47,6 +50,8 @@
 <script>
 	AOS.init();
 </script>
+
+
 
 </body>
 

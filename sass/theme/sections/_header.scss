@@ -89,6 +89,8 @@
   display: block;
   width: 150px;
   z-index:5;
+  position:absolute;
+  top:2rem;
   @include media-breakpoint-down(sm) {
     width: 100px;
   }
@@ -144,9 +146,7 @@
 *	Header
 *
 *-------------------------------------------------------------------------*/
-#header {
 
-}
 .admin-bar #header {
   top: 32px;
 }
@@ -229,6 +229,7 @@
     right:2em;
     margin-right:2rem;
     z-index:2;
+    top:6rem;
 
     &:before{
       content:"";
@@ -280,6 +281,7 @@
 .header__circle{
   position:absolute;
   border-radius:100%;
+
   z-index:1;
   &--primary{
     background-color:$primary;
