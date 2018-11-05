@@ -59,6 +59,7 @@
 
   .logo {
     margin-bottom: 0;
+    z-index:3;
   }
 
   .logo--white {
@@ -87,6 +88,7 @@
 .header__logo {
   display: block;
   width: 150px;
+  z-index:5;
   @include media-breakpoint-down(sm) {
     width: 100px;
   }
@@ -96,7 +98,7 @@
 .header__inner {
   display: flex;
   justify-content: space-between;
-  max-width: 1140px;
+  align-items:center;
   margin: 0 auto;
   width: 100%;
 
@@ -221,25 +223,41 @@
 
 
 .toggle-menu {
-    position: absolute;
-    top: 30px;
-    right: 30px;
-    height: 20px;
-    width: 20px;
-    display: none;
+    position: relative;
+    height: 0.875rem;
+    width: 1.375rem;
+    margin-right:2rem;
+
+    &:before{
+      content:"";
+      background-color:$white;
+      width:4rem;
+      height:4rem;
+      border-radius:100%;
+      position:absolute;
+      top:50%;
+      left:50%;
+      transform:translate(-50%, -50%);
+      box-shadow:0px 6px 20px 0px rgba(0, 0, 0, 0.2);
+      
+      
+    }
+ 
     .line {
         position: absolute;
         display: block;
-        height: 2px;
-        width: 20px;
-        background: $primary;
-        right: 0px;
-        top: 0px;
+        height: 0.125rem;
+        width: 100%;
+        background: $accent;
+        left: 0px;
+        top: 0%;
         transition: 0.4s;
         &:nth-of-type(2) {
-            width: 15px;
-            top: 5px;
+            top: 50%;
         }
+        &:nth-of-type(3) {
+          top: 100%;
+      }
     }
     @include media-breakpoint-down(sm) {
         display: block;
@@ -247,11 +265,41 @@
 
     &.is-active .line {
         transform: rotate(135deg);
-        top: 5px;
+        top: 50%;
         &:nth-of-type(2) {
-            width: 20px;
-            top: 5px;
+            width: 100%;
+            top: 50%;
              transform: rotate(-135deg);
         }
     }
+}
+
+
+.header__circle{
+  position:absolute;
+  border-radius:100%;
+  z-index:1;
+  &--primary{
+    background-color:$primary;
+    width:30rem;
+    height:30rem;
+    top:-18.25rem;
+    left:-12.25rem;
+  }
+  &--accent{
+    z-index:-1;
+    background-color:$accent;
+    width:62.75rem;
+    height:62.75rem;
+    top:-57.75rem;
+    left:-22.9375rem;
+  }
+  &--dark{
+    z-index:-1;
+    background-color:$dark;
+    width:188.3125rem;
+    height:188.3125rem;
+    top:-180.0625rem;
+    right:-94.156265rem;
+  }
 }
