@@ -10413,15 +10413,14 @@ form[action*='list-manage.com'] .small-meta {
 .page-navigator ul {
   display: inline-block;
   padding: 0.92857143em;
-  background: rgba(0, 0, 0, 0.4);
   border-radius: 1.85714286em;
   transition: all .2s ease; }
 
-.page-navigator ul:hover {
-  background: rgba(0, 0, 0, 0.6); }
+.page-navigator li {
+  list-style: none; }
 
 .page-navigator ul li:not(:last-child) {
-  margin-bottom: 1.85714286em; }
+  margin-bottom: 0.875em; }
 
 @media all and (max-width: 767px) {
   .page-navigator {
@@ -10437,7 +10436,8 @@ form[action*='list-manage.com'] .small-meta {
   border-radius: 50%;
   transition: all .2s ease;
   display: block;
-  position: relative; }
+  position: relative;
+  background-blend-mode: difference; }
 
 .page-navigator li a:not(:hover) {
   opacity: .5; }
@@ -16045,7 +16045,7 @@ hr.short {
   top: 0;
   left: 0;
   width: 100%;
-  padding: 40px 15px;
+  padding: 1rem;
   z-index: 15;
   color: #fff;
   /* animation */
@@ -16507,13 +16507,22 @@ section.bg-effect--ken-burns {
 
 .link {
   background: transparent;
-  color: #00BBC3;
+  color: #003E6A;
   font-size: 0.825em;
   font-weight: 700;
   font-family: "Glober Bold", serif;
-  text-transform: uppercase; }
+  text-decoration: none;
+  transition: 0.2s;
+  display: inline-block; }
+  .link svg {
+    color: #00BBC3;
+    transition: 0.2s;
+    margin-left: 0.5rem; }
   .link:hover {
-    color: #008a90; }
+    color: #003E6A; }
+    .link:hover svg {
+      -webkit-transform: translateX(0.5rem);
+              transform: translateX(0.5rem); }
   .link:focus {
     box-shadow: none; }
 
@@ -16742,7 +16751,10 @@ section.bg-effect--ken-burns {
   border: 0;
   right: 2rem;
   bottom: 3rem;
-  padding-top: 1rem; }
+  padding-top: 1rem;
+  box-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.2); }
+  .back-to-top:hover {
+    color: #fff; }
 
 /*
 * Use existing Bootstrap 4 classes and

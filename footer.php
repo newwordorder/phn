@@ -22,7 +22,9 @@
 </footer>
 
 
-<a class="back-to-top" href="#header">
+		
+
+<a class="back-to-top  inner-link " href="#header">
 	<i class="far fa-arrow-up"></i>
 </a>
 

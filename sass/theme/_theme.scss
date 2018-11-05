@@ -202,14 +202,27 @@ section {
 
 .link {
   background: transparent;
-  color: $primary;
+  color: $heading-color;
   font-size: 0.825em;
   font-weight: 700;
   font-family: $font-bold;
-  text-transform: uppercase;
+  text-decoration: none;
+  transition: 0.2s;  
+  display: inline-block;   
+  
+
+  svg {
+    color: $primary;
+    transition: 0.2s; 
+    margin-left: 0.5rem;
+  }
 
   &:hover {
-    color: darken($primary, 10%);
+    color: $heading-color;
+
+    svg {
+      transform: translateX(0.5rem);
+    }
   }
 
   &:focus {
@@ -505,4 +518,8 @@ section {
   right: 2rem;
   bottom: 3rem;
   padding-top: 1rem;
+  box-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.2);
+  &:hover {
+    color: $white;
+  }
 }
