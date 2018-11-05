@@ -4,7 +4,8 @@ jQuery(document).ready(function () {
   var scenes = Array.from(document.querySelectorAll('[data-scene="scene"]'));
   scenes.map(function (scene) {
     new Parallax(scene, {
-      pointerEvents: true
+      pointerEvents: true,
+      relativeInput: true
     });
   });
   var tl = new TimelineMax();

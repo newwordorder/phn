@@ -1,342 +1,2958 @@
-window.mr=window.mr||{},mr=function(t,a,e,o){"use strict";function i(e){e=void 0===e?a:e,r.documentReady.concat(r.documentReadyDeferred).forEach(function(t){t(e)}),t.status.documentReadyRan=!0,t.status.windowLoadPending&&n(t.setContext())}function n(e){t.status.documentReadyRan?(t.status.windowLoadPending=!1,e="object"==typeof e?a:e,r.windowLoad.concat(r.windowLoadDeferred).forEach(function(t){t(e)})):t.status.windowLoadPending=!0}var r={documentReady:[],documentReadyDeferred:[],windowLoad:[],windowLoadDeferred:[]};return(t=t||{}).status={documentReadyRan:!1,windowLoadPending:!1},a(o).ready(i),a(e).on("load",n),t.setContext=function(e){var t;return void 0!==e?function(t){return a(e).find(t)}:a},t.components=r,t.documentReady=i,t.windowLoad=n,t}(window.mr,jQuery,window,document),
+
+window.mr = window.mr || {};
+
+mr = (function (mr, $, window, document){
+    "use strict";
+
+    mr = mr || {};
+
+    var components = {documentReady: [],documentReadyDeferred: [], windowLoad: [], windowLoadDeferred: []};
+
+    mr.status = {documentReadyRan: false, windowLoadPending: false};
+
+    $(document).ready(documentReady);
+    $(window).on("load", windowLoad);
+
+    function documentReady(context){
+
+        context = typeof context === typeof undefined ? $ : context;
+        components.documentReady.concat(components.documentReadyDeferred).forEach(function(component){
+            component(context);
+        });
+        mr.status.documentReadyRan = true;
+        if(mr.status.windowLoadPending){
+            windowLoad(mr.setContext());
+        }
+    }
+
+    function windowLoad(context){
+        if(mr.status.documentReadyRan){
+            mr.status.windowLoadPending = false;
+            context = typeof context === "object" ? $ : context;
+            components.windowLoad.concat(components.windowLoadDeferred).forEach(function(component){
+               component(context);
+            });
+        }else{
+            mr.status.windowLoadPending = true;
+        }
+    }
+
+    mr.setContext = function (contextSelector){
+        var context = $;
+        if(typeof contextSelector !== typeof undefined){
+            return function(selector){
+                return $(contextSelector).find(selector);
+            };
+        }
+        return context;
+    };
+
+    mr.components    = components;
+    mr.documentReady = documentReady;
+    mr.windowLoad    = windowLoad;
+
+    return mr;
+}(window.mr, jQuery, window, document));
+
+
 //////////////// Utility Functions
-mr=function(t,r,o,e){"use strict";return t.util={},t.util.requestAnimationFrame=o.requestAnimationFrame||o.mozRequestAnimationFrame||o.webkitRequestAnimationFrame||o.msRequestAnimationFrame,t.util.documentReady=function(t){var e,a=(new Date).getFullYear();t(".update-year").text(a)},t.util.windowLoad=function(e){e("[data-delay-src]").each(function(){var t=e(this);t.attr("src",t.attr("data-delay-src")),t.removeAttr("data-delay-src")})},t.util.getURLParameter=function(t){return decodeURIComponent((new RegExp("[?|&]"+t+"=([^&;]+?)(&|#|;|$)").exec(location.search)||[void 0,""])[1].replace(/\+/g,"%20"))||null},t.util.capitaliseFirstLetter=function(t){return t.charAt(0).toUpperCase()+t.slice(1)},t.util.slugify=function(t,e){return void 0!==e?t.replace(/ +/g,""):t.toLowerCase().replace(/[\~\!\@\#\$\%\^\&\*\(\)\-\_\=\+\]\[\}\{\'\"\;\\\:\?\/\>\<\.\,]+/g,"").replace(/ +/g,"-")},t.util.sortChildrenByText=function(t,e){var a=r(t),o=a.children().get(),i=-1,n=1;void 0!==e&&(n=-(i=1)),o.sort(function(t,e){var a=r(t).text(),o=r(e).text();return a<o?i:o<a?n:0}),
-// Append back into place
-a.empty(),r(o).each(function(t,e){a.append(e)})},
-// Set data-src attribute of element from src to be restored later
-t.util.idleSrc=function(t,e){var a;e=void 0!==e?e:"",(t.is(e+"[src]")?t:t.find(e+"[src]")).each(function(t,e){var a=(e=r(e)).attr("src"),o;
-// If there is no data-src, save current source to it
-void 0===e.attr("data-src")&&e.attr("data-src",a),
-// Clear the src attribute
-e.attr("src","")})},
-// Set src attribute of element from its data-src where it was temporarily stored earlier
-t.util.activateIdleSrc=function(t,e){var a;e=void 0!==e?e:"",(t.is(e+"[data-src]")?t:t.find(e+"[data-src]")).each(function(t,e){var a=(e=r(e)).attr("data-src");
-// Write the 'src' attribute using the 'data-src' value
-e.attr("src",a)})},t.util.pauseVideo=function(t){var e;(t.is("video")?t:t.find("video")).each(function(t,e){var a;r(e).get(0).pause()})},
-// Take a text value in either px (eg. 150px) or vh (eg. 65vh) and return a number in pixels.
-t.util.parsePixels=function(t){var e=r(o).height(),a;
-// Text text against regular expression for px value.
-return/^[1-9]{1}[0-9]*[p][x]$/.test(t)?parseInt(t.replace("px",""),10):/^[1-9]{1}[0-9]*[v][h]$/.test(t)?e*((a=parseInt(t.replace("vh",""),10))/100):-1},t.util.removeHash=function(){
-// Removes hash from URL bar without reloading and without losing search query
-history.pushState("",e.title,o.location.pathname+o.location.search)},t.components.documentReady.push(t.util.documentReady),t.components.windowLoad.push(t.util.windowLoad),t}(mr,jQuery,window,document),
+mr = (function (mr, $, window, document){
+    "use strict";
+    mr.util = {};
+
+    mr.util.requestAnimationFrame    = window.requestAnimationFrame ||
+                                       window.mozRequestAnimationFrame ||
+                                       window.webkitRequestAnimationFrame ||
+                                       window.msRequestAnimationFrame;
+
+    mr.util.documentReady = function($){
+        var today = new Date();
+        var year = today.getFullYear();
+        $('.update-year').text(year);
+    };
+
+    mr.util.windowLoad = function($){
+        $('[data-delay-src]').each(function(){
+            var $el = $(this);
+            $el.attr('src', $el.attr('data-delay-src'));
+            $el.removeAttr('data-delay-src');
+        });
+    };
+
+    mr.util.getURLParameter = function(name) {
+        return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [undefined, ""])[1].replace(/\+/g, '%20')) || null;
+    };
+
+
+    mr.util.capitaliseFirstLetter = function(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    };
+
+    mr.util.slugify = function(text, spacesOnly){
+        if(typeof spacesOnly !== typeof undefined){
+            return text.replace(/ +/g, '');
+        }else{
+            return text
+                .toLowerCase()
+                .replace(/[\~\!\@\#\$\%\^\&\*\(\)\-\_\=\+\]\[\}\{\'\"\;\\\:\?\/\>\<\.\,]+/g, '')
+                .replace(/ +/g, '-');
+        }
+    };
+
+    mr.util.sortChildrenByText = function(parentElement, reverse){
+        var $parentElement = $(parentElement);
+        var items          = $parentElement.children().get();
+        var order          = -1;
+        var order2         = 1;
+        if(typeof reverse !== typeof undefined){order = 1; order2 = -1;}
+
+        items.sort(function(a,b){
+          var keyA = $(a).text();
+          var keyB = $(b).text();
+
+          if (keyA < keyB) return order;
+          if (keyA > keyB) return order2;
+          return 0;
+        });
+
+        // Append back into place
+        $parentElement.empty();
+        $(items).each(function(i, itm){
+          $parentElement.append(itm);
+        });
+    };
+
+    // Set data-src attribute of element from src to be restored later
+    mr.util.idleSrc = function(context, selector){
+
+            selector  = (typeof selector !== typeof undefined) ? selector : '';
+            var elems = context.is(selector+'[src]') ? context : context.find(selector+'[src]');
+
+        elems.each(function(index, elem){
+            elem           = $(elem);
+            var currentSrc = elem.attr('src'),
+                dataSrc    = elem.attr('data-src');
+
+            // If there is no data-src, save current source to it
+            if(typeof dataSrc === typeof undefined){
+                elem.attr('data-src', currentSrc);
+            }
+
+            // Clear the src attribute
+            elem.attr('src', '');
+
+        });
+    };
+
+    // Set src attribute of element from its data-src where it was temporarily stored earlier
+    mr.util.activateIdleSrc = function(context, selector){
+
+        selector     = (typeof selector !== typeof undefined) ? selector : '';
+        var elems    = context.is(selector+'[data-src]') ? context : context.find(selector+'[data-src]');
+
+        elems.each(function(index, elem){
+            elem = $(elem);
+            var dataSrc    = elem.attr('data-src');
+
+            // Write the 'src' attribute using the 'data-src' value
+            elem.attr('src', dataSrc);
+        });
+    };
+
+    mr.util.pauseVideo = function(context){
+        var elems = context.is('video') ? context : context.find('video');
+
+        elems.each(function(index, video){
+            var playingVideo = $(video).get(0);
+            playingVideo.pause();
+        });
+    };
+
+    // Take a text value in either px (eg. 150px) or vh (eg. 65vh) and return a number in pixels.
+    mr.util.parsePixels = function(text){
+        var windowHeight = $(window).height(), value;
+
+        // Text text against regular expression for px value.
+        if(/^[1-9]{1}[0-9]*[p][x]$/.test(text)){
+            return parseInt(text.replace('px', ''),10);
+        }
+        // Otherwise it is vh value.
+        else if(/^[1-9]{1}[0-9]*[v][h]$/.test(text)){
+            value = parseInt(text.replace('vh', ''),10);
+            // Return conversion to percentage of window height.
+            return windowHeight * (value/100);
+        }else{
+            // If it is not proper text, return -1 to indicate bad value.
+            return -1;
+        }
+    };
+
+    mr.util.removeHash = function() {
+        // Removes hash from URL bar without reloading and without losing search query
+        history.pushState("", document.title, window.location.pathname + window.location.search);
+    }
+
+    mr.components.documentReady.push(mr.util.documentReady);
+    mr.components.windowLoad.push(mr.util.windowLoad);
+    return mr;
+
+}(mr, jQuery, window, document));
+
 //////////////// Window Functions
-mr=function(t,e,a,o){"use strict";return t.window={},t.window.height=e(a).height(),t.window.width=e(a).width(),e(a).on("resize",function(){t.window.height=e(a).height(),t.window.width=e(a).width()}),t}(mr,jQuery,window,document),
+mr = (function (mr, $, window, document){
+    "use strict";
+
+    mr.window = {};
+    mr.window.height = $(window).height();
+    mr.window.width = $(window).width();
+
+    $(window).on('resize',function(){
+        mr.window.height = $(window).height();
+        mr.window.width = $(window).width();
+    });
+
+    return mr;
+}(mr, jQuery, window, document));
+
+
 //////////////// Scroll Functions
-mr=function(i,t,n,e){"use strict";i.scroll={};var a=n.requestAnimationFrame||n.mozRequestAnimationFrame||n.webkitRequestAnimationFrame||n.msRequestAnimationFrame;i.scroll.listeners=[],i.scroll.busy=!1,i.scroll.y=0,i.scroll.x=0;var o=function(t){
-//////////////// Capture Scroll Event and fire scroll function
-jQuery(n).off("scroll.mr"),jQuery(n).on("scroll.mr",function(t){!1===i.scroll.busy&&(i.scroll.busy=!0,a(function(t){i.scroll.update(t)})),t.stopPropagation&&t.stopPropagation()})};return i.scroll.update=function(t){
-// Loop through all mr scroll listeners
-var e=void 0!==n.mr_parallax;if(i.scroll.y=e?mr_parallax.mr_getScrollPosition():n.pageYOffset,i.scroll.busy=!1,e&&mr_parallax.mr_parallaxBackground(),0<i.scroll.listeners.length)for(var a=0,o=i.scroll.listeners.length;a<o;a++)i.scroll.listeners[a](t)},i.scroll.documentReady=o,i.components.documentReady.push(o),i}(mr,jQuery,window,document),
+mr = (function (mr, $, window, document){
+    "use strict";
+
+
+    mr.scroll           = {};
+    var raf             = window.requestAnimationFrame ||
+                          window.mozRequestAnimationFrame ||
+                          window.webkitRequestAnimationFrame ||
+                          window.msRequestAnimationFrame;
+    mr.scroll.listeners = [];
+    mr.scroll.busy      = false;
+    mr.scroll.y         = 0;
+    mr.scroll.x         = 0;
+
+    var documentReady = function($){
+
+        //////////////// Capture Scroll Event and fire scroll function
+        jQuery(window).off('scroll.mr');
+        jQuery(window).on('scroll.mr', function(evt) {
+                if(mr.scroll.busy === false){
+
+                    mr.scroll.busy = true;
+                    raf(function(evt){
+                        mr.scroll.update(evt);
+                    });
+
+                }
+                if(evt.stopPropagation){
+                    evt.stopPropagation();
+                }
+        });
+
+    };
+
+    mr.scroll.update = function(event){
+
+        // Loop through all mr scroll listeners
+        var parallax = typeof window.mr_parallax !== typeof undefined ? true : false;
+        mr.scroll.y = (parallax ? mr_parallax.mr_getScrollPosition() : window.pageYOffset);
+        mr.scroll.busy = false;
+        if(parallax){
+            mr_parallax.mr_parallaxBackground();
+        }
+
+
+        if(mr.scroll.listeners.length > 0){
+            for (var i = 0, l = mr.scroll.listeners.length; i < l; i++) {
+               mr.scroll.listeners[i](event);
+            }
+        }
+
+    };
+
+    mr.scroll.documentReady = documentReady;
+
+    mr.components.documentReady.push(documentReady);
+
+    return mr;
+
+}(mr, jQuery, window, document));
+
+
 //////////////// Scroll Class Modifier
-mr=function(r,e,t,a){"use strict";r.scroll.classModifiers={},
-// Globally accessible list of elements/rules
-r.scroll.classModifiers.rules=[],r.scroll.classModifiers.parseScrollRules=function(n){var t,e;return n.attr("data-scroll-class").split(";").forEach(function(t){var e,a,o={};if(2===(e=t.replace(/\s/g,"").split(":")).length){if(!(-1<(a=r.util.parsePixels(e[0]))))
-// Error: scrollpoint component was malformed
-//console.log('Error - Scrollpoint not found.');
-return!1;if(o.scrollPoint=a,!e[1].length)
-// Error: toggleClass component does not exist.
-//console.log('Error - toggle class not found.');
-return!1;var i=e[1];o.toggleClass=i,
-// Set variable in object to indicate that element already has class applied
-o.hasClass=n.hasClass(i),o.element=n.get(0),r.scroll.classModifiers.rules.push(o)}}),!!r.scroll.classModifiers.rules.length},r.scroll.classModifiers.update=function(t){
-// Given the current scrollPoint, check for necessary changes
-for(var e=r.scroll.y,a=r.scroll.classModifiers.rules,o=a.length,i;o--;)e>(i=a[o]).scrollPoint&&!i.hasClass&&(
-// Set local copy and glogal copy at the same time;
-i.element.classList.add(i.toggleClass),i.hasClass=r.scroll.classModifiers.rules[o].hasClass=!0),e<i.scrollPoint&&i.hasClass&&(
-// Set local copy and glogal copy at the same time;
-i.element.classList.remove(i.toggleClass),i.hasClass=r.scroll.classModifiers.rules[o].hasClass=!1)};var o=function(){e('.main-container [data-scroll-class*="pos-fixed"]').each(function(){var t=e(this);t.css("max-width",t.parent().outerWidth()),t.parent().css("min-height",t.outerHeight())})},i=function(e){
-// Collect info on all elements that require class modification at load time
-// Each element has data-scroll-class with a formatted value to represent class to add/remove at a particular scroll point.
-e("[data-scroll-class]").each(function(){var t=e(this);
-// Test the rules to be added to an array of rules.
-r.scroll.classModifiers.parseScrollRules(t)||console.log("Error parsing scroll rules on: "+t)}),
-// For 'position fixed' elements, give them a max-width for correct fixing behaviour
-o(),e(t).on("resize",o),
-// If there are valid scroll rules add classModifiers update function to the scroll event processing queue.
-r.scroll.classModifiers.rules.length&&r.scroll.listeners.push(r.scroll.classModifiers.update)};return r.components.documentReady.push(i),r.scroll.classModifiers.documentReady=i,r}(mr,jQuery,window,document),
+mr = (function (mr, $, window, document){
+    "use strict";
+
+    mr.scroll.classModifiers = {};
+    // Globally accessible list of elements/rules
+    mr.scroll.classModifiers.rules = [];
+
+    mr.scroll.classModifiers.parseScrollRules = function(element){
+        var text  = element.attr('data-scroll-class'),
+            rules = text.split(";");
+
+        rules.forEach(function(rule){
+            var ruleComponents, scrollPoint, ruleObject = {};
+            ruleComponents = rule.replace(/\s/g, "").split(':');
+            if(ruleComponents.length === 2){
+                scrollPoint = mr.util.parsePixels(ruleComponents[0]);
+                if(scrollPoint > -1){
+                    ruleObject.scrollPoint = scrollPoint;
+                    if(ruleComponents[1].length){
+                        var toggleClass = ruleComponents[1];
+                        ruleObject.toggleClass = toggleClass;
+                        // Set variable in object to indicate that element already has class applied
+                        ruleObject.hasClass = element.hasClass(toggleClass);
+                        ruleObject.element = element.get(0);
+                        mr.scroll.classModifiers.rules.push(ruleObject);
+                    }else{
+                        // Error: toggleClass component does not exist.
+                        //console.log('Error - toggle class not found.');
+                        return false;
+                    }
+                }else{
+                    // Error: scrollpoint component was malformed
+                    //console.log('Error - Scrollpoint not found.');
+                    return false;
+                }
+            }
+        });
+
+        if(mr.scroll.classModifiers.rules.length){
+            return true;
+        }else{
+            return false;
+        }
+    };
+
+    mr.scroll.classModifiers.update = function(event){
+        var currentScroll = mr.scroll.y,
+            scrollRules   = mr.scroll.classModifiers.rules,
+            l             = scrollRules.length,
+            currentRule;
+
+        // Given the current scrollPoint, check for necessary changes
+        while(l--) {
+
+            currentRule = scrollRules[l];
+
+            if(currentScroll > currentRule.scrollPoint && !currentRule.hasClass){
+                // Set local copy and glogal copy at the same time;
+                currentRule.element.classList.add(currentRule.toggleClass);
+                currentRule.hasClass = mr.scroll.classModifiers.rules[l].hasClass = true;
+            }
+            if(currentScroll < currentRule.scrollPoint && currentRule.hasClass){
+                // Set local copy and glogal copy at the same time;
+                currentRule.element.classList.remove(currentRule.toggleClass);
+                currentRule.hasClass = mr.scroll.classModifiers.rules[l].hasClass = false;
+            }
+        }
+    };
+
+    var fixedElementSizes = function(){
+        $('.main-container [data-scroll-class*="pos-fixed"]').each(function(){
+            var element = $(this);
+            element.css('max-width',element.parent().outerWidth());
+            element.parent().css('min-height',element.outerHeight());
+        });
+    };
+
+    var documentReady = function($){
+        // Collect info on all elements that require class modification at load time
+        // Each element has data-scroll-class with a formatted value to represent class to add/remove at a particular scroll point.
+        $('[data-scroll-class]').each(function(){
+            var element  = $(this);
+
+            // Test the rules to be added to an array of rules.
+            if(!mr.scroll.classModifiers.parseScrollRules(element)){
+                console.log('Error parsing scroll rules on: '+element);
+            }
+        });
+
+        // For 'position fixed' elements, give them a max-width for correct fixing behaviour
+        fixedElementSizes();
+        $(window).on('resize', fixedElementSizes);
+
+        // If there are valid scroll rules add classModifiers update function to the scroll event processing queue.
+        if(mr.scroll.classModifiers.rules.length){
+            mr.scroll.listeners.push(mr.scroll.classModifiers.update);
+        }
+    };
+
+    mr.components.documentReady.push(documentReady);
+    mr.scroll.classModifiers.documentReady = documentReady;
+
+
+
+    return mr;
+
+}(mr, jQuery, window, document));
+
+
 //////////////// Accordions
-mr=function(o,d,t,c){"use strict";return o.accordions=o.accordions||{},o.accordions.documentReady=function(a){a(".accordion__title").on("click",function(){o.accordions.activatePanel(a(this))}),a(".accordion").each(function(){var t=a(this),e=t.outerHeight(!0);t.css("min-height",e)}),""!==t.location.hash&&"#"!==t.location.hash&&a(".accordion li"+a(this).attr("href")).length&&o.accordions.activatePanelById(t.location.hash,!0),jQuery(c).on("click",'a[href^="#"]:not(a[href="#"])',function(){a(".accordion > li > .accordion__title"+a(this).attr("href")).length&&o.accordions.activatePanelById(a(this).attr("href"),!0)})},o.accordions.activatePanel=function(t,e){var a=d(t),o=a.closest(".accordion"),i=a.closest("li"),n=c.createEvent("Event"),r=c.createEvent("Event");if(n.initEvent("panelOpened.accordions.mr",!0,!0),r.initEvent("panelClosed.accordions.mr",!0,!0),i.hasClass("active"))!0!==e&&(i.removeClass("active"),a.trigger("panelClosed.accordions.mr").get(0).dispatchEvent(r));else if(o.hasClass("accordion--oneopen")){var s=o.find("li.active");s.length&&(s.removeClass("active"),s.trigger("panelClosed.accordions.mr").get(0).dispatchEvent(r)),i.addClass("active"),i.trigger("panelOpened.accordions.mr").get(0).dispatchEvent(n)}else i.is(".active")||i.trigger("panelOpened.accordions.mr").get(0).dispatchEvent(n),i.addClass("active")},o.accordions.activatePanelById=function(t,e){var a;""!==t&&"#"!==t&&(a=d(".accordion > li > .accordion__title#"+t.replace("#",""))).length&&(d("html, body").stop(!0).animate({scrollTop:a.offset().top-50},1200),o.accordions.activatePanel(a,e))},o.components.documentReady.push(o.accordions.documentReady),o}(mr,jQuery,window,document),
+mr = (function (mr, $, window, document){
+    "use strict";
+
+    mr.accordions = mr.accordions || {};
+
+    mr.accordions.documentReady = function($){
+        $('.accordion__title').on('click', function(){
+            mr.accordions.activatePanel($(this));
+        });
+
+        $('.accordion').each(function(){
+            var accordion = $(this);
+            var minHeight = accordion.outerHeight(true);
+            accordion.css('min-height',minHeight);
+        });
+
+        if(window.location.hash !== '' && window.location.hash !== '#'){
+            if($('.accordion li'+$(this).attr('href')).length){
+                 mr.accordions.activatePanelById(window.location.hash, true);
+            }
+        }
+
+        jQuery(document).on('click', 'a[href^="#"]:not(a[href="#"])', function(){
+
+             if($('.accordion > li > .accordion__title'+$(this).attr('href')).length){
+                mr.accordions.activatePanelById($(this).attr('href'), true);
+             }
+        });
+    };
+
+
+
+    mr.accordions.activatePanel = function(panel, forceOpen){
+
+        var $panel    = $(panel),
+            accordion = $panel.closest('.accordion'),
+            li        = $panel.closest('li'),
+            openEvent = document.createEvent('Event'),
+            closeEvent = document.createEvent('Event');
+
+            openEvent.initEvent('panelOpened.accordions.mr', true, true);
+            closeEvent.initEvent('panelClosed.accordions.mr', true, true);
+
+
+
+        if(li.hasClass('active')){
+
+            if(forceOpen !== true){
+
+                li.removeClass('active');
+                $panel.trigger('panelClosed.accordions.mr').get(0).dispatchEvent(closeEvent);
+            }
+        }else{
+
+            if(accordion.hasClass('accordion--oneopen')){
+
+                var wasActive = accordion.find('li.active');
+                if(wasActive.length){
+                    wasActive.removeClass('active');
+                    wasActive.trigger('panelClosed.accordions.mr').get(0).dispatchEvent(closeEvent);
+                }
+                li.addClass('active');
+                li.trigger('panelOpened.accordions.mr').get(0).dispatchEvent(openEvent);
+
+            }else{
+
+                if(!li.is('.active')){
+                    li.trigger('panelOpened.accordions.mr').get(0).dispatchEvent(openEvent);
+                }
+                li.addClass('active');
+            }
+        }
+    };
+
+    mr.accordions.activatePanelById = function(id, forceOpen){
+        var panel;
+
+        if(id !== '' && id !== '#'){
+            panel = $('.accordion > li > .accordion__title#'+id.replace('#', ''));
+            if(panel.length){
+                $('html, body').stop(true).animate({
+                    scrollTop: (panel.offset().top - 50)
+                }, 1200);
+
+                mr.accordions.activatePanel(panel, forceOpen);
+            }
+        }
+    };
+
+    mr.components.documentReady.push(mr.accordions.documentReady);
+    return mr;
+
+}(mr, jQuery, window, document));
+
+
 //////////////// Alerts
-mr=function(t,e,a,o){"use strict";return t.alerts=t.alerts||{},t.alerts.documentReady=function(t){t(".alert__close").on("click touchstart",function(){jQuery(this).closest(".alert").addClass("alert--dismissed")})},t.components.documentReady.push(t.alerts.documentReady),t}(mr,jQuery,window,document),
+mr = (function (mr, $, window, document){
+    "use strict";
+
+    mr.alerts = mr.alerts || {};
+
+    mr.alerts.documentReady = function($){
+        $('.alert__close').on('click touchstart', function(){
+            jQuery(this).closest('.alert').addClass('alert--dismissed');
+        });
+    };
+
+    mr.components.documentReady.push(mr.alerts.documentReady);
+    return mr;
+
+}(mr, jQuery, window, document));
+
+
 //////////////// Backgrounds
-mr=function(t,e,a,o){"use strict";return t.backgrounds=t.backgrounds||{},t.backgrounds.documentReady=function(e){
-//////////////// Append .background-image-holder <img>'s as CSS backgrounds
-e(".background-image-holder").each(function(){var t=e(this).children("img").attr("src");e(this).css("background",'url("'+t+'")').css("background-position","initial").css("opacity","1")})},t.components.documentReady.push(t.backgrounds.documentReady),t}(mr,jQuery,window,document),
+mr = (function (mr, $, window, document){
+    "use strict";
+
+    mr.backgrounds = mr.backgrounds || {};
+
+    mr.backgrounds.documentReady = function($){
+
+        //////////////// Append .background-image-holder <img>'s as CSS backgrounds
+
+	    $('.background-image-holder').each(function() {
+	        var imgSrc = $(this).children('img').attr('src');
+	        $(this).css('background', 'url("' + imgSrc + '")').css('background-position', 'initial').css('opacity','1');
+	    });
+    };
+
+    mr.components.documentReady.push(mr.backgrounds.documentReady);
+    return mr;
+
+}(mr, jQuery, window, document));
+
 //////////////// Bars
-mr=function(t,e,a,o){"use strict";return t.bars=t.bars||{},t.bars.documentReady=function(a){a('.nav-container .bar[data-scroll-class*="fixed"]:not(.bar--absolute)').each(function(){var t=a(this),e=t.outerHeight(!0);t.closest(".nav-container").css("min-height",e)})},t.components.documentReady.push(t.bars.documentReady),t}(mr,jQuery,window,document),
+mr = (function (mr, $, window, document){
+    "use strict";
+
+    mr.bars = mr.bars || {};
+
+    mr.bars.documentReady = function($){
+        $('.nav-container .bar[data-scroll-class*="fixed"]:not(.bar--absolute)').each(function(){
+            var bar = $(this),
+                barHeight = bar.outerHeight(true);
+            bar.closest('.nav-container').css('min-height',barHeight);
+        });
+    };
+
+    mr.components.documentReady.push(mr.bars.documentReady);
+    return mr;
+
+}(mr, jQuery, window, document));
+
 //////////////// Cookies
-mr=function(t,e,a,s){"use strict";return t.cookies={getItem:function(t){return t&&decodeURIComponent(s.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*"+encodeURIComponent(t).replace(/[\-\.\+\*]/g,"\\$&")+"\\s*\\=\\s*([^;]*).*$)|^.*$"),"$1"))||null},setItem:function(t,e,a,o,i,n){if(!t||/^(?:expires|max\-age|path|domain|secure)$/i.test(t))return!1;var r="";if(a)switch(a.constructor){case Number:r=a===1/0?"; expires=Fri, 31 Dec 9999 23:59:59 GMT":"; max-age="+a;break;case String:r="; expires="+a;break;case Date:r="; expires="+a.toUTCString();break}return s.cookie=encodeURIComponent(t)+"="+encodeURIComponent(e)+r+(i?"; domain="+i:"")+(o?"; path="+o:"")+(n?"; secure":""),!0},removeItem:function(t,e,a){return!!this.hasItem(t)&&(s.cookie=encodeURIComponent(t)+"=; expires=Thu, 01 Jan 1970 00:00:00 GMT"+(a?"; domain="+a:"")+(e?"; path="+e:""),!0)},hasItem:function(t){return!!t&&new RegExp("(?:^|;\\s*)"+encodeURIComponent(t).replace(/[\-\.\+\*]/g,"\\$&")+"\\s*\\=").test(s.cookie)},keys:function(){for(var t=s.cookie.replace(/((?:^|\s*;)[^\=]+)(?=;|$)|^\s*|\s*(?:\=[^;]*)?(?:\1|$)/g,"").split(/\s*(?:\=[^;]*)?;\s*/),e=t.length,a=0;a<e;a++)t[a]=decodeURIComponent(t[a]);return t}},t}(mr,jQuery,window,document),
+mr = (function (mr, $, window, document){
+    "use strict";
+
+    mr.cookies = {
+
+        getItem: function (sKey) {
+            if (!sKey) { return null; }
+            return decodeURIComponent(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
+        },
+        setItem: function (sKey, sValue, vEnd, sPath, sDomain, bSecure) {
+            if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) { return false; }
+                var sExpires = "";
+                if (vEnd) {
+                  switch (vEnd.constructor) {
+                    case Number:
+                      sExpires = vEnd === Infinity ? "; expires=Fri, 31 Dec 9999 23:59:59 GMT" : "; max-age=" + vEnd;
+                      break;
+                    case String:
+                      sExpires = "; expires=" + vEnd;
+                      break;
+                    case Date:
+                      sExpires = "; expires=" + vEnd.toUTCString();
+                      break;
+                }
+            }
+            document.cookie = encodeURIComponent(sKey) + "=" + encodeURIComponent(sValue) + sExpires + (sDomain ? "; domain=" + sDomain : "") + (sPath ? "; path=" + sPath : "") + (bSecure ? "; secure" : "");
+            return true;
+        },
+        removeItem: function (sKey, sPath, sDomain) {
+            if (!this.hasItem(sKey)) { return false; }
+            document.cookie = encodeURIComponent(sKey) + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT" + (sDomain ? "; domain=" + sDomain : "") + (sPath ? "; path=" + sPath : "");
+            return true;
+        },
+        hasItem: function (sKey) {
+            if (!sKey) { return false; }
+            return (new RegExp("(?:^|;\\s*)" + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie);
+        },
+        keys: function () {
+            var aKeys = document.cookie.replace(/((?:^|\s*;)[^\=]+)(?=;|$)|^\s*|\s*(?:\=[^;]*)?(?:\1|$)/g, "").split(/\s*(?:\=[^;]*)?;\s*/);
+            for (var nLen = aKeys.length, nIdx = 0; nIdx < nLen; nIdx++) { aKeys[nIdx] = decodeURIComponent(aKeys[nIdx]); }
+            return aKeys;
+        }
+    };
+
+    return mr;
+
+}(mr, jQuery, window, document));
+
 //////////////// Countdown
-mr=function(r,t,e,a){"use strict";return r.countdown=r.countdown||{},r.countdown.options=r.countdown.options||{},r.countdown.documentReady=function(n){n(".countdown[data-date]").each(function(){var e=n(this),t=e.attr("data-date"),a=void 0!==e.attr("data-days-text")?"%D "+e.attr("data-days-text")+" %H:%M:%S":"%D days %H:%M:%S",a=void 0!==r.countdown.options.format?r.countdown.options.format:a,o=void 0!==e.attr("data-date-format")?e.attr("data-date-format"):a,i;void 0!==e.attr("data-date-fallback")&&(i=e.attr("data-date-fallback")||"Timer Done"),e.countdown(t,function(t){t.elapsed?e.text(i):e.text(t.strftime(o))})})},r.components.documentReadyDeferred.push(r.countdown.documentReady),r}(mr,jQuery,window,document),
+mr = (function (mr, $, window, document){
+    "use strict";
+
+    mr.countdown = mr.countdown || {};
+    mr.countdown.options = mr.countdown.options || {};
+
+    mr.countdown.documentReady = function($){
+
+        $('.countdown[data-date]').each(function(){
+            var element      = $(this),
+                date         = element.attr('data-date'),
+                daysText     = typeof element.attr('data-days-text') !== typeof undefined ? '%D '+element.attr('data-days-text')+' %H:%M:%S': '%D days %H:%M:%S',
+                daysText     = typeof mr.countdown.options.format !== typeof undefined ? mr.countdown.options.format : daysText,
+                dateFormat   = typeof element.attr('data-date-format') !== typeof undefined ? element.attr('data-date-format'): daysText,
+
+                fallback;
+
+            if(typeof element.attr('data-date-fallback') !== typeof undefined){
+                fallback = element.attr('data-date-fallback') || "Timer Done";
+            }
+
+            element.countdown(date, function(event) {
+                if(event.elapsed){
+                    element.text(fallback);
+                }else{
+                    element.text(
+                      event.strftime(dateFormat)
+                    );
+                }
+            });
+        });
+
+    };
+
+    mr.components.documentReadyDeferred.push(mr.countdown.documentReady);
+    return mr;
+
+}(mr, jQuery, window, document));
+
 //////////////// Datepicker
-mr=function(t,e,a,o){"use strict";t.datepicker=t.datepicker||{};var i=t.datepicker.options||{};return t.datepicker.documentReady=function(t){t(".datepicker").length&&t(".datepicker").pickadate(i)},t.components.documentReadyDeferred.push(t.datepicker.documentReady),t}(mr,jQuery,window,document),
+mr = (function (mr, $, window, document){
+    "use strict";
+
+    mr.datepicker = mr.datepicker || {};
+
+    var options = mr.datepicker.options || {};
+
+    mr.datepicker.documentReady = function($){
+        if($('.datepicker').length){
+            $('.datepicker').pickadate(options);
+        }
+    };
+
+    mr.components.documentReadyDeferred.push(mr.datepicker.documentReady);
+    return mr;
+
+}(mr, jQuery, window, document));
+
 //////////////// Dropdowns
-mr=function(e,t,s,o){"use strict";return e.dropdowns=e.dropdowns||{},e.dropdowns.done=!1,e.dropdowns.documentReady=function(a){var t=!1;a('html[dir="rtl"]').length&&(t=!0),e.dropdowns.done||(jQuery(o).on("click","body:not(.dropdowns--hover) .dropdown:not(.dropdown--hover), body.dropdowns--hover .dropdown.dropdown--click",function(t){var e=jQuery(this);jQuery(t.target).is(".dropdown--active > .dropdown__trigger")?(e.siblings().removeClass("dropdown--active").find(".dropdown").removeClass("dropdown--active"),e.toggleClass("dropdown--active")):(a(".dropdown--active").removeClass("dropdown--active"),e.addClass("dropdown--active"))}),jQuery(o).on("click touchstart","body:not(.dropdowns--hover)",function(t){jQuery(t.target).is('[class*="dropdown"], [class*="dropdown"] *')||a(".dropdown--active").removeClass("dropdown--active")}),jQuery("body.dropdowns--hover .dropdown").on("click",function(t){var e;t.stopPropagation(),jQuery(this).toggleClass("dropdown--active")}),
-// Append a container to the body for measuring purposes
-jQuery("body").append('<div class="container containerMeasure" style="opacity:0;pointer-events:none;"></div>'),
-// Menu dropdown positioning
-!1===t?(e.dropdowns.repositionDropdowns(a),jQuery(s).on("resize",function(){e.dropdowns.repositionDropdowns(a)})):(e.dropdowns.repositionDropdownsRtl(a),jQuery(s).on("resize",function(){e.dropdowns.repositionDropdownsRtl(a)})),e.dropdowns.done=!0)},e.dropdowns.repositionDropdowns=function(t){t(".dropdown__container").each(function(){var t,e,a,o,i;jQuery(this).css("left",""),e=(t=jQuery(this)).offset().left,a=jQuery(".containerMeasure").offset().left,o=t.closest(".dropdown").offset().left,i=null,t.css("left",-e+a),t.find('.dropdown__content:not([class*="md-12"])').length&&(i=t.find(".dropdown__content")).css("left",o-a)}),t(".dropdown__content").each(function(){var t,e,a,o,i,n;o=(e=(t=jQuery(this)).offset().left)+(a=t.outerWidth(!0)),i=jQuery(s).outerWidth(!0),n=jQuery(".containerMeasure").outerWidth()-a,i<o&&t.css("left",n)})},e.dropdowns.repositionDropdownsRtl=function(t){var r=jQuery(s).width();t(".dropdown__container").each(function(){var t,e,a,o,i;jQuery(this).css("left",""),t=jQuery(this),e=r-(t.offset().left+t.outerWidth(!0)),a=jQuery(".containerMeasure").offset().left,o=r-(t.closest(".dropdown").offset().left+t.closest(".dropdown").outerWidth(!0)),i=null,t.css("right",-e+a),t.find('.dropdown__content:not([class*="md-12"])').length&&(i=t.find(".dropdown__content")).css("right",o-a)}),t(".dropdown__content").each(function(){var t,e,a,o,i,n;t=jQuery(this),o=(e=r-(t.offset().left+t.outerWidth(!0)))+(a=t.outerWidth(!0)),i=jQuery(s).outerWidth(!0),n=jQuery(".containerMeasure").outerWidth()-a,i<o&&t.css("right",n)})},e.components.documentReady.push(e.dropdowns.documentReady),e}(mr,jQuery,window,document),
+mr = (function (mr, $, window, document){
+    "use strict";
+
+    mr.dropdowns = mr.dropdowns || {};
+
+    mr.dropdowns.done = false;
+
+    mr.dropdowns.documentReady = function($){
+
+        var rtl = false;
+
+        if($('html[dir="rtl"]').length){
+            rtl = true;
+        }
+
+        if(!mr.dropdowns.done){
+            jQuery(document).on('click','body:not(.dropdowns--hover) .dropdown:not(.dropdown--hover), body.dropdowns--hover .dropdown.dropdown--click',function(event){
+                var dropdown = jQuery(this);
+                if(jQuery(event.target).is('.dropdown--active > .dropdown__trigger')){
+                    dropdown.siblings().removeClass('dropdown--active').find('.dropdown').removeClass('dropdown--active');
+                    dropdown.toggleClass('dropdown--active');
+                }else{
+                    $('.dropdown--active').removeClass('dropdown--active');
+                    dropdown.addClass('dropdown--active');
+                }
+            });
+            jQuery(document).on('click touchstart', 'body:not(.dropdowns--hover)', function(event){
+                if(!jQuery(event.target).is('[class*="dropdown"], [class*="dropdown"] *')){
+                    $('.dropdown--active').removeClass('dropdown--active');
+                }
+            });
+            jQuery('body.dropdowns--hover .dropdown').on('click', function(event){
+                event.stopPropagation();
+                var hoverDropdown = jQuery(this);
+                hoverDropdown.toggleClass('dropdown--active');
+            });
+
+            // Append a container to the body for measuring purposes
+            jQuery('body').append('<div class="container containerMeasure" style="opacity:0;pointer-events:none;"></div>');
+
+
+
+
+            // Menu dropdown positioning
+            if(rtl === false){
+                mr.dropdowns.repositionDropdowns($);
+                jQuery(window).on('resize', function(){mr.dropdowns.repositionDropdowns($);});
+            }else{
+                mr.dropdowns.repositionDropdownsRtl($);
+                jQuery(window).on('resize', function(){mr.dropdowns.repositionDropdownsRtl($);});
+            }
+
+            mr.dropdowns.done = true;
+        }
+    };
+
+    mr.dropdowns.repositionDropdowns = function($){
+        $('.dropdown__container').each(function(){
+            var container, containerOffset, masterOffset, menuItem, content;
+
+                jQuery(this).css('left', '');
+
+                container       = jQuery(this);
+                containerOffset = container.offset().left;
+                masterOffset    = jQuery('.containerMeasure').offset().left;
+                menuItem        = container.closest('.dropdown').offset().left;
+                content         = null;
+
+                container.css('left',((-containerOffset)+(masterOffset)));
+
+                if(container.find('.dropdown__content:not([class*="md-12"])').length){
+                    content = container.find('.dropdown__content');
+                    content.css('left', ((menuItem)-(masterOffset)));
+                }
+
+        });
+        $('.dropdown__content').each(function(){
+            var dropdown, offset, width, offsetRight, winWidth, leftCorrect;
+
+                dropdown    = jQuery(this);
+                offset      = dropdown.offset().left;
+                width       = dropdown.outerWidth(true);
+                offsetRight = offset + width;
+                winWidth    = jQuery(window).outerWidth(true);
+                leftCorrect = jQuery('.containerMeasure').outerWidth() - width;
+
+            if(offsetRight > winWidth){
+                dropdown.css('left', leftCorrect);
+            }
+
+        });
+    };
+
+    mr.dropdowns.repositionDropdownsRtl = function($){
+
+        var windowWidth = jQuery(window).width();
+
+        $('.dropdown__container').each(function(){
+            var container, containerOffset, masterOffset, menuItem, content;
+
+                jQuery(this).css('left', '');
+
+                container   = jQuery(this);
+                containerOffset = windowWidth - (container.offset().left + container.outerWidth(true));
+                masterOffset    = jQuery('.containerMeasure').offset().left;
+                menuItem        = windowWidth - (container.closest('.dropdown').offset().left + container.closest('.dropdown').outerWidth(true));
+                content         = null;
+
+                container.css('right',((-containerOffset)+(masterOffset)));
+
+                if(container.find('.dropdown__content:not([class*="md-12"])').length){
+                    content = container.find('.dropdown__content');
+                    content.css('right', ((menuItem)-(masterOffset)));
+                }
+        });
+        $('.dropdown__content').each(function(){
+            var dropdown, offset, width, offsetRight, winWidth, rightCorrect;
+
+                dropdown    = jQuery(this);
+                offset      = windowWidth - (dropdown.offset().left + dropdown.outerWidth(true));
+                width       = dropdown.outerWidth(true);
+                offsetRight = offset + width;
+                winWidth    = jQuery(window).outerWidth(true);
+                rightCorrect = jQuery('.containerMeasure').outerWidth() - width;
+
+            if(offsetRight > winWidth){
+               dropdown.css('right', rightCorrect);
+            }
+
+        });
+    };
+
+
+    mr.components.documentReady.push(mr.dropdowns.documentReady);
+    return mr;
+
+}(mr, jQuery, window, document));
+
 //////////////// Forms
-mr=function(p,f,h,t){"use strict";return p.forms=p.forms||{},p.forms.captcha={},p.forms.captcha.widgets=[],p.forms.captcha.done=!1,p.forms.documentReady=function(i){p.forms.captcha.widgets=[],
-/// Checkbox & Radio Inputs
-i('.input-checkbox input[type="checkbox"], .input-radio input[type="radio"]').each(function(t){var e=i(this),a=e.siblings("label"),o="input-assigned-"+t;void 0===e.attr("id")||""===e.attr("id")?e.attr("id",o):o=e.attr("id"),a.attr("for",o)}),
-//////////////// Number Inputs
-i(".input-number__controls > span").off("click.mr").on("click.mr",function(){var t=jQuery(this),e=t.closest(".input-number"),a=e.find('input[type="number"]'),o=a.attr("max"),i=a.attr("min"),n=1,r=parseInt(a.val(),10);e.is("[data-step]")&&(n=parseInt(e.attr("data-step"),10)),t.hasClass("input-number__increase")?r+n<=o&&a.val(r+n):i<=r-n&&a.val(r-n)}),
-//////////////// File Uploads
-i(".input-file .btn").off("click.mr").on("click.mr",function(){return i(this).siblings("input").trigger("click"),!1}),
-//////////////// Handle Form Submit
-i('form.form-email, form[action*="list-manage.com"], form[action*="createsend.com"]').attr("novalidate",!0).off("submit").on("submit",p.forms.submit),
-//////////////// Handle Form Submit
-i(t).on("change, input, paste, keyup",".attempted-submit .field-error",function(){i(this).removeClass("field-error")}),
-//////////////// Check forms for Google reCaptcha site keys
-i('form[data-recaptcha-sitekey]:not([data-recaptcha-sitekey=""])').each(function(){var t=jQuery(this),e=t.find("div.recaptcha"),a,o,i,n,r,s,d;s=void 0!==(s=t.attr("data-recaptcha-theme"))?s:"",d=void 0!==(d=t.attr("data-recaptcha-size"))?d:"",
-// Store the site key for later use
-p.forms.captcha.sitekey=t.attr("data-recaptcha-sitekey"),e.length||(
-// Create a captcha div and insert it before the submit button.
-a=t.find("button[type=submit]").closest('[class*="col-"]'),e=jQuery("<div>").addClass("recaptcha"),(o=jQuery("<div>").addClass("col-xs-12").append(e)).insertBefore(a)),
-// Add the widget div to the widgets array
-i={element:e.get(0),parentForm:t,theme:s,size:d},p.forms.captcha.widgets.push(i),
-// mr.forms.captcha.done indicates whether the api script has been appended yet.
-!1===p.forms.captcha.done?jQuery('script[src*="recaptcha/api.js"]').length||(r="https://www.google.com/recaptcha/api.js?onload=mrFormsCaptchaInit&render=explicit",(n=jQuery("<script async defer>")).attr("src",r),jQuery("body").append(n),p.forms.captcha.done=!0):"undefined"!=typeof grecaptcha&&p.forms.captcha.renderWidgets()})},p.forms.submit=function(t){
-// return false so form submits through jQuery rather than reloading page.
-t.preventDefault?t.preventDefault():t.returnValue=!1;var e=f("body"),a=f(t.target).closest("form"),o=void 0!==a.attr("action")?a.attr("action"):"",i=a.find('button[type="submit"], input[type="submit"]'),n=0,r=a.attr("original-error"),s=!!a.find("div.recaptcha").length,d,c,l,u,m;
-// Do this if the form is intended to be submitted to MailChimp or Campaign Monitor
-if(e.find(".form-error, .form-success").remove(),i.attr("data-text",i.text()),u=a.attr("data-error")?a.attr("data-error"):"Please fill all fields correctly",m=a.attr("data-success")?a.attr("data-success"):"Thanks, we'll be in touch shortly",e.append('<div class="form-error" style="display: none;">'+u+"</div>"),e.append('<div class="form-success" style="display: none;">'+m+"</div>"),c=e.find(".form-error"),l=e.find(".form-success"),a.addClass("attempted-submit"),-1!==o.indexOf("createsend.com")||-1!==o.indexOf("list-manage.com"))
-// validateFields returns 1 on error;
-if(console.log("Mail list form signup detected."),void 0!==r&&!1!==r&&c.html(r),1!==p.forms.validateFields(a)){a.removeClass("attempted-submit"),
-// Hide the error if one was shown
-c.fadeOut(200),
-// Create a new loading spinner in the submit button.
-i.addClass("btn--loading");try{f.ajax({url:a.attr("action"),crossDomain:!0,data:a.serialize(),method:"GET",cache:!1,dataType:"json",contentType:"application/json; charset=utf-8",success:function(t){
-// Request was a success, what was the response?
-"success"!==t.result&&200!==t.Status?(
-// Got an error from Mail Chimp or Campaign Monitor
-// Keep the current error text in a data attribute on the form
-c.attr("original-error",c.text()),
-// Show the error with the returned error text.
-c.html(t.msg).stop(!0).fadeIn(1e3),l.stop(!0).fadeOut(1e3),i.removeClass("btn--loading")):(
-// Got success from Mail Chimp or Campaign Monitor
-i.removeClass("btn--loading"),
-// For some browsers, if empty `successRedirect` is undefined; for others,
-// `successRedirect` is false.  Check for both.
-void 0!==(d=a.attr("data-success-redirect"))&&!1!==d&&""!==d?h.location=d:(p.forms.resetForm(a),p.forms.showFormSuccess(l,c,1e3,5e3,500)))}})}catch(t){
-// Keep the current error text in a data attribute on the form
-c.attr("original-error",c.text()),
-// Show the error with the returned error text.
-c.html(t.message),p.forms.showFormError(l,c,1e3,5e3,500),i.removeClass("btn--loading")}}else
-// There was a validation error - show the default form error message
-p.forms.showFormError(l,c,1e3,5e3,500);else
-// If no MailChimp or Campaign Monitor form was detected then this is treated as an email form instead.
-void 0!==r&&!1!==r&&c.text(r),1===(n=p.forms.validateFields(a))?p.forms.showFormError(l,c,1e3,5e3,500):(a.removeClass("attempted-submit"),
-// Hide the error if one was shown
-c.fadeOut(200),
-// Create a new loading spinner in the submit button.
-i.addClass("btn--loading"),jQuery.ajax({type:"POST",url:""!==o?o:"mail/mail.php",data:a.serialize()+"&url="+h.location.href+"&captcha="+s,success:function(t){
-// Swiftmailer always sends back a number representing number of emails sent.
-// If this is numeric (not Swift Mailer error text) AND greater than 0 then show success message.
-i.removeClass("btn--loading"),f.isNumeric(t)?0<parseInt(t,10)&&(
-// For some browsers, if empty 'successRedirect' is undefined; for others,
-// 'successRedirect' is false.  Check for both.
-void 0!==(d=a.attr("data-success-redirect"))&&!1!==d&&""!==d&&(h.location=d),p.forms.resetForm(a),p.forms.showFormSuccess(l,c,1e3,5e3,500),p.forms.captcha.resetWidgets()):(
-// Keep the current error text in a data attribute on the form
-c.attr("original-error",c.text()),
-// Show the error with the returned error text.
-c.text(t).stop(!0).fadeIn(1e3),l.stop(!0).fadeOut(1e3))},error:function(t,e,a){
-// Keep the current error text in a data attribute on the form
-c.attr("original-error",c.text()),
-// Show the error with the returned error text.
-c.text(a).stop(!0).fadeIn(1e3),l.stop(!0).fadeOut(1e3),i.removeClass("btn--loading")}}));return!1},p.forms.validateFields=function(t){var e=f(e),a=!1,o,i,n;if((t=f(t)).find('.validate-required[type="checkbox"]').each(function(){var t=f(this);f('[name="'+f(this).attr("name")+'"]:checked').length||(a=1,i=f(this).attr("data-name")||"check",t.parent().addClass("field-error"))}),t.find(".validate-required, .required, [required]").not('input[type="checkbox"]').each(function(){""===f(this).val()?(f(this).addClass("field-error"),a=1):f(this).removeClass("field-error")}),t.find('.validate-email, .email, [name*="cm-"][type="email"]').each(function(){/(.+)@(.+){2,}\.(.+){2,}/.test(f(this).val())?f(this).removeClass("field-error"):(f(this).addClass("field-error"),a=1)}),t.find(".validate-number-dash").each(function(){/^[0-9][0-9-]+[0-9]$/.test(f(this).val())?f(this).removeClass("field-error"):(f(this).addClass("field-error"),a=1)}),
-// Validate recaptcha
-t.find("div.recaptcha").length&&void 0!==t.attr("data-recaptcha-sitekey")&&(n=f(t.find("div.recaptcha")),""!==grecaptcha.getResponse(t.data("recaptchaWidgetID"))?n.removeClass("field-error"):(n.addClass("field-error"),a=1)),t.find(".field-error").length){var r=f(t).find(".field-error:first");r.length&&f("html, body").stop(!0).animate({scrollTop:r.offset().top-100},1200,function(){r.focus()})}else e.find(".form-error").fadeOut(1e3);return a},p.forms.showFormSuccess=function(t,e,a,o,i){t.stop(!0).fadeIn(a),e.stop(!0).fadeOut(a),setTimeout(function(){t.stop(!0).fadeOut(i)},o)},p.forms.showFormError=function(t,e,a,o,i){e.stop(!0).fadeIn(a),t.stop(!0).fadeOut(a),setTimeout(function(){e.stop(!0).fadeOut(i)},o)},
-// Reset form to empty/default state.
-p.forms.resetForm=function(t){(t=f(t)).get(0).reset(),t.find(".input-radio, .input-checkbox").removeClass("checked"),t.find("[data-default-value]").filter('[type="text"],[type="number"],[type="email"],[type="url"],[type="search"],[type="tel"]').each(function(){var t=jQuery(this);t.val(t.attr("data-default-value"))})},
-// Defined on the window scope as the recaptcha js api seems not to be able to call function in mr scope
-h.mrFormsCaptchaInit=function(){p.forms.captcha.renderWidgets()},p.forms.captcha.renderWidgets=function(){p.forms.captcha.widgets.forEach(function(t){""===t.element.innerHTML.replace(/[\s\xA0]+/g,"")&&(t.id=grecaptcha.render(t.element,{sitekey:p.forms.captcha.sitekey,theme:t.theme,size:t.size,callback:p.forms.captcha.setHuman}),t.parentForm.data("recaptchaWidgetID",t.id))})},p.forms.captcha.resetWidgets=function(){p.forms.captcha.widgets.forEach(function(t){grecaptcha.reset(t.id)})},p.forms.captcha.setHuman=function(){jQuery("div.recaptcha.field-error").removeClass("field-error")},p.components.documentReadyDeferred.push(p.forms.documentReady),p}(mr,jQuery,window,document),
+
+mr = (function (mr, $, window, document){
+    "use strict";
+
+    mr.forms                 = mr.forms || {};
+    mr.forms.captcha         = {};
+    mr.forms.captcha.widgets = [];
+    mr.forms.captcha.done    = false;
+
+    mr.forms.documentReady = function($){
+
+        mr.forms.captcha.widgets = [];
+
+        /// Checkbox & Radio Inputs
+
+        $('.input-checkbox input[type="checkbox"], .input-radio input[type="radio"]').each(function(index){
+            var input = $(this),
+                label = input.siblings('label'),
+                id    = "input-assigned-"+index;
+            if(typeof input.attr('id') === typeof undefined || input.attr('id') === ""){
+                input.attr('id',id);
+                label.attr('for',id);
+            }else{
+                id = input.attr('id');
+                label.attr('for',id);
+            }
+        });
+
+        //////////////// Number Inputs
+
+        $('.input-number__controls > span').off('click.mr').on('click.mr',function(){
+            var control = jQuery(this),
+                parent   = control.closest('.input-number'),
+                input    = parent.find('input[type="number"]'),
+                max      = input.attr('max'),
+                min      = input.attr('min'),
+                step     = 1,
+                current  = parseInt(input.val(),10);
+
+            if(parent.is('[data-step]')){
+                step = parseInt(parent.attr('data-step'),10);
+            }
+
+            if(control.hasClass('input-number__increase')){
+                if((current+step) <= max){
+                    input.val(current+step);
+                }
+            }else{
+                if((current-step) >= min){
+                    input.val(current-step);
+                }
+            }
+        });
+
+
+        //////////////// File Uploads
+
+        $('.input-file .btn').off('click.mr').on('click.mr',function(){
+            $(this).siblings('input').trigger('click');
+            return false;
+        });
+
+        //////////////// Handle Form Submit
+
+        $('form.form-email, form[action*="list-manage.com"], form[action*="createsend.com"]').attr('novalidate', true).off('submit').on('submit', mr.forms.submit);
+
+        //////////////// Handle Form Submit
+        $(document).on('change, input, paste, keyup', '.attempted-submit .field-error', function(){
+            $(this).removeClass('field-error');
+        });
+
+         //////////////// Check forms for Google reCaptcha site keys
+
+        $('form[data-recaptcha-sitekey]:not([data-recaptcha-sitekey=""])').each(function(){
+            var $thisForm    = jQuery(this),
+                $captchaDiv  = $thisForm.find('div.recaptcha'),
+                $insertBefore, $column, widgetObject,  $script, scriptSrc, widgetColourTheme, widgetSize;
+
+            widgetColourTheme = $thisForm.attr('data-recaptcha-theme');
+            widgetColourTheme = typeof widgetColourTheme !== typeof undefined ? widgetColourTheme : '';
+
+            widgetSize = $thisForm.attr('data-recaptcha-size');
+            widgetSize = typeof widgetSize !== typeof undefined ? widgetSize : '';
+
+            // Store the site key for later use
+            mr.forms.captcha.sitekey = $thisForm.attr('data-recaptcha-sitekey');
+
+            if($captchaDiv.length){
+                // If a div.recaptcha was already present on this form, do nothing at this stage,
+                // It will be populated with a captcha widget later.
+            }else{
+                // Create a captcha div and insert it before the submit button.
+                $insertBefore = $thisForm.find('button[type=submit]').closest('[class*="col-"]');
+                $captchaDiv   = jQuery('<div>').addClass('recaptcha');
+                $column       = jQuery('<div>').addClass('col-xs-12').append($captchaDiv);
+                $column.insertBefore($insertBefore);
+            }
+
+
+            // Add the widget div to the widgets array
+            widgetObject = {
+                element:    $captchaDiv.get(0),
+                parentForm: $thisForm,
+                theme:      widgetColourTheme,
+                size:       widgetSize,
+            };
+
+
+
+            mr.forms.captcha.widgets.push(widgetObject);
+
+            // mr.forms.captcha.done indicates whether the api script has been appended yet.
+            if(mr.forms.captcha.done === false){
+                if(!jQuery('script[src*="recaptcha/api.js"]').length){
+                    $script   = jQuery('<script async defer>');
+                    scriptSrc = 'https://www.google.com/recaptcha/api.js?onload=mrFormsCaptchaInit&render=explicit';
+                    $script.attr('src', scriptSrc);
+                    jQuery('body').append($script);
+                    mr.forms.captcha.done = true;
+                }
+            }else{
+                if(typeof grecaptcha !== typeof undefined){
+                    mr.forms.captcha.renderWidgets();
+                }
+            }
+
+        });
+
+
+    };
+
+    mr.forms.submit = function(e){
+        // return false so form submits through jQuery rather than reloading page.
+        if (e.preventDefault) e.preventDefault();
+        else e.returnValue = false;
+
+        var body          = $('body'),
+            thisForm      = $(e.target).closest('form'),
+            formAction    = typeof thisForm.attr('action') !== typeof undefined ? thisForm.attr('action') : "",
+            submitButton  = thisForm.find('button[type="submit"], input[type="submit"]'),
+            error         = 0,
+            originalError = thisForm.attr('original-error'),
+            captchaUsed   = thisForm.find('div.recaptcha').length ? true:false,
+            successRedirect, formError, formSuccess, errorText, successText;
+
+        body.find('.form-error, .form-success').remove();
+        submitButton.attr('data-text', submitButton.text());
+        errorText = thisForm.attr('data-error') ? thisForm.attr('data-error') : "Please fill all fields correctly";
+        successText = thisForm.attr('data-success') ? thisForm.attr('data-success') : "Thanks, we'll be in touch shortly";
+        body.append('<div class="form-error" style="display: none;">' + errorText + '</div>');
+        body.append('<div class="form-success" style="display: none;">' + successText + '</div>');
+        formError = body.find('.form-error');
+        formSuccess = body.find('.form-success');
+        thisForm.addClass('attempted-submit');
+
+        // Do this if the form is intended to be submitted to MailChimp or Campaign Monitor
+        if (formAction.indexOf('createsend.com') !== -1 || formAction.indexOf('list-manage.com') !== -1 ) {
+
+            console.log('Mail list form signup detected.');
+            if (typeof originalError !== typeof undefined && originalError !== false) {
+                formError.html(originalError);
+            }
+
+            // validateFields returns 1 on error;
+            if (mr.forms.validateFields(thisForm) !== 1) {
+
+                thisForm.removeClass('attempted-submit');
+
+                // Hide the error if one was shown
+                formError.fadeOut(200);
+                // Create a new loading spinner in the submit button.
+                submitButton.addClass('btn--loading');
+
+                try{
+                    $.ajax({
+                        url: thisForm.attr('action'),
+                        crossDomain: true,
+                        data: thisForm.serialize(),
+                        method: "GET",
+                        cache: false,
+                        dataType: 'json',
+                        contentType: 'application/json; charset=utf-8',
+                        success: function(data){
+                            // Request was a success, what was the response?
+
+                            if (data.result !== "success" && data.Status !== 200) {
+
+                                // Got an error from Mail Chimp or Campaign Monitor
+
+                                // Keep the current error text in a data attribute on the form
+                                formError.attr('original-error', formError.text());
+                                // Show the error with the returned error text.
+                                formError.html(data.msg).stop(true).fadeIn(1000);
+                                formSuccess.stop(true).fadeOut(1000);
+
+                                submitButton.removeClass('btn--loading');
+                            } else {
+
+                                // Got success from Mail Chimp or Campaign Monitor
+
+                                submitButton.removeClass('btn--loading');
+
+                                successRedirect = thisForm.attr('data-success-redirect');
+                                // For some browsers, if empty `successRedirect` is undefined; for others,
+                                // `successRedirect` is false.  Check for both.
+                                if (typeof successRedirect !== typeof undefined && successRedirect !== false && successRedirect !== "") {
+                                    window.location = successRedirect;
+                                }else{
+                                    mr.forms.resetForm(thisForm);
+                                    mr.forms.showFormSuccess(formSuccess, formError, 1000, 5000, 500);
+                                }
+                            }
+                        }
+                    });
+                }catch(err){
+                    // Keep the current error text in a data attribute on the form
+                    formError.attr('original-error', formError.text());
+                    // Show the error with the returned error text.
+                    formError.html(err.message);
+                    mr.forms.showFormError(formSuccess, formError, 1000, 5000, 500);
+
+                    submitButton.removeClass('btn--loading');
+                }
+
+
+
+            } else {
+                // There was a validation error - show the default form error message
+                mr.forms.showFormError(formSuccess, formError, 1000, 5000, 500);
+            }
+        } else {
+            // If no MailChimp or Campaign Monitor form was detected then this is treated as an email form instead.
+            if (typeof originalError !== typeof undefined && originalError !== false) {
+                formError.text(originalError);
+            }
+
+            error = mr.forms.validateFields(thisForm);
+
+            if (error === 1) {
+                mr.forms.showFormError(formSuccess, formError, 1000, 5000, 500);
+            } else {
+
+                thisForm.removeClass('attempted-submit');
+
+                // Hide the error if one was shown
+                formError.fadeOut(200);
+
+                // Create a new loading spinner in the submit button.
+                submitButton.addClass('btn--loading');
+
+                jQuery.ajax({
+                    type: "POST",
+                    url: (formAction !== "" ? formAction : "mail/mail.php"),
+                    data: thisForm.serialize()+"&url="+window.location.href+"&captcha="+captchaUsed,
+                    success: function(response) {
+                        // Swiftmailer always sends back a number representing number of emails sent.
+                        // If this is numeric (not Swift Mailer error text) AND greater than 0 then show success message.
+
+                        submitButton.removeClass('btn--loading');
+
+                        if ($.isNumeric(response)) {
+                            if (parseInt(response,10) > 0) {
+                                // For some browsers, if empty 'successRedirect' is undefined; for others,
+                                // 'successRedirect' is false.  Check for both.
+                                successRedirect = thisForm.attr('data-success-redirect');
+                                if (typeof successRedirect !== typeof undefined && successRedirect !== false && successRedirect !== "") {
+                                    window.location = successRedirect;
+                                }
+
+                                mr.forms.resetForm(thisForm);
+                                mr.forms.showFormSuccess(formSuccess, formError, 1000, 5000, 500);
+                                mr.forms.captcha.resetWidgets();
+                            }
+                        }
+                        // If error text was returned, put the text in the .form-error div and show it.
+                        else {
+                            // Keep the current error text in a data attribute on the form
+                            formError.attr('original-error', formError.text());
+                            // Show the error with the returned error text.
+                            formError.text(response).stop(true).fadeIn(1000);
+                            formSuccess.stop(true).fadeOut(1000);
+                        }
+                    },
+                    error: function(errorObject, errorText, errorHTTP) {
+                        // Keep the current error text in a data attribute on the form
+                        formError.attr('original-error', formError.text());
+                        // Show the error with the returned error text.
+                        formError.text(errorHTTP).stop(true).fadeIn(1000);
+                        formSuccess.stop(true).fadeOut(1000);
+                        submitButton.removeClass('btn--loading');
+                    }
+                });
+            }
+        }
+        return false;
+    };
+
+    mr.forms.validateFields = function(form) {
+        var body = $(body),
+            error = false,
+            originalErrorMessage,
+            name,
+            thisElement;
+
+            form = $(form);
+
+
+
+
+        form.find('.validate-required[type="checkbox"]').each(function() {
+            var checkbox = $(this);
+            if (!$('[name="' + $(this).attr('name') + '"]:checked').length) {
+                error = 1;
+                name = $(this).attr('data-name') ||  'check';
+                checkbox.parent().addClass('field-error');
+                //body.find('.form-error').text('Please tick at least one ' + name + ' box.');
+            }
+        });
+
+        form.find('.validate-required, .required, [required]').not('input[type="checkbox"]').each(function() {
+            if ($(this).val() === '') {
+                $(this).addClass('field-error');
+                error = 1;
+            } else {
+                $(this).removeClass('field-error');
+            }
+        });
+
+        form.find('.validate-email, .email, [name*="cm-"][type="email"]').each(function() {
+            if (!(/(.+)@(.+){2,}\.(.+){2,}/.test($(this).val()))) {
+                $(this).addClass('field-error');
+                error = 1;
+            } else {
+                $(this).removeClass('field-error');
+            }
+        });
+
+        form.find('.validate-number-dash').each(function() {
+            if (!(/^[0-9][0-9-]+[0-9]$/.test($(this).val()))) {
+                $(this).addClass('field-error');
+                error = 1;
+            } else {
+                $(this).removeClass('field-error');
+            }
+        });
+
+        // Validate recaptcha
+        if(form.find('div.recaptcha').length && typeof form.attr('data-recaptcha-sitekey') !== typeof undefined){
+            thisElement = $(form.find('div.recaptcha'));
+
+            if(grecaptcha.getResponse(form.data('recaptchaWidgetID')) !== ""){
+                thisElement.removeClass('field-error');
+            }else{
+                thisElement.addClass('field-error');
+                error = 1;
+            }
+        }
+
+        if (!form.find('.field-error').length) {
+            body.find('.form-error').fadeOut(1000);
+        }else{
+
+            var firstError = $(form).find('.field-error:first');
+
+            if(firstError.length){
+                $('html, body').stop(true).animate({
+                    scrollTop: (firstError.offset().top - 100)
+                }, 1200, function(){firstError.focus();});
+            }
+        }
+
+
+
+        return error;
+    };
+
+    mr.forms.showFormSuccess = function(formSuccess, formError, fadeOutError, wait, fadeOutSuccess){
+
+        formSuccess.stop(true).fadeIn(fadeOutError);
+
+        formError.stop(true).fadeOut(fadeOutError);
+        setTimeout(function() {
+            formSuccess.stop(true).fadeOut(fadeOutSuccess);
+        }, wait);
+    };
+
+    mr.forms.showFormError = function(formSuccess, formError, fadeOutSuccess, wait, fadeOutError){
+
+        formError.stop(true).fadeIn(fadeOutSuccess);
+
+        formSuccess.stop(true).fadeOut(fadeOutSuccess);
+        setTimeout(function() {
+            formError.stop(true).fadeOut(fadeOutError);
+        }, wait);
+    };
+
+    // Reset form to empty/default state.
+    mr.forms.resetForm = function(form){
+        form = $(form);
+        form.get(0).reset();
+        form.find('.input-radio, .input-checkbox').removeClass('checked');
+        form.find('[data-default-value]').filter('[type="text"],[type="number"],[type="email"],[type="url"],[type="search"],[type="tel"]').each(function(){
+            var elem = jQuery(this);
+            elem.val(elem.attr('data-default-value'));
+        });
+
+    };
+
+    // Defined on the window scope as the recaptcha js api seems not to be able to call function in mr scope
+    window.mrFormsCaptchaInit = function(){
+        mr.forms.captcha.renderWidgets();
+    };
+
+    mr.forms.captcha.renderWidgets = function(){
+        mr.forms.captcha.widgets.forEach(function(widget){
+            if(widget.element.innerHTML.replace(/[\s\xA0]+/g,'') === ''){
+                widget.id = grecaptcha.render(widget.element, {
+                    'sitekey' : mr.forms.captcha.sitekey,
+                    'theme' : widget.theme,
+                    'size' : widget.size,
+                    'callback' : mr.forms.captcha.setHuman
+                });
+                widget.parentForm.data('recaptchaWidgetID', widget.id);
+            }
+        });
+    };
+
+    mr.forms.captcha.resetWidgets = function(){
+        mr.forms.captcha.widgets.forEach(function(widget){
+            grecaptcha.reset(widget.id);
+        });
+    };
+
+    mr.forms.captcha.setHuman = function(){
+        jQuery('div.recaptcha.field-error').removeClass('field-error');
+    };
+
+    mr.components.documentReadyDeferred.push(mr.forms.documentReady);
+    return mr;
+
+}(mr, jQuery, window, document));
+
 //////////////// Granim
-mr=function(v,t,e,a){"use strict";return v.granim=v.granim||{},v.granim.documentReady=function(h){h("[data-gradient-bg]").each(function(t,e){var a=h(this),o="granim-"+t,i=a.attr("data-gradient-bg"),n=[],r=[],s={},d,c,l,u,m;
-// Canvas element forms the gradient background
-if(a.prepend('<canvas id="'+o+'"></canvas>'),!0===(
-// Regular expression to match comma separated list of hex colour values
-c=/^(#[0-9|a-f|A-F]{6}){1}([ ]*,[ ]*#[0-9|a-f|A-F]{6})*$/.test(i))){for(
-// If number of colours is odd - duplicate last colour to make even array
-(d=(i=(i=i.replace(" ","")).split(",")).length)%2!=0&&i.push(i[d-1]),l=0;l<d/2;l++)(r=[]).push(i.shift()),r.push(i.shift()),n.push(r);
-// attribute overrides - allows per-gradient override of global options.
-s.states={"default-state":{gradients:n}}}u={element:"#"+o,name:"basic-gradient",direction:"left-right",opacity:[1,1],isPausedWhenNotInView:!0,states:{"default-state":{gradients:n}}},m=jQuery.extend({},u,v.granim.options,s),h(this).data("gradientOptions",m);var p=h(this),f=new Granim(m)})},v.components.documentReadyDeferred.push(v.granim.documentReady),v}(mr,jQuery,window,document),
+mr = (function (mr, $, window, document){
+    "use strict";
+
+    mr.granim = mr.granim || {};
+
+    mr.granim.documentReady = function($){
+    	$('[data-gradient-bg]').each(function(index,element){
+    		var granimParent = $(this),
+    			granimID 	 = 'granim-'+index+'',
+				colours 	 = granimParent.attr('data-gradient-bg'),
+				pairs        = [],
+				tempPair     = [],
+                ao           = {},
+				count,
+				passes,
+				i,
+                themeDefaults,
+
+                options;
+
+			// Canvas element forms the gradient background
+			granimParent.prepend('<canvas id="'+granimID+'"></canvas>');
+
+            // Regular expression to match comma separated list of hex colour values
+            passes = /^(#[0-9|a-f|A-F]{6}){1}([ ]*,[ ]*#[0-9|a-f|A-F]{6})*$/.test(colours);
+
+            if(passes === true){
+            	colours = colours.replace(' ','');
+            	colours = colours.split(',');
+            	count = colours.length;
+            	// If number of colours is odd - duplicate last colour to make even array
+            	if(count%2 !== 0){
+            		colours.push(colours[count-1]);
+            	}
+            	for(i = 0; i < (count/2); i++){
+                    tempPair = [];
+                    tempPair.push(colours.shift());
+                    tempPair.push(colours.shift());
+                    pairs.push(tempPair);
+            	}
+
+                // attribute overrides - allows per-gradient override of global options.
+                ao.states = {
+                    "default-state": {
+                        gradients: pairs
+                    }
+                }
+            }
+
+            themeDefaults = {
+                element: '#'+granimID,
+                name: 'basic-gradient',
+                direction: 'left-right',
+                opacity: [1, 1],
+                isPausedWhenNotInView: true,
+                states : {
+                    "default-state": {
+                        gradients: pairs
+                    }
+                }
+            };
+
+            options = jQuery.extend({}, themeDefaults, mr.granim.options, ao);
+            $(this).data('gradientOptions', options);
+    		var granimElement = $(this);
+    		var granimInstance = new Granim(options);
+    	});
+    };
+
+    mr.components.documentReadyDeferred.push(mr.granim.documentReady);
+    return mr;
+
+}(mr, jQuery, window, document));
+
 //////////////// Instagram
-mr=function(d,t,e,a){"use strict";return d.instagram=d.instagram||{},d.instagram.documentReady=function(o){var i,n,r={};if(o(".instafeed").length){
-// Replace with your own Access Token and Client ID
-var t="4079540202.b9b1d8a.1d13c245c68d4a17bfbff87919aaeb14",e="b9b1d8ae049d4153b24a6332f0088686",a,s;o(".instafeed[data-access-token][data-client-id]").length&&(""!==(a=o(".instafeed[data-access-token][data-client-id]").first().attr("data-access-token"))&&(t=a),""!==(s=o(".instafeed[data-access-token][data-client-id]").first().attr("data-client-id"))&&(e=s)),jQuery.fn.spectragram.accessData={accessToken:t,clientID:e}}o(".instafeed").each(function(){var t=o(this),e=t.attr("data-user-name"),a=12;i={query:"mediumrarethemes",max:12},
-// Attribute Overrides taken from data attributes allow for per-feed customization
-r.max=t.attr("data-amount"),r.query=t.attr("data-user-name"),n=jQuery.extend({},i,d.instagram.options,r),t.append("<ul></ul>"),t.children("ul").spectragram("getUserFeed",n)})},d.components.documentReadyDeferred.push(d.instagram.documentReady),d}(mr,jQuery,window,document),
+mr = (function (mr, $, window, document){
+    "use strict";
+
+    mr.instagram = mr.instagram || {};
+
+    mr.instagram.documentReady = function($){
+
+        var themeDefaults, options, ao = {};
+
+        if($('.instafeed').length){
+
+            // Replace with your own Access Token and Client ID
+            var token  = '4079540202.b9b1d8a.1d13c245c68d4a17bfbff87919aaeb14',
+                client = 'b9b1d8ae049d4153b24a6332f0088686',
+                elementToken, elementClient;
+
+            if($('.instafeed[data-access-token][data-client-id]').length){
+                elementToken = $('.instafeed[data-access-token][data-client-id]').first().attr('data-access-token');
+                elementClient = $('.instafeed[data-access-token][data-client-id]').first().attr('data-client-id');
+
+                if(elementToken !== ""){token = elementToken;}
+                if(elementClient !== ""){client = elementClient;}
+            }
+
+            jQuery.fn.spectragram.accessData = {
+                accessToken: token,
+                clientID: client
+            };
+        }
+
+        $('.instafeed').each(function(){
+            var feed   = $(this),
+                feedID = feed.attr('data-user-name'),
+                fetchNumber = 12;
+
+            themeDefaults = {
+                query: 'mediumrarethemes',
+                max: 12
+            };
+
+            // Attribute Overrides taken from data attributes allow for per-feed customization
+            ao.max = feed.attr('data-amount')
+            ao.query = feed.attr('data-user-name');
+
+            options = jQuery.extend({}, themeDefaults, mr.instagram.options, ao);
+
+            feed.append('<ul></ul>');
+            feed.children('ul').spectragram('getUserFeed', options);
+        });
+    };
+
+    mr.components.documentReadyDeferred.push(mr.instagram.documentReady);
+    return mr;
+
+}(mr, jQuery, window, document));
+
 //////////////// Maps
-mr=function(w,t,e,b){"use strict";return w.maps=w.maps||{},w.maps.options=w.maps.options||{},w.maps.documentReady=function(t){
-// Interact with Map once the user has clicked (to prevent scrolling the page = zooming the map
-t(".map-holder").on("click",function(){t(this).addClass("interact")}).removeClass("interact");var e=t(".map-container[data-maps-api-key]");e.length&&(e.addClass("gmaps-active"),w.maps.initAPI(t),w.maps.init())},w.maps.initAPI=function(t){
-// Load Google MAP API JS with callback to initialise when fully loaded
-if(b.querySelector("[data-maps-api-key]")&&!b.querySelector(".gMapsAPI")&&t("[data-maps-api-key]").length){var e=b.createElement("script"),a=t("[data-maps-api-key]:first").attr("data-maps-api-key");""!==(a=void 0!==a?a:"")&&(e.type="text/javascript",e.src="https://maps.googleapis.com/maps/api/js?key="+a+"&callback=mr.maps.init",e.className="gMapsAPI",b.body.appendChild(e))}},w.maps.init=function(){void 0!==e.google&&void 0!==e.google.maps&&(w.maps.instances=[],jQuery(".gmaps-active").each(function(){var a=this,t=jQuery(this),e=766<jQuery(b).width(),o=void 0!==t.attr("data-zoom-controls"),i=void 0!==t.attr("data-zoom-controls")&&t.attr("data-zoom-controls"),n=void 0!==t.attr("data-latlong")&&t.attr("data-latlong"),r=!!n&&1*n.substr(0,n.indexOf(",")),s=!!n&&1*n.substr(n.indexOf(",")+1),d=new google.maps.Geocoder,c=void 0!==t.attr("data-address")?t.attr("data-address").split(";"):[""],l,u,m,p,f,h,v={},y={},g;(g=b.createEvent("Event")).initEvent("mapCreated.maps.mr",!0,!0),p={disableDefaultUI:!0,draggable:e,scrollwheel:!1,styles:[{featureType:"landscape",stylers:[{saturation:-100},{lightness:65},{visibility:"on"}]},{featureType:"poi",stylers:[{saturation:-100},{lightness:51},{visibility:"simplified"}]},{featureType:"road.highway",stylers:[{saturation:-100},{visibility:"simplified"}]},{featureType:"road.arterial",stylers:[{saturation:-100},{lightness:30},{visibility:"on"}]},{featureType:"road.local",stylers:[{saturation:-100},{lightness:40},{visibility:"on"}]},{featureType:"transit",stylers:[{saturation:-100},{visibility:"simplified"}]},{featureType:"administrative.province",stylers:[{visibility:"off"}]},{featureType:"water",elementType:"labels",stylers:[{visibility:"on"},{lightness:-25},{saturation:-100}]},{featureType:"water",elementType:"geometry",stylers:[{hue:"#ffff00"},{lightness:-25},{saturation:-97}]}],zoom:17,zoomControl:!1},
-// Attribute overrides - allows data attributes on the map to override global options
-v.styles=void 0!==t.attr("data-map-style")?JSON.parse(t.attr("data-map-style")):void 0,v.zoom=t.attr("data-map-zoom")?parseInt(t.attr("data-map-zoom"),10):void 0,v.zoomControlOptions=!1!==i?{position:google.maps.ControlPosition[i]}:void 0,m={icon:{url:("undefined"!=typeof mr_variant?"../":"")+"img/mapmarker.png",scaledSize:new google.maps.Size(50,50)},title:"We Are Here",optimised:!1},y.icon=void 0!==t.attr("data-marker-image")?t.attr("data-marker-image"):void 0,y.title=t.attr("data-marker-title"),f=jQuery.extend({},p,w.maps.options.map,v),h=jQuery.extend({},m,w.maps.options.marker,y),void 0!==c&&""!==c[0]?d.geocode({address:c[0].replace("[nomarker]","")},function(t,e){e===google.maps.GeocoderStatus.OK?(l=new google.maps.Map(a,f),w.maps.instances.push(l),jQuery(a).trigger("mapCreated.maps.mr").get(0).dispatchEvent(g),l.setCenter(t[0].geometry.location),c.forEach(function(t){var e;if(/(\-?\d+(\.\d+)?),\s*(\-?\d+(\.\d+)?)/.test(t))var a=t.split(","),o=new google.maps.Marker(jQuery.extend({},h,{position:{lat:1*a[0],lng:1*a[1]},map:l}));else t.indexOf("[nomarker]")<0&&(e=new google.maps.Geocoder).geocode({address:t.replace("[nomarker]","")},function(t,e){e===google.maps.GeocoderStatus.OK?o=new google.maps.Marker(jQuery.extend({},h,{map:l,position:t[0].geometry.location})):console.log("Map marker error: "+e)})})):console.log("There was a problem geocoding the address.")}):void 0!==r&&""!==r&&!1!==r&&void 0!==s&&""!==s&&!1!==s&&(f.center={lat:r,lng:s},l=new google.maps.Map(a,f),u=new google.maps.Marker(jQuery.extend({},h,{position:{lat:r,lng:s},map:l})),w.maps.instances.push(l),jQuery(a).trigger("mapCreated.maps.mr").get(0).dispatchEvent(g))}))},w.components.documentReady.push(w.maps.documentReady),w}(mr,jQuery,window,document),
+mr = (function (mr, $, window, document){
+    "use strict";
+
+    mr.maps = mr.maps || {};
+    mr.maps.options = mr.maps.options || {};
+
+    mr.maps.documentReady = function($){
+        // Interact with Map once the user has clicked (to prevent scrolling the page = zooming the map
+
+        $('.map-holder').on('click', function() {
+            $(this).addClass('interact');
+        }).removeClass('interact');
+
+        var mapsOnPage = $('.map-container[data-maps-api-key]');
+        if(mapsOnPage.length){
+            mapsOnPage.addClass('gmaps-active');
+            mr.maps.initAPI($);
+            mr.maps.init();
+        }
+
+    };
+
+    mr.maps.initAPI = function($){
+        // Load Google MAP API JS with callback to initialise when fully loaded
+        if(document.querySelector('[data-maps-api-key]') && !document.querySelector('.gMapsAPI')){
+            if($('[data-maps-api-key]').length){
+                var script = document.createElement('script');
+                var apiKey = $('[data-maps-api-key]:first').attr('data-maps-api-key');
+                apiKey = typeof apiKey !== typeof undefined ? apiKey : '';
+                if(apiKey !== ''){
+                    script.type = 'text/javascript';
+                    script.src = 'https://maps.googleapis.com/maps/api/js?key='+apiKey+'&callback=mr.maps.init';
+                    script.className = 'gMapsAPI';
+                    document.body.appendChild(script);
+                }
+            }
+        }
+    };
+
+    mr.maps.init = function(){
+        if(typeof window.google !== "undefined"){
+            if(typeof window.google.maps !== "undefined"){
+
+                mr.maps.instances = [];
+
+
+                jQuery('.gmaps-active').each(function(){
+                    var mapElement      = this,
+                        mapInstance     = jQuery(this),
+                        isDraggable     = jQuery(document).width() > 766 ? true : false,
+                        showZoomControl = typeof mapInstance.attr('data-zoom-controls') !== typeof undefined ? true : false,
+                        zoomControlPos  = typeof mapInstance.attr('data-zoom-controls') !== typeof undefined ? mapInstance.attr('data-zoom-controls'): false,
+                        latlong         = typeof mapInstance.attr('data-latlong') !== typeof undefined ? mapInstance.attr('data-latlong') : false,
+                        latitude        = latlong ? 1 *latlong.substr(0, latlong.indexOf(',')) : false,
+                        longitude       = latlong ? 1 * latlong.substr(latlong.indexOf(",") + 1) : false,
+                        geocoder        = new google.maps.Geocoder(),
+                        address         = typeof mapInstance.attr('data-address') !== typeof undefined ? mapInstance.attr('data-address').split(';'): [""],
+                        map, marker, markerDefaults,mapDefaults,mapOptions, markerOptions, mapAo = {}, markerAo = {}, mapCreatedEvent;
+
+                        mapCreatedEvent    = document.createEvent('Event');
+                        mapCreatedEvent.initEvent('mapCreated.maps.mr', true, true);
+
+
+
+
+                    mapDefaults = {
+                        disableDefaultUI: true,
+                        draggable: isDraggable,
+                        scrollwheel: false,
+                        styles: [{"featureType":"landscape","stylers":[{"saturation":-100},{"lightness":65},{"visibility":"on"}]},{"featureType":"poi","stylers":[{"saturation":-100},{"lightness":51},{"visibility":"simplified"}]},{"featureType":"road.highway","stylers":[{"saturation":-100},{"visibility":"simplified"}]},{"featureType":"road.arterial","stylers":[{"saturation":-100},{"lightness":30},{"visibility":"on"}]},{"featureType":"road.local","stylers":[{"saturation":-100},{"lightness":40},{"visibility":"on"}]},{"featureType":"transit","stylers":[{"saturation":-100},{"visibility":"simplified"}]},{"featureType":"administrative.province","stylers":[{"visibility":"off"}]},{"featureType":"water","elementType":"labels","stylers":[{"visibility":"on"},{"lightness":-25},{"saturation":-100}]},{"featureType":"water","elementType":"geometry","stylers":[{"hue":"#ffff00"},{"lightness":-25},{"saturation":-97}]}],
+                        zoom: 17,
+                        zoomControl: false,
+                    };
+
+                    // Attribute overrides - allows data attributes on the map to override global options
+                    mapAo.styles             = typeof mapInstance.attr('data-map-style') !== typeof undefined ? JSON.parse(mapInstance.attr('data-map-style')): undefined;
+                    mapAo.zoom               = mapInstance.attr('data-map-zoom') ? parseInt(mapInstance.attr('data-map-zoom'),10) : undefined;
+                    mapAo.zoomControlOptions = zoomControlPos !== false ? {position: google.maps.ControlPosition[zoomControlPos]} : undefined;
+
+                    markerDefaults = {
+                        icon: {url:( typeof mr_variant !== typeof undefined ? '../': '' )+'img/mapmarker.png', scaledSize: new google.maps.Size(50,50)},
+                        title: 'We Are Here',
+                        optimised: false
+                    };
+
+                    markerAo.icon = typeof mapInstance.attr('data-marker-image') !== typeof undefined ? mapInstance.attr('data-marker-image'): undefined;
+                    markerAo.title = mapInstance.attr('data-marker-title');
+
+                    mapOptions = jQuery.extend({}, mapDefaults, mr.maps.options.map, mapAo);
+                    markerOptions = jQuery.extend({}, markerDefaults, mr.maps.options.marker, markerAo);
+
+
+                    if(address !== undefined && address[0] !== ""){
+                            geocoder.geocode( { 'address': address[0].replace('[nomarker]','')}, function(results, status) {
+                                if (status === google.maps.GeocoderStatus.OK) {
+                                map = new google.maps.Map(mapElement, mapOptions);
+
+
+                                mr.maps.instances.push(map);
+                                jQuery(mapElement).trigger('mapCreated.maps.mr').get(0).dispatchEvent(mapCreatedEvent);
+                                map.setCenter(results[0].geometry.location);
+
+                                address.forEach(function(address){
+                                    var markerGeoCoder;
+
+                                    if(/(\-?\d+(\.\d+)?),\s*(\-?\d+(\.\d+)?)/.test(address) ){
+                                        var latlong = address.split(','),
+                                        marker = new google.maps.Marker(jQuery.extend({}, markerOptions, {
+                                                        position: { lat: 1*latlong[0], lng: 1*latlong[1] },
+                                                        map: map,
+                                                    }));
+                                    }
+                                    else if(address.indexOf('[nomarker]') < 0){
+                                        markerGeoCoder = new google.maps.Geocoder();
+                                        markerGeoCoder.geocode( { 'address': address.replace('[nomarker]','')}, function(results, status) {
+                                            if (status === google.maps.GeocoderStatus.OK) {
+                                                marker = new google.maps.Marker(jQuery.extend({}, markerOptions, {
+                                                    map: map,
+                                                    position: results[0].geometry.location,
+                                                }));
+                                            }
+                                            else{
+                                                console.log('Map marker error: '+status);
+                                            }
+                                        });
+                                    }
+
+                                });
+                            } else {
+                                console.log('There was a problem geocoding the address.');
+                            }
+                        });
+                    }
+                    else if(typeof latitude !== typeof undefined && latitude !== "" && latitude !== false && typeof longitude !== typeof undefined && longitude !== "" && longitude !== false ){
+
+                        mapOptions.center   = { lat: latitude, lng: longitude};
+                        map                 = new google.maps.Map(mapElement, mapOptions);
+                        marker              = new google.maps.Marker(jQuery.extend({}, markerOptions, {
+                                                    position: { lat: latitude, lng: longitude },
+                                                    map: map }));
+                        mr.maps.instances.push(map);
+                        jQuery(mapElement).trigger('mapCreated.maps.mr').get(0).dispatchEvent(mapCreatedEvent);
+
+
+                    }
+
+
+
+                });
+            }
+        }
+    };
+
+    mr.components.documentReady.push(mr.maps.documentReady);
+    return mr;
+
+}(mr, jQuery, window, document));
+
+
 //////////////// Masonry
-mr=function(n,r,t,e){"use strict";return n.masonry=n.masonry||{},n.masonry.documentReady=function(o){n.masonry.updateFilters(),o(e).on("click touchstart",".masonry__filters li:not(.js-no-action)",function(){var t=o(this),e=t.closest(".masonry").find(".masonry__container"),a="*";"*"!==t.attr("data-masonry-filter")&&(a=".filter-"+t.attr("data-masonry-filter")),t.siblings("li").removeClass("active"),t.addClass("active"),e.removeClass("masonry--animate"),e.on("layoutComplete",function(){o(this).addClass("masonry--active"),"undefined"!=typeof mr_parallax&&setTimeout(function(){mr_parallax.profileParallaxElements()},100)}),e.isotope({filter:a})})},n.masonry.windowLoad=function(){r(".masonry").each(function(){var t=r(this).find(".masonry__container"),e=r(this),a="*",o,i={};o={itemSelector:".masonry__item",filter:"*",masonry:{columnWidth:".masonry__item"}},
-// Check for a default filter attribute
-e.is("[data-default-filter]")&&(a=".filter-"+(a=e.attr("data-default-filter").toLowerCase()),e.find("li[data-masonry-filter]").removeClass("active"),e.find('li[data-masonry-filter="'+e.attr("data-default-filter").toLowerCase()+'"]').addClass("active")),
-// Use data attributes to override the default settings and provide a per-masonry customisation where necessary.
-i.filter="*"!==a?a:void 0,t.on("layoutComplete",function(){t.addClass("masonry--active"),"undefined"!=typeof mr_parallax&&setTimeout(function(){mr_parallax.profileParallaxElements()},100)}),t.isotope(jQuery.extend({},o,n.masonry.options,i))})},n.masonry.updateFilters=function(t){var e;r(
-// If no argument is supplied, just apply the update to all masonry sets on the page.
-t=void 0!==t?t:".masonry").each(function(){var a=r(this),t=a.find(".masonry__container"),e=a.find(".masonry__filters"),
-// data-filter-all-text can be used to set the word for "all"
-o=void 0!==e.attr("data-filter-all-text")?e.attr("data-filter-all-text"):"All",i;
-// Ensure we are working with a .masonry element
-a.is(".masonry")&&t.find(".masonry__item[data-masonry-filter]").length&&(
-// Create empty ul for filters
-(i=e.find("> ul")).length||(i=e.append("<ul></ul>").find("> ul")),
-// To avoid cases where user leave filter attribute blank
-// only take items that have filter attribute
-t.find(".masonry__item[data-masonry-filter]").each(function(){var o=r(this),t=o.attr("data-masonry-filter"),e=[];
-// If not undefined or empty
-void 0!==t&&""!==t&&(
-// Split tags from string into array
-e=t.split(",")),r(e).each(function(t,e){
-// Slugify the tag
-var a=n.util.slugify(e);
-// Add the filter class to the masonry item
-o.addClass("filter-"+a),
-// If this tag does not appear in the list already, add it
-i.find('[data-masonry-filter="'+a+'"]').length||i.append('<li data-masonry-filter="'+a+'">'+e+"</li>")})}),
-// Remove any unnused filter options in list
-i.find("[data-masonry-filter]").each(function(){var t=r(this),e=t.text();"*"!==r(this).attr("data-masonry-filter")&&(a.find('.masonry__item[data-masonry-filter*="'+e+'"]').length||t.remove())}),n.util.sortChildrenByText(r(this).find(".masonry__filters ul")),
-// Add a filter "all" option
-i.find('[data-masonry-filter="*"]').length||i.prepend('<li class="active" data-masonry-filter="*">'+o+"</li>"));
-//End of "if $masonry is .masonry"
-})},n.masonry.updateLayout=function(t){var e;r(
-// If no argument is supplied, just apply the update to all masonry sets on the page.
-t=void 0!==t?t:".masonry").each(function(){var t=r(this),e=t.find(".masonry__item:not([style])"),a=t.find(".masonry__container");t.is(".masonry")&&(e.length&&a.isotope("appended",e).isotope("layout"),a.isotope("layout"))})},n.components.documentReady.push(n.masonry.documentReady),n.components.windowLoad.push(n.masonry.windowLoad),n}(mr,jQuery,window,document),
+mr = (function (mr, $, window, document){
+    "use strict";
+
+    mr.masonry = mr.masonry || {};
+
+    mr.masonry.documentReady = function($){
+
+        mr.masonry.updateFilters();
+
+        $(document).on('click touchstart', '.masonry__filters li:not(.js-no-action)', function(){
+            var masonryFilter = $(this);
+            var masonryContainer = masonryFilter.closest('.masonry').find('.masonry__container');
+            var filterValue = '*';
+            if(masonryFilter.attr('data-masonry-filter') !== '*'){
+                filterValue = '.filter-'+masonryFilter.attr('data-masonry-filter');
+            }
+            masonryFilter.siblings('li').removeClass('active');
+            masonryFilter.addClass('active');
+            masonryContainer.removeClass('masonry--animate');
+            masonryContainer.on('layoutComplete',function(){
+                $(this).addClass('masonry--active');
+                if(typeof mr_parallax !== typeof undefined){
+                    setTimeout(function(){ mr_parallax.profileParallaxElements(); },100);
+                }
+            });
+            masonryContainer.isotope({ filter: filterValue });
+
+        });
+
+    };
+
+    mr.masonry.windowLoad = function(){
+
+        $('.masonry').each(function(){
+            var masonry       = $(this).find('.masonry__container'),
+                masonryParent = $(this),
+                defaultFilter = '*',
+                themeDefaults, ao = {};
+
+            themeDefaults = {
+                itemSelector: '.masonry__item',
+                filter: '*',
+                masonry: {
+                  columnWidth: '.masonry__item'
+                }
+            };
+
+            // Check for a default filter attribute
+            if(masonryParent.is('[data-default-filter]')){
+                defaultFilter = masonryParent.attr('data-default-filter').toLowerCase();
+                defaultFilter = '.filter-'+defaultFilter;
+                masonryParent.find('li[data-masonry-filter]').removeClass('active');
+                masonryParent.find('li[data-masonry-filter="'+masonryParent.attr("data-default-filter").toLowerCase()+'"]').addClass('active');
+            }
+
+            // Use data attributes to override the default settings and provide a per-masonry customisation where necessary.
+            ao.filter = defaultFilter !== '*' ? defaultFilter : undefined;
+
+            masonry.on('layoutComplete',function(){
+                masonry.addClass('masonry--active');
+                if(typeof mr_parallax !== typeof undefined){
+                    setTimeout(function(){ mr_parallax.profileParallaxElements(); },100);
+                }
+            });
+
+
+            masonry.isotope(jQuery.extend({}, themeDefaults, mr.masonry.options, ao));
+
+        });
+    };
+
+    mr.masonry.updateFilters = function(masonry){
+
+        // If no argument is supplied, just apply the update to all masonry sets on the page.
+        masonry = typeof masonry !== typeof undefined ? masonry : '.masonry';
+
+        var $masonry = $(masonry);
+
+        $masonry.each(function(){
+            var $masonry         = $(this),
+                masonryContainer = $masonry.find('.masonry__container'),
+                filters          = $masonry.find('.masonry__filters'),
+                // data-filter-all-text can be used to set the word for "all"
+                filterAllText    = typeof filters.attr('data-filter-all-text') !== typeof undefined ? filters.attr('data-filter-all-text') : "All",
+                filtersList;
+
+            // Ensure we are working with a .masonry element
+            if($masonry.is('.masonry')){
+                // If a filterable masonry item exists
+                if(masonryContainer.find('.masonry__item[data-masonry-filter]').length){
+
+                    // Create empty ul for filters
+                    filtersList = filters.find('> ul');
+
+                    if(!filtersList.length){
+                        filtersList = filters.append('<ul></ul>').find('> ul');
+                    }
+
+                    // To avoid cases where user leave filter attribute blank
+                    // only take items that have filter attribute
+                    masonryContainer.find('.masonry__item[data-masonry-filter]').each(function(){
+                        var masonryItem  = $(this),
+                            filterString = masonryItem.attr('data-masonry-filter'),
+                            filtersArray = [];
+
+                        // If not undefined or empty
+                        if(typeof filterString !== typeof undefined && filterString !== ""){
+                            // Split tags from string into array
+                            filtersArray = filterString.split(',');
+                        }
+                        $(filtersArray).each(function(index, tag){
+
+                            // Slugify the tag
+
+                            var slug = mr.util.slugify(tag);
+
+                            // Add the filter class to the masonry item
+
+                            masonryItem.addClass('filter-'+slug);
+
+                            // If this tag does not appear in the list already, add it
+                            if(!filtersList.find('[data-masonry-filter="'+slug+'"]').length){
+                                filtersList.append('<li data-masonry-filter="'+slug+'">'+tag+'</li>');
+
+                            }
+                        });
+                    });
+
+                    // Remove any unnused filter options in list
+                    filtersList.find('[data-masonry-filter]').each(function(){
+                        var $this  = $(this),
+                            filter = $this.text();
+
+                        if($(this).attr('data-masonry-filter') !== "*"){
+                            if(!$masonry.find('.masonry__item[data-masonry-filter*="'+filter+'"]').length){
+                                $this.remove();
+                            }
+                        }
+                    });
+
+                    mr.util.sortChildrenByText($(this).find('.masonry__filters ul'));
+                    // Add a filter "all" option
+                    if(!filtersList.find('[data-masonry-filter="*"]').length){
+                        filtersList.prepend('<li class="active" data-masonry-filter="*">'+filterAllText+'</li>');
+                    }
+
+                }
+                //End of "if filterable masonry item exists"
+            }
+            //End of "if $masonry is .masonry"
+        });
+
+    };
+
+    mr.masonry.updateLayout = function(masonry){
+
+        // If no argument is supplied, just apply the update to all masonry sets on the page.
+        masonry = typeof masonry !== typeof undefined ? masonry : '.masonry';
+
+        var $masonry = $(masonry);
+
+
+        $masonry.each(function(){
+            var collection       = $(this),
+                newItems         = collection.find('.masonry__item:not([style])'),
+                masonryContainer = collection.find('.masonry__container');
+
+            if(collection.is('.masonry')){
+                if(newItems.length){
+                    masonryContainer.isotope('appended', newItems).isotope( 'layout');
+                }
+
+                masonryContainer.isotope('layout');
+            }
+        });
+    };
+
+    mr.components.documentReady.push(mr.masonry.documentReady);
+    mr.components.windowLoad.push(mr.masonry.windowLoad);
+    return mr;
+
+}(mr, jQuery, window, document));
+
+
 //////////////// Modals
-mr=function(r,i,s,d){"use strict";return r.modals=r.modals||{},r.modals.documentReady=function(n){var t='<div class="all-page-modals"></div>',e=n("div.main-container");
-// Autoshow modal by ID from location href
-if(e.length?(jQuery(t).insertAfter(e),r.modals.allModalsContainer=n("div.all-page-modals")):(jQuery("body").append(t),r.modals.allModalsContainer=jQuery("body div.all-page-modals")),n(".modal-container").each(function(){
-// Add modal close if none exists
-var t=n(this),e=n(s),a=t.find(".modal-content");
-// Set modal height
-if(t.find(".modal-close").length||t.find(".modal-content").append('<div class="modal-close modal-close-cross"></div>'),void 0!==a.attr("data-width")){var o=1*a.attr("data-width").substr(0,a.attr("data-width").indexOf("%"));a.css("width",o+"%")}if(void 0!==a.attr("data-height")){var i=1*a.attr("data-height").substr(0,a.attr("data-height").indexOf("%"));a.css("height",i+"%")}
-// Set iframe's src to data-src to stop autoplaying iframes
-r.util.idleSrc(t,"iframe")}),n(".modal-instance").each(function(t){var e=n(this),a=e.find(".modal-container"),o=e.find(".modal-content"),i=e.find(".modal-trigger");
-// Link modal with modal-id attribute
-i.attr("data-modal-index",t),a.attr("data-modal-index",t),
-// Set unique id for multiple triggers
-void 0!==a.attr("data-modal-id")&&i.attr("data-modal-id",a.attr("data-modal-id")),
-// Attach the modal to the body
-a=a.detach(),r.modals.allModalsContainer.append(a)}),n(".modal-trigger").on("click",function(){var t=n(this),e,a;
-// Determine if the modal id is set by user or is set programatically
-return a=void 0!==t.attr("data-modal-id")?(e=t.attr("data-modal-id"),r.modals.allModalsContainer.find('.modal-container[data-modal-id="'+e+'"]')):(e=n(this).attr("data-modal-index"),r.modals.allModalsContainer.find('.modal-container[data-modal-index="'+e+'"]')),r.util.activateIdleSrc(a,"iframe"),r.modals.autoplayVideo(a),r.modals.showModal(a),!1}),jQuery(d).on("click",".modal-close",r.modals.closeActiveModal),jQuery(d).keyup(function(t){27===t.keyCode&&// escape key maps to keycode `27`
-r.modals.closeActiveModal()}),n(".modal-container:not(.modal--prevent-close)").on("click",function(t){t.target===this&&r.modals.closeActiveModal()}),
-// Trigger autoshow modals
-n(".modal-container[data-autoshow]").each(function(){var t=n(this),e=1*t.attr("data-autoshow");r.util.activateIdleSrc(t),r.modals.autoplayVideo(t),
-// If this modal has a cookie attribute, check to see if a cookie is set, and if so, don't show it.
-void 0!==t.attr("data-cookie")&&r.cookies.hasItem(t.attr("data-cookie"))||r.modals.showModal(t,e)}),
-// Exit modals
-n(".modal-container[data-show-on-exit]").each(function(){var t=jQuery(this),e=t.attr("data-show-on-exit"),a=0;t.attr("data-delay")&&(a=parseInt(t.attr("data-delay"),10)||0),
-// If a valid selector is found, attach leave event to show modal.
-n(e).length&&(t.prepend(n('<i class="ti-close close-modal">')),jQuery(d).on("mouseleave",e,function(){n(".modal-active").length||void 0!==t.attr("data-cookie")&&r.cookies.hasItem(t.attr("data-cookie"))||r.modals.showModal(t,a)}))}),2===s.location.href.split("#").length){var a=s.location.href.split("#").pop();n('[data-modal-id="'+a+'"]').length&&(r.modals.closeActiveModal(),r.modals.showModal(n('[data-modal-id="'+a+'"]')))}jQuery(d).on("click",'a[href^="#"]',function(){var t=n(this).attr("href").replace("#","");n('[data-modal-id="'+t+'"]').length&&(r.modals.closeActiveModal(),setTimeout(r.modals.showModal,500,'[data-modal-id="'+t+'"]',0))}),
-// Make modal scrollable
-jQuery(d).on("wheel mousewheel scroll",".modal-content, .modal-content .scrollable",function(t){t.preventDefault&&t.preventDefault(),t.stopPropagation&&t.stopPropagation(),this.scrollTop+=t.originalEvent.deltaY})},
-////////////////
-//////////////// End documentReady
-////////////////
-r.modals.showModal=function(e,t){var a=void 0!==t?1*t:0,o;i(e).length&&setTimeout(function(){var t=d.createEvent("Event");t.initEvent("modalOpened.modals.mr",!0,!0),i(e).addClass("modal-active").trigger("modalOpened.modals.mr").get(0).dispatchEvent(t)},a)},r.modals.closeActiveModal=function(){var t=jQuery("body div.modal-active"),e=d.createEvent("Event");r.util.idleSrc(t,"iframe"),r.util.pauseVideo(t),
-// If this modal requires to be closed permanently using a cookie, set the cookie now.
-void 0!==t.attr("data-cookie")&&r.cookies.setItem(t.attr("data-cookie"),"true",1/0,"/"),t.length&&(
-// Remove hash from URL bar if this modal was opened via url bar ID
-t.is("[data-modal-id]")&&s.location.hash==="#"+t.attr("data-modal-id")&&r.util.removeHash(),e.initEvent("modalClosed.modals.mr",!0,!0),t.removeClass("modal-active").trigger("modalClosed.modals.mr").get(0).dispatchEvent(e))},r.modals.autoplayVideo=function(t){var e;
-// If modal contains HTML5 video with autoplay, play the video
-t.find("video[autoplay]").length&&t.find("video").get(0).play()},r.components.documentReady.push(r.modals.documentReady),r}(mr,jQuery,window,document),
+mr = (function (mr, $, window, document){
+    "use strict";
+
+    mr.modals = mr.modals || {};
+
+    mr.modals.documentReady = function($){
+        var allPageModals = "<div class=\"all-page-modals\"></div>",
+            mainContainer = $('div.main-container');
+
+        if(mainContainer.length){
+            jQuery(allPageModals).insertAfter(mainContainer);
+            mr.modals.allModalsContainer = $('div.all-page-modals');
+        }
+        else{
+            jQuery('body').append(allPageModals);
+            mr.modals.allModalsContainer = jQuery('body div.all-page-modals');
+        }
+
+        $('.modal-container').each(function(){
+
+            // Add modal close if none exists
+
+            var modal        = $(this),
+                $window      = $(window),
+                modalContent = modal.find('.modal-content');
+
+
+            if(!modal.find('.modal-close').length){
+                modal.find('.modal-content').append('<div class="modal-close modal-close-cross"></div>');
+            }
+
+            // Set modal height
+
+            if(modalContent.attr('data-width') !== undefined){
+                var modalWidth = modalContent.attr('data-width').substr(0,modalContent.attr('data-width').indexOf('%')) * 1;
+                modalContent.css('width',modalWidth + '%');
+            }
+            if(modalContent.attr('data-height') !== undefined){
+                var modalHeight = modalContent.attr('data-height').substr(0,modalContent.attr('data-height').indexOf('%')) * 1;
+                modalContent.css('height',modalHeight + '%');
+            }
+
+            // Set iframe's src to data-src to stop autoplaying iframes
+            mr.util.idleSrc(modal, 'iframe');
+
+        });
+
+
+        $('.modal-instance').each(function(index){
+            var modalInstance = $(this);
+            var modal = modalInstance.find('.modal-container');
+            var modalContent = modalInstance.find('.modal-content');
+            var trigger = modalInstance.find('.modal-trigger');
+
+            // Link modal with modal-id attribute
+
+            trigger.attr('data-modal-index',index);
+            modal.attr('data-modal-index',index);
+
+            // Set unique id for multiple triggers
+
+            if(typeof modal.attr('data-modal-id') !== typeof undefined){
+                trigger.attr('data-modal-id', modal.attr('data-modal-id'));
+            }
+
+
+            // Attach the modal to the body
+            modal = modal.detach();
+            mr.modals.allModalsContainer.append(modal);
+        });
+
+
+        $('.modal-trigger').on('click', function(){
+
+            var modalTrigger = $(this);
+            var uniqueID, targetModal;
+            // Determine if the modal id is set by user or is set programatically
+
+            if(typeof modalTrigger.attr('data-modal-id') !== typeof undefined){
+                uniqueID = modalTrigger.attr('data-modal-id');
+                targetModal = mr.modals.allModalsContainer.find('.modal-container[data-modal-id="'+uniqueID+'"]');
+            }else{
+                uniqueID = $(this).attr('data-modal-index');
+                targetModal = mr.modals.allModalsContainer.find('.modal-container[data-modal-index="'+uniqueID+'"]');
+            }
+
+            mr.util.activateIdleSrc(targetModal, 'iframe');
+            mr.modals.autoplayVideo(targetModal);
+
+            mr.modals.showModal(targetModal);
+
+            return false;
+        });
+
+        jQuery(document).on('click', '.modal-close', mr.modals.closeActiveModal);
+
+        jQuery(document).keyup(function(e) {
+            if (e.keyCode === 27) { // escape key maps to keycode `27`
+                mr.modals.closeActiveModal();
+            }
+        });
+
+        $('.modal-container:not(.modal--prevent-close)').on('click', function(e) {
+            if( e.target !== this ) return;
+            mr.modals.closeActiveModal();
+        });
+
+        // Trigger autoshow modals
+        $('.modal-container[data-autoshow]').each(function(){
+            var modal = $(this);
+            var millisecondsDelay = modal.attr('data-autoshow')*1;
+
+            mr.util.activateIdleSrc(modal);
+            mr.modals.autoplayVideo(modal);
+
+            // If this modal has a cookie attribute, check to see if a cookie is set, and if so, don't show it.
+            if(typeof modal.attr('data-cookie') !== typeof undefined){
+                if(!mr.cookies.hasItem(modal.attr('data-cookie'))){
+                    mr.modals.showModal(modal, millisecondsDelay);
+                }
+            }else{
+                mr.modals.showModal(modal, millisecondsDelay);
+            }
+        });
+
+        // Exit modals
+        $('.modal-container[data-show-on-exit]').each(function(){
+            var modal        = jQuery(this),
+                exitSelector = modal.attr('data-show-on-exit'),
+                delay = 0;
+
+            if(modal.attr('data-delay')){
+                delay = parseInt(modal.attr('data-delay'), 10) || 0;
+            }
+
+            // If a valid selector is found, attach leave event to show modal.
+            if($(exitSelector).length){
+                modal.prepend($('<i class="ti-close close-modal">'));
+                jQuery(document).on('mouseleave', exitSelector, function(){
+                    if(!$('.modal-active').length){
+                        if(typeof modal.attr('data-cookie') !== typeof undefined){
+                            if(!mr.cookies.hasItem(modal.attr('data-cookie'))){
+                                mr.modals.showModal(modal, delay);
+                            }
+                        }else{
+                            mr.modals.showModal(modal, delay);
+                        }
+                    }
+                });
+            }
+        });
+
+
+        // Autoshow modal by ID from location href
+        if(window.location.href.split('#').length === 2){
+            var modalID = window.location.href.split('#').pop();
+            if($('[data-modal-id="'+modalID+'"]').length){
+                mr.modals.closeActiveModal();
+                mr.modals.showModal($('[data-modal-id="'+modalID+'"]'));
+            }
+        }
+
+        jQuery(document).on('click','a[href^="#"]', function(){
+            var modalID = $(this).attr('href').replace('#', '');
+            if($('[data-modal-id="'+modalID+'"]').length){
+                mr.modals.closeActiveModal();
+                setTimeout(mr.modals.showModal, 500,'[data-modal-id="'+modalID+'"]', 0);
+            }
+        });
+
+        // Make modal scrollable
+        jQuery(document).on('wheel mousewheel scroll','.modal-content, .modal-content .scrollable', function(evt){
+            if(evt.preventDefault){evt.preventDefault();}
+            if(evt.stopPropagation){evt.stopPropagation();}
+            this.scrollTop += (evt.originalEvent.deltaY);
+        });
+    };
+    ////////////////
+    //////////////// End documentReady
+    ////////////////
+
+    mr.modals.showModal = function(modal, millisecondsDelay){
+
+        var delay = (typeof millisecondsDelay !== typeof undefined) ? (1*millisecondsDelay) : 0, $modal = $(modal);
+
+        if($modal.length){
+            setTimeout(function(){
+                var openEvent = document.createEvent('Event');
+                openEvent.initEvent('modalOpened.modals.mr', true, true);
+                $(modal).addClass('modal-active').trigger('modalOpened.modals.mr').get(0).dispatchEvent(openEvent);
+
+            },delay);
+        }
+    };
+
+    mr.modals.closeActiveModal = function(){
+        var modal      = jQuery('body div.modal-active'),
+            closeEvent = document.createEvent('Event');
+
+        mr.util.idleSrc(modal, 'iframe');
+        mr.util.pauseVideo(modal);
+
+        // If this modal requires to be closed permanently using a cookie, set the cookie now.
+        if(typeof modal.attr('data-cookie') !== typeof undefined){
+            mr.cookies.setItem(modal.attr('data-cookie'), "true", Infinity, '/');
+        }
+
+        if(modal.length){
+            // Remove hash from URL bar if this modal was opened via url bar ID
+            if(modal.is('[data-modal-id]') && window.location.hash === '#'+modal.attr('data-modal-id')){
+                mr.util.removeHash();
+            }
+            closeEvent.initEvent('modalClosed.modals.mr', true, true);
+            modal.removeClass('modal-active').trigger('modalClosed.modals.mr').get(0).dispatchEvent(closeEvent);
+        }
+    };
+
+    mr.modals.autoplayVideo = function(modal){
+        // If modal contains HTML5 video with autoplay, play the video
+        if(modal.find('video[autoplay]').length){
+            var video = modal.find('video').get(0);
+            video.play();
+        }
+    };
+
+    mr.components.documentReady.push(mr.modals.documentReady);
+    return mr;
+
+}(mr, jQuery, window, document));
+
 //////////////// Newsletter Providers
-mr=function(s,a,t,e){"use strict";return s.newsletters=s.newsletters||{},s.newsletters.documentReady=function(a){var e,t,o,i,n,r;
-// Treat Campaign Monitor forms
-a('form[action*="createsend.com"]').each(function(){
-// Override browser validation and allow us to use our own
-(e=a(this)).attr("novalidate","novalidate"),
-// Give each text input a placeholder value
-e.is(".form--no-placeholders")?e.find("input[placeholder]").removeAttr("placeholder"):e.find("input:not([checkbox]):not([radio])").each(function(){var t=a(this);void 0!==t.attr("placeholder")?""===t.attr("placeholder")&&t.siblings("label").length&&(t.attr("placeholder",t.siblings("label").first().text()),e.is(".form--no-labels")&&t.siblings("label").first().remove()):t.siblings("label").length&&(t.attr("placeholder",t.siblings("label").first().text()),e.is(".form--no-labels")&&t.siblings("label").first().remove()),t.parent().is("p")&&t.unwrap()}),
-// Wrap select elements in template code
-e.find("select").wrap('<div class="input-select"></div>'),
-// Wrap radios elements in template code
-e.find('input[type="radio"]').wrap('<div class="input-radio"></div>'),
-// Wrap checkbox elements in template code
-e.find('input[type="checkbox"]').each(function(){t=a(this),i=t.attr("id"),(o=e.find("label[for="+i+"]")).length||(o=a('<label for="'+i+'"></label>')),t.before('<div class="input-checkbox" data-id="'+i+'"></div>'),a('.input-checkbox[data-id="'+i+'"]').prepend(t),a('.input-checkbox[data-id="'+i+'"]').prepend(o)}),e.find('button[type="submit"]').each(function(){var t=a(this);t.addClass("btn"),t.parent().is("p")&&t.unwrap()}),e.find("[required]").attr("required","required").addClass("validate-required"),e.addClass("form--active"),s.newsletters.prepareAjaxAction(e)}),
-// Treat MailChimp forms
-a('form[action*="list-manage.com"]').each(function(){
-// Override browser validation and allow us to use our own
-(e=a(this)).attr("novalidate","novalidate"),
-// Give each text input a placeholder value
-e.is(".form--no-placeholders")?e.find("input[placeholder]").removeAttr("placeholder"):e.find("input:not([checkbox]):not([radio])").each(function(){var t=a(this);void 0!==t.attr("placeholder")?""===t.attr("placeholder")&&t.siblings("label").length&&(t.attr("placeholder",t.siblings("label").first().text()),e.is(".form--no-labels")&&t.siblings("label").first().remove()):t.siblings("label").length&&(t.attr("placeholder",t.siblings("label").first().text()),e.is(".form--no-labels")&&t.siblings("label").first().remove())}),e.is(".form--no-labels")&&e.find("input:not([checkbox]):not([radio])").each(function(){var t=a(this);t.siblings("label").length&&t.siblings("label").first().remove()}),
-// Wrap select elements in template code
-e.find("select").wrap('<div class="input-select"></div>'),
-// Wrap checboxes elements in template code
-e.find('input[type="checkbox"]').each(function(){t=jQuery(this),n=t.parent(),(o=n.find("label")).length||(o=jQuery("<label>")),t.before('<div class="input-checkbox"></div>'),n.find(".input-checkbox").append(t),n.find(".input-checkbox").append(o)}),
-// Wrap radio elements in template code
-e.find('input[type="radio"]').each(function(){r=jQuery(this),n=r.closest("li"),(o=n.find("label")).length||(o=jQuery("<label>")),r.before('<div class="input-radio"></div>'),n.find(".input-radio").prepend(r),n.find(".input-radio").prepend(o)}),
-// Convert MailChimp input[type="submit"] to div.button
-e.find('input[type="submit"]').each(function(){var t=a(this),e=jQuery("<button/>").attr("type","submit").attr("class",t.attr("class")).addClass("btn").text(t.attr("value"));t.parent().is("div.clear")&&t.unwrap(),e.insertBefore(t),t.remove()}),e.find("input").each(function(){var t=a(this);t.hasClass("required")&&t.removeClass("required").addClass("validate-required")}),e.find('input[type="email"]').removeClass("email").addClass("validate-email"),e.find("#mce-responses").remove(),e.find(".mc-field-group").each(function(){a(this).children().first().unwrap()}),e.find("[required]").attr("required","required").addClass("validate-required"),e.addClass("form--active"),s.newsletters.prepareAjaxAction(e)}),
-// Reinitialize the forms so interactions work as they should
-s.forms.documentReady(s.setContext("form.form--active"))},s.newsletters.prepareAjaxAction=function(t){var e=a(t).attr("action");
-// Alter action for a Mail Chimp-compatible ajax request url.
-/list-manage\.com/.test(e)&&"//"===(e=e.replace("/post?","/post-json?")+"&c=?").substr(0,2)&&(e="http:"+e),
-// Alter action for a Campaign Monitor-compatible ajax request url.
-/createsend\.com/.test(e)&&(e+="?callback=?"),
-// Set action on the form
-a(t).attr("action",e)},s.components.documentReady.push(s.newsletters.documentReady),s}(mr,jQuery,window,document),
+mr = (function (mr, $, window, document){
+    "use strict";
+
+    mr.newsletters = mr.newsletters || {};
+
+    mr.newsletters.documentReady = function($){
+
+  	var form,checkbox,label,id,parent,radio;
+
+    // Treat Campaign Monitor forms
+    $('form[action*="createsend.com"]').each(function(){
+    	form = $(this);
+
+        // Override browser validation and allow us to use our own
+        form.attr('novalidate', 'novalidate');
+
+    	// Give each text input a placeholder value
+
+    	if(!form.is('.form--no-placeholders')){
+            form.find('input:not([checkbox]):not([radio])').each(function(){
+                var $input = $(this);
+                if(typeof $input.attr('placeholder') !== typeof undefined){
+                    if($input.attr('placeholder') === ""){
+                        if($input.siblings('label').length){
+                            $input.attr('placeholder', $input.siblings('label').first().text());
+                            if(form.is('.form--no-labels')){
+                                $input.siblings('label').first().remove();
+                            }
+                        }
+                    }
+                }else if($input.siblings('label').length){
+                    $input.attr('placeholder', $input.siblings('label').first().text());
+                    if(form.is('.form--no-labels')){
+                        $input.siblings('label').first().remove();
+                    }
+                }
+                if($input.parent().is('p')){
+                    $input.unwrap();
+                }
+            });
+        }else{
+            form.find('input[placeholder]').removeAttr('placeholder');
+        }
+
+
+    	// Wrap select elements in template code
+
+    	form.find('select').wrap('<div class="input-select"></div>');
+
+    	// Wrap radios elements in template code
+
+    	form.find('input[type="radio"]').wrap('<div class="input-radio"></div>');
+
+    	// Wrap checkbox elements in template code
+
+    	form.find('input[type="checkbox"]').each(function(){
+    		checkbox = $(this);
+    		id = checkbox.attr('id');
+    		label = form.find('label[for='+id+']');
+            if(!label.length){
+                label = $('<label for="'+id+'"></label>');
+            }
+
+    		checkbox.before('<div class="input-checkbox" data-id="'+id+'"></div>');
+    		$('.input-checkbox[data-id="'+id+'"]').prepend(checkbox);
+    		$('.input-checkbox[data-id="'+id+'"]').prepend(label);
+    	});
+
+    	form.find('button[type="submit"]').each(function(){
+            var button = $(this);
+            button.addClass('btn');
+            if(button.parent().is('p')){
+                button.unwrap();
+            }
+        });
+
+        form.find('[required]').attr('required', 'required').addClass('validate-required');
+
+        form.addClass('form--active');
+
+        mr.newsletters.prepareAjaxAction(form);
+
+
+    });
+
+    // Treat MailChimp forms
+    $('form[action*="list-manage.com"]').each(function(){
+    	form = $(this);
+
+        // Override browser validation and allow us to use our own
+        form.attr('novalidate', 'novalidate');
+
+    	// Give each text input a placeholder value
+        if(!form.is('.form--no-placeholders')){
+        	form.find('input:not([checkbox]):not([radio])').each(function(){
+        		var $input = $(this);
+                if(typeof $input.attr('placeholder') !== typeof undefined){
+                    if($input.attr('placeholder') === ""){
+                        if($input.siblings('label').length){
+                            $input.attr('placeholder', $input.siblings('label').first().text());
+                            if(form.is('.form--no-labels')){
+                                $input.siblings('label').first().remove();
+                            }
+                        }
+                    }
+                }else if($input.siblings('label').length){
+                    $input.attr('placeholder', $input.siblings('label').first().text());
+                    if(form.is('.form--no-labels')){
+                        $input.siblings('label').first().remove();
+                    }
+                }
+        	});
+        }else{
+            form.find('input[placeholder]').removeAttr('placeholder');
+        }
+
+        if(form.is('.form--no-labels')){
+            form.find('input:not([checkbox]):not([radio])').each(function(){
+                var $input = $(this);
+                if($input.siblings('label').length){
+                    $input.siblings('label').first().remove();
+                }
+            });
+        }
+
+    	// Wrap select elements in template code
+
+    	form.find('select').wrap('<div class="input-select"></div>');
+
+    	// Wrap checboxes elements in template code
+
+    	form.find('input[type="checkbox"]').each(function(){
+    		checkbox = jQuery(this);
+    		parent = checkbox.parent();
+    		label = parent.find('label');
+            if(!label.length){
+                label = jQuery('<label>');
+            }
+    		checkbox.before('<div class="input-checkbox"></div>');
+    		parent.find('.input-checkbox').append(checkbox);
+    		parent.find('.input-checkbox').append(label);
+    	});
+
+    	// Wrap radio elements in template code
+
+    	form.find('input[type="radio"]').each(function(){
+    		radio = jQuery(this);
+    		parent = radio.closest('li');
+    		label = parent.find('label');
+            if(!label.length){
+                label = jQuery('<label>');
+            }
+    		radio.before('<div class="input-radio"></div>');
+    		parent.find('.input-radio').prepend(radio);
+    		parent.find('.input-radio').prepend(label);
+    	});
+
+        // Convert MailChimp input[type="submit"] to div.button
+
+        form.find('input[type="submit"]').each(function(){
+            var submit = $(this);
+
+            var newButton = jQuery('<button/>').attr('type','submit').attr('class', submit.attr('class')).addClass('btn').text(submit.attr('value'));
+
+            if(submit.parent().is('div.clear')){
+                submit.unwrap();
+            }
+
+            newButton.insertBefore(submit);
+            submit.remove();
+        });
+
+        form.find('input').each(function(){
+            var input = $(this);
+            if(input.hasClass('required')){
+                input.removeClass('required').addClass('validate-required');
+            }
+        });
+
+        form.find('input[type="email"]').removeClass('email').addClass('validate-email');
+
+        form.find('#mce-responses').remove();
+
+        form.find('.mc-field-group').each(function(){
+            $(this).children().first().unwrap();
+        });
+
+        form.find('[required]').attr('required', 'required').addClass('validate-required');
+
+        form.addClass('form--active');
+
+        mr.newsletters.prepareAjaxAction(form);
+
+    });
+
+	// Reinitialize the forms so interactions work as they should
+
+	mr.forms.documentReady(mr.setContext('form.form--active'));
+
+  };
+
+  mr.newsletters.prepareAjaxAction = function(form){
+        var action = $(form).attr('action');
+
+        // Alter action for a Mail Chimp-compatible ajax request url.
+        if(/list-manage\.com/.test(action)){
+           action = action.replace('/post?', '/post-json?') + "&c=?";
+           if(action.substr(0,2) === "//"){
+               action = 'http:' + action;
+           }
+        }
+
+        // Alter action for a Campaign Monitor-compatible ajax request url.
+        if(/createsend\.com/.test(action)){
+           action = action + '?callback=?';
+        }
+
+        // Set action on the form
+        $(form).attr('action', action);
+
+    };
+
+
+
+  mr.components.documentReady.push(mr.newsletters.documentReady);
+  return mr;
+
+}(mr, jQuery, window, document));
+
 //////////////// Notifications
-mr=function(r,o,t,s){"use strict";return r.notifications=r.notifications||{},r.notifications.documentReady=function(a){a(".notification").each(function(){var t=a(this);t.find(".notification-close").length||t.append('<div class="notification-close-cross notification-close"></div>')}),a(".notification[data-autoshow]").each(function(){var t=a(this),e=parseInt(t.attr("data-autoshow"),10);
-// If this notification has a cookie attribute, check to see if a cookie is set, and if so, don't show it.
-void 0!==t.attr("data-cookie")&&r.cookies.hasItem(t.attr("data-cookie"))||r.notifications.showNotification(t,e)}),a("[data-notification-link]:not(.notification)").on("click",function(){var t=jQuery(this).attr("data-notification-link"),e=a('.notification[data-notification-link="'+t+'"]');return jQuery(".notification--reveal").addClass("notification--dismissed"),e.removeClass("notification--dismissed"),r.notifications.showNotification(e,0),!1}),a(".notification-close").on("click",function(){var t=jQuery(this);
-// Pass the closeNotification function a reference to the close button
-if(r.notifications.closeNotification(t),"#"===t.attr("href"))return!1}),a(".notification .").on("click",function(){var t=jQuery(this).closest(".notification").attr("data-notification-link");r.notifications.closeNotification(t)})},r.notifications.showNotification=function(t,e){var a=jQuery(t),o=void 0!==e?1*e:0,i=s.createEvent("Event");
-// If notification has autohide attribute, set a timeout
-// for the autohide time plus the original delay time in case notification was called
-// on page load
-if(setTimeout(function(){i.initEvent("notificationOpened.notifications.mr",!0,!0),a.addClass("notification--reveal").trigger("notificationOpened.notifications.mr").get(0).dispatchEvent(i),a.closest("nav").addClass("notification--reveal"),a.find("input").length&&a.find("input").first().focus()},o),t.is("[data-autohide]")){var n=parseInt(t.attr("data-autohide"),10);setTimeout(function(){r.notifications.closeNotification(t)},n+o)}},r.notifications.closeNotification=function(t){var e=jQuery(t),a=s.createEvent("Event");t=e.is(".notification")?e:e.is(".notification-close")?e.closest(".notification"):o('.notification[data-notification-link="'+t+'"]'),a.initEvent("notificationClosed.notifications.mr",!0,!0),t.addClass("notification--dismissed").trigger("notificationClosed.notifications.mr").get(0).dispatchEvent(a),t.closest("nav").removeClass("notification--reveal"),
-// If this notification requires to be closed permanently using a cookie, set the cookie now.
-void 0!==t.attr("data-cookie")&&r.cookies.setItem(t.attr("data-cookie"),"true",1/0,"/")},r.components.documentReady.push(r.notifications.documentReady),r}(mr,jQuery,window,document),
+mr = (function (mr, $, window, document){
+    "use strict";
+
+    mr.notifications = mr.notifications || {};
+
+    mr.notifications.documentReady = function($){
+
+        $('.notification').each(function(){
+            var notification = $(this);
+            if(!notification.find('.notification-close').length){
+                notification.append('<div class="notification-close-cross notification-close"></div>');
+            }
+        });
+
+
+        $('.notification[data-autoshow]').each(function(){
+            var notification = $(this);
+            var millisecondsDelay = parseInt(notification.attr('data-autoshow'),10);
+
+            // If this notification has a cookie attribute, check to see if a cookie is set, and if so, don't show it.
+            if(typeof notification.attr('data-cookie') !== typeof undefined){
+                if(!mr.cookies.hasItem(notification.attr('data-cookie'))){
+                    mr.notifications.showNotification(notification, millisecondsDelay);
+                }
+            }else{
+                mr.notifications.showNotification(notification, millisecondsDelay);
+            }
+        });
+
+        $('[data-notification-link]:not(.notification)').on('click', function(){
+            var notificationID = jQuery(this).attr('data-notification-link');
+            var notification = $('.notification[data-notification-link="'+notificationID+'"]');
+            jQuery('.notification--reveal').addClass('notification--dismissed');
+            notification.removeClass('notification--dismissed');
+            mr.notifications.showNotification(notification, 0);
+            return false;
+        });
+
+        $('.notification-close').on('click', function(){
+            var closeButton = jQuery(this);
+            // Pass the closeNotification function a reference to the close button
+            mr.notifications.closeNotification(closeButton);
+
+            if(closeButton.attr('href') === '#'){
+                return false;
+            }
+        });
+
+        $('.notification .inner-link').on('click', function(){
+            var notificationLink = jQuery(this).closest('.notification').attr('data-notification-link');
+            mr.notifications.closeNotification(notificationLink);
+        });
+
+    };
+
+
+    mr.notifications.showNotification = function(notification, millisecondsDelay){
+        var $notification = jQuery(notification),
+            delay         = (typeof millisecondsDelay !== typeof undefined) ? (1*millisecondsDelay) : 0,
+            openEvent     = document.createEvent('Event');
+
+        setTimeout(function(){
+            openEvent.initEvent('notificationOpened.notifications.mr', true, true);
+            $notification.addClass('notification--reveal').trigger('notificationOpened.notifications.mr').get(0).dispatchEvent(openEvent);
+            $notification.closest('nav').addClass('notification--reveal');
+            if($notification.find('input').length){
+                $notification.find('input').first().focus();
+            }
+
+
+
+        },delay);
+        // If notification has autohide attribute, set a timeout
+        // for the autohide time plus the original delay time in case notification was called
+        // on page load
+        if(notification.is('[data-autohide]')){
+            var hideDelay = parseInt(notification.attr('data-autohide'),10);
+            setTimeout(function(){
+                mr.notifications.closeNotification(notification);
+            },hideDelay+delay);
+        }
+    };
+
+    mr.notifications.closeNotification = function(notification){
+        var $notification = jQuery(notification),
+            closeEvent    = document.createEvent('Event');
+        notification = $notification.is('.notification') ?
+                       $notification :
+                       $notification.is('.notification-close') ?
+                       $notification.closest('.notification') :
+                       $('.notification[data-notification-link="'+notification+'"]');
+
+        closeEvent.initEvent('notificationClosed.notifications.mr', true, true);
+        notification.addClass('notification--dismissed').trigger('notificationClosed.notifications.mr').get(0).dispatchEvent(closeEvent);
+        notification.closest('nav').removeClass('notification--reveal');
+
+        // If this notification requires to be closed permanently using a cookie, set the cookie now.
+        if(typeof notification.attr('data-cookie') !== typeof undefined){
+            mr.cookies.setItem(notification.attr('data-cookie'), "true", Infinity, '/');
+        }
+    };
+
+    mr.components.documentReady.push(mr.notifications.documentReady);
+    return mr;
+
+}(mr, jQuery, window, document));
+
 //////////////// Parallax
-mr=function(t,e,s,a){"use strict";return t.parallax=t.parallax||{},t.parallax.documentReady=function(t){var e=t(s),a=e.width(),o=e.height(),i=t("nav").outerHeight(!0);if(768<a){var n=t(".parallax:nth-of-type(1)"),r=t(".parallax:nth-of-type(1) .background-image-holder");r.css("top",-i),n.outerHeight(!0)===o&&r.css("height",o+i)}},t.parallax.update=function(){"undefined"!=typeof mr_parallax&&(mr_parallax.profileParallaxElements(),mr_parallax.mr_parallaxBackground())},t.components.documentReady.push(t.parallax.documentReady),t}(mr,jQuery,window,document),
+mr = (function (mr, $, window, document){
+    "use strict";
+
+    mr.parallax = mr.parallax || {};
+
+    mr.parallax.documentReady = function($){
+
+        var $window      = $(window);
+        var windowWidth  = $window.width();
+        var windowHeight = $window.height();
+        var navHeight    = $('nav').outerHeight(true);
+
+        if (windowWidth > 768) {
+            var parallaxHero = $('.parallax:nth-of-type(1)'),
+                parallaxHeroImage = $('.parallax:nth-of-type(1) .background-image-holder');
+
+            parallaxHeroImage.css('top', -(navHeight));
+            if(parallaxHero.outerHeight(true) === windowHeight){
+                parallaxHeroImage.css('height', windowHeight + navHeight);
+            }
+        }
+    };
+
+    mr.parallax.update = function(){
+        if(typeof mr_parallax !== typeof undefined){
+            mr_parallax.profileParallaxElements();
+            mr_parallax.mr_parallaxBackground();
+        }
+    };
+
+    mr.components.documentReady.push(mr.parallax.documentReady);
+    return mr;
+
+}(mr, jQuery, window, document));
+
 //////////////// Progress Horizontal (bars)
-mr=function(t,e,a,o){"use strict";return t.progressHorizontal=t.progressHorizontal||{},t.progressHorizontal.documentReady=function(t){var o=[];t(".progress-horizontal").each(function(){var t=jQuery(this).find(".progress-horizontal__bar"),e={},a=jQuery('<div class="progress-horizontal__progress"></div>');t.prepend(a),e.element=t,e.progress=a,e.value=parseInt(t.attr("data-value"),10)+"%",e.offsetTop=t.offset().top,e.animate=!1,jQuery(this).hasClass("progress-horizontal--animate")?e.animate=!0:a.css("width",e.value),o.push(e)})},t.components.documentReady.push(t.progressHorizontal.documentReady),t}(mr,jQuery,window,document),
+mr = (function (mr, $, window, document){
+    "use strict";
+
+    mr.progressHorizontal = mr.progressHorizontal || {};
+
+    mr.progressHorizontal.documentReady = function($){
+
+        var progressBars = [];
+
+        $('.progress-horizontal').each(function(){
+            var bar       = jQuery(this).find('.progress-horizontal__bar'),
+                barObject = {},
+                progress  = jQuery('<div class="progress-horizontal__progress"></div>');
+
+                bar.prepend(progress);
+
+                barObject.element = bar;
+                barObject.progress = progress;
+                barObject.value = parseInt(bar.attr('data-value'),10)+"%";
+                barObject.offsetTop = bar.offset().top;
+                barObject.animate = false;
+
+                if(jQuery(this).hasClass('progress-horizontal--animate')){
+                    barObject.animate = true;
+                }else{
+                    progress.css('width',barObject.value);
+                }
+                progressBars.push(barObject);
+        });
+    };
+
+    mr.components.documentReady.push(mr.progressHorizontal.documentReady);
+    return mr;
+
+}(mr, jQuery, window, document));
+
 //////////////// EasyPiecharts
-mr=function(c,t,e,a){"use strict";return c.easypiecharts=c.easypiecharts||{},c.easypiecharts.pies=[],c.easypiecharts.options=c.easypiecharts.options||{},c.easypiecharts.documentReady=function(t){t(".radial").each(function(){var t=jQuery(this),e=0,a,o,i=110,n=3,r={},s={},d;r={animate:{duration:2e3,enabled:!0},barColor:"#000000",scaleColor:!1,size:i,lineWidth:3},void 0!==c.easypiecharts.options.size&&(i=c.easypiecharts.options.size),void 0!==t.attr("data-timing")&&(s.animate={duration:parseInt(t.attr("data-timing"),10),enabled:!0}),void 0!==t.attr("data-color")&&(s.barColor=t.attr("data-color")),void 0!==t.attr("data-size")&&(i=s.size=parseInt(t.attr("data-size"),10)),void 0!==t.attr("data-bar-width")&&(s.lineWidth=parseInt(t.attr("data-bar-width"),10)),t.css("height",i).css("width",i),"object"==typeof c.easypiecharts.options&&(d=jQuery.extend({},r,c.easypiecharts.options,s)),t.easyPieChart(d),t.data("easyPieChart").update(0)}),t(".radial").length&&(c.easypiecharts.init(),c.easypiecharts.activate(),c.scroll.listeners.push(c.easypiecharts.activate))},c.easypiecharts.init=function(){c.easypiecharts.pies=[],t(".radial").each(function(){var t={},e=jQuery(this);t.element=e,t.value=parseInt(e.attr("data-value"),10),t.top=e.offset().top,t.height=e.height()/2,t.active=!1,c.easypiecharts.pies.push(t)})},c.easypiecharts.activate=function(){c.easypiecharts.pies.forEach(function(t){Math.round(c.scroll.y+c.window.height)>=Math.round(t.top+t.height)&&!1===t.active&&(t.element.data("easyPieChart").enableAnimation(),t.element.data("easyPieChart").update(t.value),t.element.addClass("radial--active"),t.active=!0)})},c.components.documentReadyDeferred.push(c.easypiecharts.documentReady),c}(mr,jQuery,window,document),
+mr = (function (mr, $, window, document){
+	  "use strict";
+
+		mr.easypiecharts = mr.easypiecharts || {};
+		mr.easypiecharts.pies = [];
+		mr.easypiecharts.options = mr.easypiecharts.options || {};
+
+		mr.easypiecharts.documentReady = function($){
+
+		  	$('.radial').each(function(){
+		  		var chart              = jQuery(this),
+		  			  value              = 0,
+		  			  color              = '#000000',
+		  			  time               = 2000,
+		  			  pieSize            = 110,
+		  			  barWidth           = 3,
+		  			  defaults           = {},
+		  			  attributeOverrides = {},
+		  			  options;
+
+		  		defaults = {
+		  			animate: ({duration: time, enabled: true}),
+		  			barColor: color,
+		  			scaleColor: false,
+		  			size: pieSize,
+		  			lineWidth: barWidth
+		  		};
+
+		  		if(typeof mr.easypiecharts.options.size !== typeof undefined){
+            pieSize = mr.easypiecharts.options.size;
+		  		}
+		  		if(typeof chart.attr('data-timing') !== typeof undefined){
+		  			attributeOverrides.animate = {duration: parseInt(chart.attr('data-timing'), 10), enabled: true};
+		  		}
+		  		if(typeof chart.attr('data-color') !== typeof undefined){
+		  			attributeOverrides.barColor = chart.attr('data-color');
+		  		}
+		  		if(typeof chart.attr('data-size') !== typeof undefined){
+		  			pieSize = attributeOverrides.size = parseInt(chart.attr('data-size'), 10);
+		  		}
+		  		if(typeof chart.attr('data-bar-width') !== typeof undefined){
+		  			attributeOverrides.lineWidth = parseInt(chart.attr('data-bar-width'), 10);
+		  		}
+
+		  		chart.css('height',pieSize).css('width',pieSize);
+
+
+
+		  		if(typeof mr.easypiecharts.options === 'object'){
+            options = jQuery.extend({}, defaults, mr.easypiecharts.options, attributeOverrides);
+		  		}
+
+		  		chart.easyPieChart(options);
+		  		chart.data('easyPieChart').update(0);
+		  	});
+
+		  	if($('.radial').length){
+		  		mr.easypiecharts.init();
+		  		mr.easypiecharts.activate();
+		  		mr.scroll.listeners.push(mr.easypiecharts.activate);
+		  	}
+
+	  };
+
+	  mr.easypiecharts.init = function(){
+
+			mr.easypiecharts.pies = [];
+
+			$('.radial').each(function(){
+			  var pieObject  = {},
+				  currentPie = jQuery(this);
+
+				  pieObject.element = currentPie;
+				  pieObject.value = parseInt(currentPie.attr('data-value'),10);
+				  pieObject.top = currentPie.offset().top;
+				  pieObject.height = currentPie.height()/2;
+				  pieObject.active = false;
+				  mr.easypiecharts.pies.push(pieObject);
+			});
+		};
+
+		mr.easypiecharts.activate = function(){
+			mr.easypiecharts.pies.forEach(function(pie){
+				if(Math.round((mr.scroll.y + mr.window.height)) >= Math.round(pie.top+pie.height)){
+					if(pie.active === false){
+
+	                	pie.element.data('easyPieChart').enableAnimation();
+	                	pie.element.data('easyPieChart').update(pie.value);
+	                	pie.element.addClass('radial--active');
+	                	pie.active = true;
+					}
+	            }
+        	});
+		};
+
+	  mr.components.documentReadyDeferred.push(mr.easypiecharts.documentReady);
+	  return mr;
+
+}(mr, jQuery, window, document));
+
 //////////////// Flickity
-mr=function(s,t,e,a){"use strict";return s.sliders=s.sliders||{},s.sliders.documentReady=function(r){r(".slider").each(function(t){var a=r(this),e=a.find("ul.slides");e.find(">li").addClass("slide");var o=e.find("li").length,i={cellSelector:".slide",cellAlign:"left",wrapAround:!0,pageDots:!1,prevNextButtons:!1,autoPlay:!0,draggable:!(o<2),imagesLoaded:!0,accessibility:!0,rightToLeft:!1,initialIndex:0,freeScroll:!1},n={};n.pageDots="true"===a.attr("data-paging")&&1<e.find("li").length||void 0,n.prevNextButtons="true"===a.attr("data-arrows")||void 0,n.draggable="false"!==a.attr("data-draggable")&&void 0,n.autoPlay="false"!==a.attr("data-autoplay")&&(a.attr("data-timing")?parseInt(a.attr("data-timing"),10):void 0),n.accessibility="false"!==a.attr("data-accessibility")&&void 0,n.rightToLeft="true"===a.attr("data-rtl")||void 0,n.initialIndex=a.attr("data-initial")?parseInt(a.attr("data-initial"),10):void 0,n.freeScroll="true"===a.attr("data-freescroll")||void 0,
-// Set data attribute to inidicate the number of children in the slider
-a.attr("data-children",o),r(this).data("sliderOptions",jQuery.extend({},i,s.sliders.options,n)),r(e).flickity(r(this).data("sliderOptions")),r(e).on("scroll.flickity",function(t,e){a.find(".is-selected").hasClass("controls--dark")?a.addClass("controls--dark"):a.removeClass("controls--dark")})}),s.parallax.update&&s.parallax.update()},s.components.documentReadyDeferred.push(s.sliders.documentReady),s}(mr,jQuery,window,document),
+mr = (function (mr, $, window, document){
+    "use strict";
+
+    mr.sliders = mr.sliders || {};
+
+    mr.sliders.documentReady = function($){
+
+        $('.slider').each(function(index){
+
+            var slider = $(this);
+            var sliderInitializer = slider.find('ul.slides');
+            sliderInitializer.find('>li').addClass('slide');
+            var childnum = sliderInitializer.find('li').length;
+
+            var themeDefaults = {
+                cellSelector: '.slide',
+                cellAlign: 'left',
+                wrapAround: true,
+                pageDots: false,
+                prevNextButtons: false,
+                autoPlay: true,
+                draggable: (childnum < 2 ? false: true),
+                imagesLoaded: true,
+                accessibility: true,
+                rightToLeft: false,
+                initialIndex: 0,
+                freeScroll: false
+            };
+
+            // Attribute Overrides - options that are overridden by data attributes on the slider element
+            var ao = {};
+            ao.pageDots = (slider.attr('data-paging') === 'true' && sliderInitializer.find('li').length > 1) ? true : undefined;
+            ao.prevNextButtons = slider.attr('data-arrows') === 'true'? true: undefined;
+            ao.draggable = slider.attr('data-draggable') === 'false'? false : undefined;
+            ao.autoPlay = slider.attr('data-autoplay') === 'false'? false: (slider.attr('data-timing') ? parseInt(slider.attr('data-timing'), 10): undefined);
+            ao.accessibility = slider.attr('data-accessibility') === 'false'? false : undefined;
+            ao.rightToLeft = slider.attr('data-rtl') === 'true'? true : undefined;
+            ao.initialIndex = slider.attr('data-initial') ? parseInt(slider.attr('data-initial'), 10) : undefined;
+            ao.freeScroll = slider.attr('data-freescroll') === "true" ? true: undefined;
+
+            // Set data attribute to inidicate the number of children in the slider
+            slider.attr('data-children',childnum);
+
+
+            $(this).data('sliderOptions', jQuery.extend({}, themeDefaults, mr.sliders.options, ao));
+
+            $(sliderInitializer).flickity($(this).data('sliderOptions'));
+
+            $(sliderInitializer).on( 'scroll.flickity', function( event, progress ) {
+              if(slider.find('.is-selected').hasClass('controls--dark')){
+                slider.addClass('controls--dark');
+              }else{
+                slider.removeClass('controls--dark');
+              }
+            });
+        });
+
+        if(mr.parallax.update){ mr.parallax.update(); }
+
+    };
+
+    mr.components.documentReadyDeferred.push(mr.sliders.documentReady);
+    return mr;
+
+}(mr, jQuery, window, document));
+
 //////////////// Smoothscroll
-mr=function(n,i,r,t){"use strict";return n.smoothscroll=n.smoothscroll||{},n.smoothscroll.sections=[],n.smoothscroll.init=function(){n.smoothscroll.sections=[],i("a.").each(function(){var t={},e=i(this),a=e.attr("href"),o;new RegExp("^#[^\r\n\t\f\v#.]+$","gm").test(a)&&i("section"+a).length&&(t.id=a,t.top=Math.round(i(a).offset().top),t.height=Math.round(i(a).outerHeight()),t.link=e.get(0),t.active=!1,n.smoothscroll.sections.push(t))}),n.smoothscroll.highlight()},n.smoothscroll.highlight=function(){n.smoothscroll.sections.forEach(function(t){n.scroll.y>=t.top&&n.scroll.y<t.top+t.height?!1===t.active&&(t.link.classList.add("--active"),t.active=!0):(t.link.classList.remove("--active"),t.active=!1)})},n.scroll.listeners.push(n.smoothscroll.highlight),n.smoothscroll.documentReady=function(o){
-// Smooth scroll to inner links
-var t=o("a."),e,a,i={};a={selector:".",selectorHeader:null,speed:750,easing:"easeInOutCubic",offset:0},t.length&&(t.each(function(t){var e=o(this),a;"#"!==e.attr("href").charAt(0)&&e.removeClass("")}),n.smoothscroll.init(),o(r).on("resize",n.smoothscroll.init),e=0,o("body[data-smooth-scroll-offset]").length&&(e=o("body").attr("data-smooth-scroll-offset"),e*=1),i.offset=0!==e?e:void 0,smoothScroll.init(jQuery.extend({},a,n.smoothscroll.options,i)))},n.components.documentReady.push(n.smoothscroll.documentReady),n.components.windowLoad.push(n.smoothscroll.init),n}(mr,jQuery,window,document),
+mr = (function (mr, $, window, document){
+    "use strict";
+
+    mr.smoothscroll = mr.smoothscroll || {};
+    mr.smoothscroll.sections = [];
+
+    mr.smoothscroll.init = function(){
+        mr.smoothscroll.sections = [];
+
+
+
+        $('a.inner-link').each(function(){
+            var sectionObject = {},
+                link          = $(this),
+                href          = link.attr('href'),
+                validLink     = new RegExp('^#[^\r\n\t\f\v\#\.]+$','gm');
+
+            if(validLink.test(href)){
+
+                if($('section'+href).length){
+
+                    sectionObject.id     = href;
+                    sectionObject.top = Math.round($(href).offset().top);
+                    sectionObject.height = Math.round($(href).outerHeight());
+                    sectionObject.link   = link.get(0);
+                    sectionObject.active = false;
+
+                    mr.smoothscroll.sections.push(sectionObject);
+                }
+            }
+        });
+
+        mr.smoothscroll.highlight();
+    };
+
+    mr.smoothscroll.highlight = function(){
+        mr.smoothscroll.sections.forEach(function(section){
+            if(mr.scroll.y >= section.top && mr.scroll.y < (section.top + section.height)){
+                if(section.active === false){
+                    section.link.classList.add("inner-link--active");
+                    section.active = true;
+                }
+            }else{
+                section.link.classList.remove("inner-link--active");
+                section.active = false;
+            }
+        });
+    };
+
+    mr.scroll.listeners.push(mr.smoothscroll.highlight);
+
+    mr.smoothscroll.documentReady = function($){
+        // Smooth scroll to inner links
+        var innerLinks = $('a.inner-link'), offset, themeDefaults, ao = {};
+
+        themeDefaults = {
+            selector: '.inner-link',
+            selectorHeader: null,
+            speed: 750,
+            easing: 'easeInOutCubic',
+            offset: 0
+        };
+
+        if(innerLinks.length){
+            innerLinks.each(function(index){
+                var link          = $(this),
+                    href          = link.attr('href');
+                if(href.charAt(0) !== "#"){
+                    link.removeClass('inner-link');
+                }
+            });
+
+            mr.smoothscroll.init();
+            $(window).on('resize', mr.smoothscroll.init);
+
+            offset = 0;
+            if($('body[data-smooth-scroll-offset]').length){
+                offset = $('body').attr('data-smooth-scroll-offset');
+                offset = offset*1;
+            }
+
+            ao.offset = offset !== 0 ? offset: undefined;
+
+            smoothScroll.init(jQuery.extend({}, themeDefaults, mr.smoothscroll.options, ao));
+        }
+    };
+
+    mr.components.documentReady.push(mr.smoothscroll.documentReady);
+    mr.components.windowLoad.push(mr.smoothscroll.init);
+    return mr;
+
+}(mr, jQuery, window, document));
+
 //////////////// Tabs
-mr=function(a,d,t,c){"use strict";return a.tabs=a.tabs||{},a.tabs.documentReady=function(o){o(".tabs").each(function(){var t=o(this);t.after('<ul class="tabs-content">'),t.find("li").each(function(){var t=o(this),e=t.find(".tab__content").wrap("<li></li>").parent(),a=e.clone(!0,!0);e.remove(),t.closest(".tabs-container").find(".tabs-content").append(a)})}),o(".tabs > li").on("click",function(){var t=o(this),e;a.tabs.activateTab(t),
-// Update the URL bar if the currently clicked tab has an ID
-t.is("[id]")&&(
-// Create the hash from the tab's ID
-e="#"+t.attr("id"),
-// Check we are in a newish browser with the history API
-history.pushState?history.pushState(null,null,e):location.hash=e)}),o(".tabs li.active").each(function(){a.tabs.activateTab(this)}),""!==t.location.hash&&a.tabs.activateTabById(t.location.hash),o('a[href^="#"]').on("click",function(){a.tabs.activateTabById(o(this).attr("href"))})},a.tabs.activateTab=function(t){var e=d(t),a=e.closest(".tabs-container"),o=1*e.index()+1,i=a.find("> .tabs-content > li:nth-of-type("+o+")"),n=c.createEvent("Event"),r,s;n.initEvent("tabOpened.tabs.mr",!0,!0),a.find("> .tabs > li").removeClass("active"),a.find("> .tabs-content > li").removeClass("active"),e.addClass("active").trigger("tabOpened.tabs.mr").get(0).dispatchEvent(n),i.addClass("active"),(
-// If there is an <iframe> element in the tab, reload its content when the tab is made active.
-r=i.find("iframe")).length&&r.attr("src",r.attr("src"))},a.tabs.activateTabById=function(t){""!==t&&"#"!==t&&d(".tabs > li#"+t.replace("#","")).length&&d(".tabs > li#"+t.replace("#","")).click()},a.components.documentReady.push(a.tabs.documentReady),a}(mr,jQuery,window,document),
+mr = (function (mr, $, window, document){
+    "use strict";
+
+    mr.tabs = mr.tabs || {};
+
+    mr.tabs.documentReady = function($){
+        $('.tabs').each(function(){
+            var tabs = $(this);
+            tabs.after('<ul class="tabs-content">');
+            tabs.find('li').each(function(){
+                var currentTab      = $(this),
+                    tabContent      = currentTab.find('.tab__content').wrap('<li></li>').parent(),
+                    tabContentClone = tabContent.clone(true,true);
+                tabContent.remove();
+                currentTab.closest('.tabs-container').find('.tabs-content').append(tabContentClone);
+            });
+        });
+
+        $('.tabs > li').on('click', function(){
+            var clickedTab = $(this), hash;
+            mr.tabs.activateTab(clickedTab);
+
+            // Update the URL bar if the currently clicked tab has an ID
+            if(clickedTab.is('[id]')){
+                // Create the hash from the tab's ID
+                hash = '#'+ clickedTab.attr('id');
+                // Check we are in a newish browser with the history API
+                if(history.pushState) {
+                    history.pushState(null, null, hash);
+                }
+                else {
+                    location.hash = hash;
+                }
+            }
+        });
+
+        $('.tabs li.active').each(function(){
+            mr.tabs.activateTab(this);
+        });
+
+        if(window.location.hash !== ''){
+            mr.tabs.activateTabById(window.location.hash);
+        }
+
+        $('a[href^="#"]').on('click', function(){
+            mr.tabs.activateTabById($(this).attr('href'));
+        });
+
+    };
+
+    mr.tabs.activateTab = function(tab){
+        var clickedTab    = $(tab),
+            tabContainer  = clickedTab.closest('.tabs-container'),
+            activeIndex   = (clickedTab.index()*1)+(1),
+            activeContent = tabContainer.find('> .tabs-content > li:nth-of-type('+activeIndex+')'),
+            openEvent     = document.createEvent('Event'),
+            iframe, radial;
+
+            openEvent.initEvent('tabOpened.tabs.mr', true, true);
+
+
+        tabContainer.find('> .tabs > li').removeClass('active');
+        tabContainer.find('> .tabs-content > li').removeClass('active');
+
+        clickedTab.addClass('active').trigger('tabOpened.tabs.mr').get(0).dispatchEvent(openEvent);
+        activeContent.addClass('active');
+
+
+
+        // If there is an <iframe> element in the tab, reload its content when the tab is made active.
+        iframe = activeContent.find('iframe');
+        if(iframe.length){
+            iframe.attr('src', iframe.attr('src'));
+        }
+    };
+
+
+
+    mr.tabs.activateTabById = function(id){
+        if(id !== '' && id !== '#'){
+            if($('.tabs > li#'+id.replace('#', '')).length){
+                $('.tabs > li#'+id.replace('#', '')).click();
+            }
+        }
+    };
+
+    mr.components.documentReady.push(mr.tabs.documentReady);
+    return mr;
+
+}(mr, jQuery, window, document));
+
 //////////////// Toggle Class
-mr=function(t,e,a,o){"use strict";return t.toggleClass=t.toggleClass||{},t.toggleClass.documentReady=function(n){n("[data-toggle-class]").each(function(){var i=n(this),t=i.attr("data-toggle-class").split("|");n(t).each(function(){var t=i,e=[],a="",o="",e;2===(e=this.split(";")).length?(o=e[0],a=e[1],n(t).on("click",function(){return t.hasClass("toggled-class")?t.removeClass("toggled-class"):t.toggleClass("toggled-class"),n(o).toggleClass(a),!1})):console.log('Error in [data-toggle-class] attribute. This attribute accepts an element, or comma separated elements terminated witha ";" followed by a class name to toggle')})})},t.components.documentReady.push(t.toggleClass.documentReady),t}(mr,jQuery,window,document),
+mr = (function (mr, $, window, document){
+    "use strict";
+
+    mr.toggleClass = mr.toggleClass || {};
+
+    mr.toggleClass.documentReady = function($){
+        $('[data-toggle-class]').each(function(){
+        	var element = $(this),
+                data    = element.attr('data-toggle-class').split("|");
+
+
+            $(data).each(function(){
+                var candidate     = element,
+                    dataArray     = [],
+            	    toggleClass   = '',
+            	    toggleElement = '',
+                    dataArray = this.split(";");
+
+            	if(dataArray.length === 2){
+            		toggleElement = dataArray[0];
+            		toggleClass   = dataArray[1];
+            		$(candidate).on('click',function(){
+                        if(!candidate.hasClass('toggled-class')){
+                            candidate.toggleClass('toggled-class');
+                        }else{
+                            candidate.removeClass('toggled-class');
+                        }
+            			$(toggleElement).toggleClass(toggleClass);
+            			return false;
+            		});
+            	}else{
+            		console.log('Error in [data-toggle-class] attribute. This attribute accepts an element, or comma separated elements terminated witha ";" followed by a class name to toggle');
+            	}
+            });
+        });
+    };
+
+    mr.components.documentReady.push(mr.toggleClass.documentReady);
+    return mr;
+
+}(mr, jQuery, window, document));
+
 //////////////// Typed Headline Effect
-mr=function(n,t,e,a){"use strict";return n.typed=n.typed||{},n.typed.documentReady=function(i){i(".typed-text").each(function(){var t=i(this),e=t.attr("data-typed-strings")?t.attr("data-typed-strings").split(","):[],a={strings:[],typeSpeed:100,loop:!0,showCursor:!1},o={};o.strings=t.attr("data-typed-strings")?t.attr("data-typed-strings").split(","):void 0,i(t).typed(jQuery.extend({},a,n.typed.options,o))})},n.components.documentReady.push(n.typed.documentReady),n}(mr,jQuery,window,document),
+mr = (function (mr, $, window, document){
+    "use strict";
+
+    mr.typed = mr.typed || {};
+
+
+    mr.typed.documentReady = function($){
+        $('.typed-text').each(function(){
+            var text = $(this);
+            var strings = text.attr("data-typed-strings") ? text.attr("data-typed-strings").split(",") : [],
+                themeDefaults = {
+                    strings: [],
+                    typeSpeed: 100,
+                    loop: true,
+                    showCursor: false
+                }, ao = {};
+
+            ao.strings = text.attr("data-typed-strings") ? text.attr("data-typed-strings").split(",") : undefined;
+
+            $(text).typed(jQuery.extend({}, themeDefaults, mr.typed.options, ao));
+
+        });
+    };
+
+    mr.components.documentReady.push(mr.typed.documentReady);
+    return mr;
+
+}(mr, jQuery, window, document));
+
 //////////////// Twitter Feeds
-mr=function(n,t,e,a){"use strict";return n.twitter=n.twitter||{},n.twitter.options=n.twitter.options||{},n.twitter.documentReady=function(o){o(".tweets-feed").each(function(t){o(this).attr("id","tweets-"+t)}).each(function(t){function e(t){for(var e=t.length,a=0,o='<ul class="slides">';a<e;)o+="<li>"+t[a]+"</li>",a++;
-// Initialize twitter feed slider
-if(o+="</ul>",i.html(o),i.closest(".slider").length)return n.sliders.documentReady(n.setContext()),o}var i=o("#tweets-"+t),a={domId:"",maxTweets:6,enableLinks:!0,showUser:!0,showTime:!0,dateFunction:"",showRetweet:!1,customCallback:e};a=jQuery.extend(a,n.twitter.options),void 0!==i.attr("data-widget-id")?a.id=i.attr("data-widget-id"):void 0!==i.attr("data-feed-name")&&""!==i.attr("data-feed-name")?a.profile={screenName:i.attr("data-feed-name").replace("@","")}:void 0!==n.twitter.options.profile?a.profile={screenName:n.twitter.options.profile.replace("@","")}:a.profile={screenName:"twitter"},a.maxTweets=i.attr("data-amount")?i.attr("data-amount"):a.maxTweets,i.closest(".twitter-feed--slider").length&&i.addClass("slider"),twitterFetcher.fetch(a)})},n.components.documentReady.push(n.twitter.documentReady),n}(mr,jQuery,window,document),
+mr = (function (mr, $, window, document){
+    "use strict";
+
+    mr.twitter = mr.twitter || {};
+    mr.twitter.options = mr.twitter.options || {};
+
+    mr.twitter.documentReady = function($){
+        $('.tweets-feed').each(function(index) {
+            $(this).attr('id', 'tweets-' + index);
+        }).each(function(index) {
+            var element = $('#tweets-' + index);
+
+            var TweetConfig = {
+               "domId": '',
+               "maxTweets": 6,
+               "enableLinks": true,
+               "showUser": true,
+               "showTime": true,
+               "dateFunction": '',
+               "showRetweet": false,
+               "customCallback": handleTweets
+            };
+
+            TweetConfig = jQuery.extend(TweetConfig, mr.twitter.options);
+
+
+
+            if(typeof element.attr('data-widget-id') !== typeof undefined){
+                TweetConfig.id = element.attr('data-widget-id');
+            }else if(typeof element.attr('data-feed-name') !== typeof undefined && element.attr('data-feed-name') !== ""){
+                TweetConfig.profile = {"screenName": element.attr('data-feed-name').replace('@', '')};
+            }else if(typeof mr.twitter.options.profile !== typeof undefined){
+                TweetConfig.profile = {"screenName": mr.twitter.options.profile.replace('@', '')};
+            }else{
+                TweetConfig.profile = {"screenName": 'twitter'};
+            }
+
+            TweetConfig.maxTweets = element.attr('data-amount') ? element.attr('data-amount'): TweetConfig.maxTweets;
+
+            if(element.closest('.twitter-feed--slider').length){
+                element.addClass('slider');
+            }
+
+            function handleTweets(tweets) {
+                var x = tweets.length;
+                var n = 0;
+                var html = '<ul class="slides">';
+                while (n < x) {
+                    html += '<li>' + tweets[n] + '</li>';
+                    n++;
+                }
+                html += '</ul>';
+                element.html(html);
+
+                // Initialize twitter feed slider
+                if(element.closest('.slider').length){
+                    mr.sliders.documentReady(mr.setContext());
+
+                    return html;
+                }
+            }
+            twitterFetcher.fetch(TweetConfig);
+        });
+    };
+
+    mr.components.documentReady.push(mr.twitter.documentReady);
+    return mr;
+
+}(mr, jQuery, window, document));
+
 //////////////// Video
-mr=function(o,t,e,a){"use strict";return o.video=o.video||{},o.video.options=o.video.options||{},o.video.options.ytplayer=o.video.options.ytplayer||{},o.video.documentReady=function(i){
-//////////////// Youtube Background
-i(".youtube-background").length&&i(".youtube-background").each(function(){var t=i(this),e={containment:"self",autoPlay:!0,mute:!0,opacity:1},a={};
-// Attribute overrides - provides overrides to the global options on a per-video basis
-a.videoURL=i(this).attr("data-video-url"),a.startAt=i(this).attr("data-start-at")?parseInt(i(this).attr("data-start-at"),10):void 0,t.closest(".videobg").append('<div class="loading-indicator"></div>'),t.YTPlayer(jQuery.extend({},e,o.video.options.ytplayer,a)),t.on("YTPStart",function(){t.closest(".videobg").addClass("video-active")})}),i(".videobg").find("video").length&&i(".videobg").find("video").closest(".videobg").addClass("video-active"),
-//////////////// Video Cover Play Icons
-i(".video-cover").each(function(){var t=i(this);t.find("iframe[src]").length&&(t.find("iframe").attr("data-src",t.find("iframe").attr("src")),t.find("iframe").attr("src",""))}),i(".video-cover .video-play-icon").on("click",function(){var t,e=i(this).closest(".video-cover");if(e.find("video").length){var a=e.find("video").get(0);return e.addClass("reveal-video"),a.play(),!1}if(e.find("iframe").length){var o=e.find("iframe");return o.attr("src",o.attr("data-src")),e.addClass("reveal-video"),!1}})},o.components.documentReady.push(o.video.documentReady),o}(mr,jQuery,window,document),
+mr = (function (mr, $, window, document){
+    "use strict";
+
+    mr.video = mr.video || {};
+    mr.video.options = mr.video.options || {};
+    mr.video.options.ytplayer = mr.video.options.ytplayer || {};
+
+	  mr.video.documentReady = function($){
+
+			//////////////// Youtube Background
+
+			if($('.youtube-background').length){
+				$('.youtube-background').each(function(){
+
+
+					var player = $(this),
+
+					themeDefaults = {
+						containment: "self",
+						autoPlay: true,
+						mute: true,
+						opacity: 1
+					}, ao = {};
+
+          // Attribute overrides - provides overrides to the global options on a per-video basis
+					ao.videoURL = $(this).attr('data-video-url');
+					ao.startAt = $(this).attr('data-start-at')? parseInt($(this).attr('data-start-at'), 10): undefined;
+
+
+					player.closest('.videobg').append('<div class="loading-indicator"></div>');
+					player.YTPlayer(jQuery.extend({}, themeDefaults, mr.video.options.ytplayer, ao));
+					player.on("YTPStart",function(){
+				  		player.closest('.videobg').addClass('video-active');
+					});
+
+				});
+			}
+
+			if($('.videobg').find('video').length){
+				$('.videobg').find('video').closest('.videobg').addClass('video-active');
+			}
+
+			//////////////// Video Cover Play Icons
+
+			$('.video-cover').each(function(){
+			    var videoCover = $(this);
+			    if(videoCover.find('iframe[src]').length){
+			        videoCover.find('iframe').attr('data-src', videoCover.find('iframe').attr('src'));
+			        videoCover.find('iframe').attr('src','');
+			    }
+			});
+
+			$('.video-cover .video-play-icon').on("click", function(){
+			    var playIcon = $(this);
+			    var videoCover = playIcon.closest('.video-cover');
+			    if(videoCover.find('video').length){
+			        var video = videoCover.find('video').get(0);
+			        videoCover.addClass('reveal-video');
+			        video.play();
+			        return false;
+			    }else if(videoCover.find('iframe').length){
+			        var iframe = videoCover.find('iframe');
+			        iframe.attr('src',iframe.attr('data-src'));
+			        videoCover.addClass('reveal-video');
+			        return false;
+			    }
+			});
+	  };
+
+	  mr.components.documentReady.push(mr.video.documentReady);
+	  return mr;
+
+}(mr, jQuery, window, document));
+
 //////////////// Wizard
-mr=function(a,t,e,o){"use strict";return a.wizard=a.wizard||{},a.wizard.documentReady=function(t){t(".wizard").each(function(){var t=jQuery(this),e={};e={headerTag:"h5",bodyTag:"section",transitionEffect:"slideLeft",autoFocus:!0},t.is('[role="application"][id^="steps-uid"]')||(t.steps(jQuery.extend({},e,a.wizard.options)),t.addClass("active"))})},a.components.documentReady.push(a.wizard.documentReady),a}(mr,jQuery,window,document);
+mr = (function (mr, $, window, document){
+    "use strict";
+
+    mr.wizard = mr.wizard || {};
+
+	  mr.wizard.documentReady = function($){
+
+			$('.wizard').each(function(){
+				var wizard = jQuery(this), themeDefaults = {};
+
+        themeDefaults = {
+					headerTag: "h5",
+				  bodyTag: "section",
+					transitionEffect: "slideLeft",
+					autoFocus: true
+				}
+
+
+				if(!wizard.is('[role="application"][id^="steps-uid"]')){
+						wizard.steps(jQuery.extend({}, themeDefaults, mr.wizard.options));
+
+		   	    wizard.addClass('active');
+		    }
+
+		  });
+		};
+
+	  mr.components.documentReady.push(mr.wizard.documentReady);
+	  return mr;
+
+}(mr, jQuery, window, document));
