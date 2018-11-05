@@ -84,11 +84,11 @@ var js = {};
                     i = t !== this.direction,
                     s = e - this.y,
                     o = this.$sub_header.outerHeight();
-                clearTimeout(this.t), e < 70 && this.$header.removeClass("-white"), i && (0 == this.opacity && "up" == t ? (this.show = e, e < o ? this.show = 0 : this.show -= 70) : 1 == this.opacity && "down" == t && (this.show = e), this.show = Math.max(0, this.show)), this.$header.hasClass("-open") && (this.show = e), this.hover && (this.show = e);
+                clearTimeout(this.t), e < 70 && this.$header.removeClass(""), i && (0 == this.opacity && "up" == t ? (this.show = e, e < o ? this.show = 0 : this.show -= 70) : 1 == this.opacity && "down" == t && (this.show = e), this.show = Math.max(0, this.show)), this.$header.hasClass("-open") && (this.show = e), this.hover && (this.show = e);
                 var n = e - this.show;
                 n = Math.max(0, n), n = Math.min(n, 70);
                 var a = (70 - n) / 70;
-                this.$header.css("opacity", a), e > o ? this.$header.addClass("-white") : 0 == a && this.$header.removeClass("-white"), this.y = e, this.direction = t, this.opacity = a
+                this.$header.css("opacity", 1), e > o ? this.$header.addClass("") : 0 == a && this.$header.removeClass(""), this.y = e, this.direction = t, this.opacity = a
             }
         }
     }), js.tooltip = js.model.extend({

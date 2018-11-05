@@ -3,7 +3,7 @@
   background: transparent;
   padding: 0;
   margin: 0;
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -223,9 +223,10 @@
 
 
 .toggle-menu {
-    position: relative;
+    position: fixed;
     height: 0.875rem;
     width: 1.375rem;
+    right:2em;
     margin-right:2rem;
     z-index:2;
 
