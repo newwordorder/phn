@@ -60,19 +60,20 @@ data-overlay="<?php echo $imageOverlay ?>"
     </div>
   <?php endif; ?>
 <?php endif; ?>
-<div class="container pos-vertical-center">
+<div class="container">
   <div class="row justify-content-center">
     <div class="col-md-10 text-center">
 
-      <h1 class="h6"><?php the_title(); ?></h1>
-      <h1 class="page-title">Lorem ipsum dolor sit amet consectetur adipisicing</h1>
+      <h1><?php the_title(); ?></h1>
+      <p class="lead"><?php the_field('intro_text') ?></p>
 
     </div>
   </div>
 </div>
 
-
-
+<div class="scroll-down">
+<img src="<?php bloginfo('template_directory'); ?>/img/scroll-down.svg">
+</div>
 </section>
 
 <?php get_template_part( 'page-templates/blocks' ); ?>
