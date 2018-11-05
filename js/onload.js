@@ -317,7 +317,6 @@ jQuery( document ).ready(function() {
 
 $(".toggle-menu").click(function () {
     if(/MSIE \d|Trident.*rv:/.test(navigator.userAgent)){
-        console.log('IE');
         document.querySelector('.toggle-menu').classList.toggle('is-active');
     }else{
     $(".toggle-menu").toggleClass("is-active");
