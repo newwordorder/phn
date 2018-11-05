@@ -37,6 +37,9 @@
 <script src="<?php echo get_template_directory_uri(); ?>/js/ytplayer.min.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/aos.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/scripts.js"></script>
+<script src="<?php echo get_template_directory_uri(); ?>/js/easings.js"></script>
+
+<script src="<?php echo get_template_directory_uri(); ?>/js/menuoverlay.js"></script>
 
 <script>
 	AOS.init();

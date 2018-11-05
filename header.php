@@ -46,7 +46,7 @@ $container = get_theme_mod( 'understrap_container_type' );
 
 				</a>
 
-				<a id="toggleMenu" class="toggle-menu">
+				<a id="toggleMenu" class="toggle-menu hamburger">
 						<span class="line"></span>
 						<span class="line"></span>
 						<span class="line"></span>
@@ -67,8 +67,14 @@ $container = get_theme_mod( 'understrap_container_type' );
 				); ?>
 				</div>
 			</div><!-- .container -->
-
+			<svg class="shape-overlays" viewBox="0 0 100 100" preserveAspectRatio="none">
+		<path class="shape-overlays__path"></path>
+		<path class="shape-overlays__path"></path>
+		<path class="shape-overlays__path"></path>
+		<path class="shape-overlays__path"></path>
+	</svg>
 	</div><!-- #header -->
+
 
 <script>
 
