@@ -200,6 +200,10 @@
   border-radius:100%;
 
   z-index:1;
+
+    @media screen and (max-width:768px){
+    display:none;
+  }
   &--primary{
     background-color:$primary;
     width:30rem;
@@ -216,6 +220,7 @@
     left:-22.9375rem;
   }
   &--dark{
+    display:none;
     z-index:-1;
     background-color:$dark;
     width:188.3125rem;
