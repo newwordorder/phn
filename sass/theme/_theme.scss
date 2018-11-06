@@ -523,3 +523,18 @@ section {
     color: $white;
   }
 }
+
+.slider {
+  overflow: hidden;
+
+}
+
+.flickity-slider {
+  li {
+    list-style: none;
+
+    :focus {
+      outline: -webkit-focus-ring-color auto 0px;
+  }
+  }
+}
