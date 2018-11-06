@@ -16189,6 +16189,9 @@ hr.short {
   position: absolute;
   border-radius: 100%;
   z-index: 1; }
+  @media screen and (max-width: 768px) {
+    .header__circle {
+      display: none; } }
   .header__circle--primary {
     background-color: #00BBC3;
     width: 30rem;
@@ -16203,6 +16206,7 @@ hr.short {
     top: -57.75rem;
     left: -22.9375rem; }
   .header__circle--dark {
+    display: none;
     z-index: -1;
     background-color: #003E6A;
     width: 188.3125rem;
