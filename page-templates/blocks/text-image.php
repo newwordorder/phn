@@ -17,6 +17,7 @@ $videoCoverImage = get_sub_field('video_cover_image');
 $layout = get_sub_field('layout');
 $flipLayout = get_sub_field('flip_layout');
 $spaceBelow = get_sub_field('space_below');
+$highlightLine = get_sub_field('highlight_line');
 
 ?>
 
@@ -27,7 +28,7 @@ $spaceBelow = get_sub_field('space_below');
               <?php echo $text ?>
               <?php get_template_part( 'page-templates/blocks/block-partials/buttons' ); ?>
           </div>
-          <div class="<?php if( $layout == '1/3' ): echo 'col-md-4'; endif; ?> <?php if( $layout == '1/2' ): echo 'col-md-6'; endif; ?> <?php if( $layout == '2/3' ): echo 'col-md-8'; endif; ?> flippable__image" data-aos="fade-up">
+          <div class="<?php if( $layout == '1/3' ): echo 'col-md-4'; endif; ?> <?php if( $layout == '1/2' ): echo 'col-md-6'; endif; ?> <?php if( $layout == '2/3' ): echo 'col-md-8'; endif; ?> flippable__image">
           
           
           
@@ -75,6 +76,30 @@ $spaceBelow = get_sub_field('space_below');
             <?php endif; //end $media ?>
 
             <?php if( $media == 'gallery' ): ?>
+
+              
+              <?php 
+
+              $images = get_sub_field('gallery');
+
+              if( $images ): ?>
+                <div class="slider">
+                  <ul class="slides">
+                    <?php foreach( $images as $image ): ?>
+                      <li>
+                        <div class="image image--landscape mb-3">
+                          <div class="background-image-holder">
+                            <img src="<?php echo $image['url']; ?>" alt="<?php echo $image['alt']; ?>" />
+                          </div> 
+                        </div>
+                          
+                        <p class="small caption"><?php echo $image['caption']; ?></p>
+                      </li>
+                    <?php endforeach; ?>
+                  </div>
+                </div>
+              <?php endif; ?>
+                    
 
             <?php endif; //end $media ?>
 
