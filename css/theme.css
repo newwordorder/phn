@@ -16350,7 +16350,8 @@ hr.short {
             transform: scale(1.1); }
 
 .floating__circles {
-  position: absolute; }
+  position: absolute;
+  z-index: 2; }
   .floating__circles * {
     border-radius: 100%;
     position: absolute; }
