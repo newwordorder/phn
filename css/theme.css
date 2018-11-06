@@ -16809,6 +16809,14 @@ section.bg-effect--ken-burns {
   .back-to-top:hover {
     color: #fff; }
 
+.slider {
+  overflow: hidden; }
+
+.flickity-slider li {
+  list-style: none; }
+  .flickity-slider li :focus {
+    outline: -webkit-focus-ring-color auto 50px; }
+
 /*
 * Use existing Bootstrap 4 classes and
 * variables to extend - override CF7 style

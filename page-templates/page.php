@@ -22,6 +22,7 @@ $invertColours = $backgroundImage['invert_colours'];
 
 $video = get_field('youtube_code');
 $fallbackImage = get_field('fallback_image');
+$introText = get_field('intro_text');
 ?>
 
 <section id="sub-header"
@@ -60,12 +61,14 @@ data-overlay="<?php echo $imageOverlay ?>"
     </div>
   <?php endif; ?>
 <?php endif; ?>
-<div class="container pos-vertical-center">
+<div class="container">
   <div class="row justify-content-center">
     <div class="col-md-10 text-center">
 
-      <h1 class="h6"><?php the_title(); ?></h1>
-      <h1 class="page-title">Lorem ipsum dolor sit amet consectetur adipisicing</h1>
+      <h1><?php the_title(); ?></h1>
+      <?php if ($introText): ?>
+        <p class="lead"><?php echo $introText; ?></p>
+      <?php endif; ?>
 
     </div>
   </div>
