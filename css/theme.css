@@ -16351,7 +16351,7 @@ hr.short {
 
 .floating__circles {
   position: absolute;
-  z-index: 2; }
+  z-index: 2 !important; }
   .floating__circles * {
     border-radius: 100%;
     position: absolute; }
@@ -16815,7 +16815,7 @@ section.bg-effect--ken-burns {
 .flickity-slider li {
   list-style: none; }
   .flickity-slider li :focus {
-    outline: -webkit-focus-ring-color auto 50px; }
+    outline: -webkit-focus-ring-color auto 0px; }
 
 /*
 * Use existing Bootstrap 4 classes and
