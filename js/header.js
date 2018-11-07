@@ -66,7 +66,7 @@ var js = {};
             "mouseleave #header": "mouseleave"
         },
         ready: function () {
-            this.$header = $("#header"), this.$sub_header = $("#sub-header"), this.active = 1
+            this.$header = $("#"), this.$sub_header = $("#sub-header"), this.active = 1
         },
         mouseenter: function () {
             var e = $(window).scrollTop();

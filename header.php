@@ -68,11 +68,48 @@ $container = get_theme_mod( 'understrap_container_type' );
 				</div>
 			</div><!-- .container -->
 			<svg class="shape-overlays" viewBox="0 0 100 100" preserveAspectRatio="none">
-		<path class="shape-overlays__path"></path>
-		<path class="shape-overlays__path"></path>
-		<path class="shape-overlays__path"></path>
-		<path class="shape-overlays__path"></path>
-	</svg>
+				<path class="shape-overlays__path"></path>
+				<path class="shape-overlays__path"></path>
+				<path class="shape-overlays__path"></path>
+				<path class="shape-overlays__path"></path>
+			</svg>
 	</div><!-- #header -->
+
+		<div class="menu d-flex justify-content-between align-items-center">
+			<div class="container h-75">
+						<div class="col-12 text-align-center d-flex justify-content-center align-items-center"><h1>Year in review</h1></div>
+					<div class="row h-100">
+					<?php
+						$page_ids=get_all_page_ids();
+						$homepageID = get_option('page_on_front');
+						foreach($page_ids as $page):
+								if($page != $homepageID && get_the_title($page) != 'Auto Draft'):
+							$title = get_the_title($page);
+							$backgroundImage = get_field('background_image', $page);
+							$image = $backgroundImage['background_image'];
+							?>
+								<div class="col-sm-6 col-lg-4 d-flex justify-content-center align-items-center p-0">
+									<a class="menu__card" href="<?php echo get_page_link($page); ?>">
+									<h5 class="menu__text"><?php echo $title; ?></h5>
+									<div class="overlay"></div>
+									<div class="background-image-holder menu__image">
+										<img src="<?php echo $image['url'] ;?>" />
+									</div>
+									<div class="menu__card--after">
+										<span></span>
+										<span></span>
+										<span></span>
+									</div>
+									</a>
+								</div>
+
+							<?php
+							endif;
+						endforeach;
+
+						?>
+					</div>
+				</div>
+			</div>
 
 	<div class="page">
