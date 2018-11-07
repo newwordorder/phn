@@ -28,7 +28,7 @@ if( get_row_layout() == 'image' ):
 
 <div class="container space-below--<?php echo $spaceBelow ?>">
   <div class="row justify-content-center">
-    <div class="col-md-<?php echo $width; ?>">
+    <div class="col-md-<?php echo $width; ?>"  data-aos="fade-up">
 
       <?php
 
@@ -39,7 +39,7 @@ if( get_row_layout() == 'image' ):
         $alt = $image['alt'];
 
        ?>
-      <img class="rounded" src="<?php echo $url; ?>" alt="<?php echo $alt; ?>"/>
+      <img src="<?php echo $url; ?>" alt="<?php echo $alt; ?>"/>
       <?php endif; ?>
 
     </div>

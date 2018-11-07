@@ -43,6 +43,7 @@
 <script src="<?php echo get_template_directory_uri(); ?>/js/smooth-scroll.min.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/ytplayer.min.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/aos.js"></script>
+<script src="<?php echo get_template_directory_uri(); ?>/js/countUp.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/scripts-min.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/easings-min.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/parallax_perspective-min.js"></script>
