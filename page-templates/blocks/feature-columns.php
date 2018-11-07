@@ -13,7 +13,7 @@ if( get_row_layout() == 'feature_columns' ):
 
   <?php if( have_rows('feature_columns_column') ): ?>
     <div class="container space-below--<?php echo $spaceBelow ?>">
-      <div class="row justify-content-center">
+      <div class="row">
         <?php while( have_rows('feature_columns_column') ): the_row();
 
           $text = get_sub_field('text_block');
