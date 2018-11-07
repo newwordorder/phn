@@ -11439,12 +11439,12 @@ hr[data-title]:before {
   padding: 0.92857143em;
   font-style: italic; }
 
-.bg--dark hr:not(.short),
+/*.bg--dark hr:not(.short),
 .imagebg hr:not(.short),
 .bg--primary hr:not(.short) {
-  opacity: .3; }
-
-/*! -- Stack Buttons
+  opacity: .3;
+}
+! -- Stack Buttons
 .btn {
   position: relative;
 }
@@ -16301,8 +16301,6 @@ hr.short {
 .feature-column {
   margin: 15px 0; }
   .feature-column--boxed {
-    border: 1px solid #efefef;
-    border-radius: 4px;
     overflow: hidden;
     background-color: #fff; }
     .feature-column--boxed__inner {
@@ -16596,7 +16594,7 @@ section.bg-effect--ken-burns {
       -webkit-transform: translateY(-20%);
               transform: translateY(-20%); }
   .page-header--page {
-    padding: 200px 0;
+    padding: 300px 0 200px;
     position: relative; }
     .page-header--page .pos-vertical-center {
       -webkit-transform: translateY(-20%);
@@ -16810,7 +16808,27 @@ section.bg-effect--ken-burns {
 .flickity-slider li {
   list-style: none; }
   .flickity-slider li :focus {
-    outline: -webkit-focus-ring-color auto 50px; }
+    outline: -webkit-focus-ring-color auto 0px; }
+
+.vert-line {
+  display: block;
+  height: 70px;
+  width: 2px;
+  background-color: #00BBC3;
+  margin: 0 auto 1rem; }
+
+.counter {
+  font-size: 6rem;
+  font-family: "Glober Book", sans-serif;
+  margin-bottom: 0;
+  position: absolute;
+  top: -4rem;
+  opacity: 0.2; }
+  .counter__wrapper {
+    margin: 2rem 0; }
+
+.counter__text {
+  padding-left: 4rem; }
 
 /*
 * Use existing Bootstrap 4 classes and

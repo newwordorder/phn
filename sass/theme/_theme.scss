@@ -266,7 +266,7 @@ section {
   }
 
   &--page {
-    padding: 200px 0;
+    padding: 300px 0 200px;
     position: relative;
 
     & .pos-vertical-center {
@@ -537,4 +537,30 @@ section {
       outline: -webkit-focus-ring-color auto 0px;
   }
   }
+}
+
+.vert-line {
+  display: block;
+  height: 70px;
+  width: 2px;
+  background-color: $primary;
+  margin: 0 auto 1rem;
+}
+
+.counter {
+  font-size: 6rem;
+  font-family: $font-regular;
+  margin-bottom: 0;
+  position: absolute;
+  top: -4rem;
+opacity: 0.2;
+
+  &__wrapper {
+    margin: 2rem 0;
+  }
+
+}
+
+.counter__text {
+  padding-left: 4rem;
 }

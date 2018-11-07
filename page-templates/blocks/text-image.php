@@ -28,7 +28,7 @@ $highlightLine = get_sub_field('highlight_line');
               <?php echo $text ?>
               <?php get_template_part( 'page-templates/blocks/block-partials/buttons' ); ?>
           </div>
-          <div class="<?php if( $layout == '1/3' ): echo 'col-md-4'; endif; ?> <?php if( $layout == '1/2' ): echo 'col-md-6'; endif; ?> <?php if( $layout == '2/3' ): echo 'col-md-8'; endif; ?> flippable__image">
+          <div class="<?php if( $layout == '1/3' ): echo 'col-md-4'; endif; ?> <?php if( $layout == '1/2' ): echo 'col-md-6'; endif; ?> <?php if( $layout == '2/3' ): echo 'col-md-8'; endif; ?> flippable__image" data-aos="fade-up">
           
           
           
