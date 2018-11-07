@@ -83,7 +83,7 @@ $container = get_theme_mod( 'understrap_container_type' );
 						$page_ids=get_all_page_ids();
 						$homepageID = get_option('page_on_front');
 						foreach($page_ids as $page):
-								if($page != $homepageID && get_the_title($page) != 'Auto Draft'):
+								if($page != $homepageID &&  get_page($page)->post_status === 'publish'):
 							$title = get_the_title($page);
 							$backgroundImage = get_field('background_image', $page);
 							$image = $backgroundImage['background_image'];
