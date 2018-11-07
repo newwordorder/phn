@@ -16153,13 +16153,15 @@ hr.short {
     display: block;
     opacity: 1;
     transition-delay: 600ms; }
+    .menu.is-active .menu__card {
+      display: inline-flex; }
   .menu * {
     transition: 400ms ease-in-out;
     text-align: center; }
   .menu__card {
     width: calc(100% - 2rem) !important;
     height: calc(100% - 2rem) !important;
-    display: inline-flex;
+    display: none;
     align-items: flex-end;
     pointer-events: all; }
     .menu__card:hover .overlay {
@@ -16526,6 +16528,37 @@ hr.short {
     width: 6rem;
     height: 6rem;
     z-index: -1; }
+
+.plyr *:focus {
+  outline: 0; }
+
+.plyr__play-large {
+  cursor: pointer; }
+
+.plyr {
+  border-radius: 6px; }
+
+/* PLYR COLOR */
+.plyr--audio .plyr__controls button.tab-focus:focus, .plyr--audio .plyr__controls button:hover, .plyr__play-large {
+  background: #ffbb46; }
+
+.plyr__progress--played, .plyr__volume--display {
+  color: #ffbb46; }
+
+.plyr input[type=range]::-ms-fill-lower {
+  background: #ffbb46; }
+
+.plyr input[type=range]:active::-webkit-slider-thumb {
+  background: #ffbb46; }
+
+.plyr input[type=range]:active::-moz-range-thumb {
+  background: #ffbb46; }
+
+.plyr input[type=range]:active::-ms-thumb {
+  background: #ffbb46; }
+
+.plyr--video .plyr__controls button.tab-focus:focus, .plyr--video .plyr__controls button:hover {
+  background: #ffbb46; }
 
 body {
   background: #003E6A; }

@@ -84,11 +84,11 @@ function containsClass(classList, className){
   const elmHamburger = document.querySelector('.hamburger');
   const gNavItems = document.querySelectorAll('.global-menu__item');
   const elmOverlay = document.querySelector('.shape-overlays');
+  const menu = document.querySelector('.menu');
+  const toggleMenu = document.querySelector('.toggle-menu');
   const overlay = new ShapeOverlays(elmOverlay);
 
   elmHamburger.addEventListener('click', () => {
-
-
 
     elmHamburger.classList.toggle("is-active");
 
@@ -98,11 +98,16 @@ function containsClass(classList, className){
     overlay.toggle();
     if (overlay.isOpened === true) {
       elmHamburger.classList.add('is-opened-navi');
+      menu.classList.add('is-active');
+      toggleMenu.classList.add('is-active');
+
       for (var i = 0; i < gNavItems.length; i++) {
         gNavItems[i].classList.add('is-opened');
       }
     } else {
       elmHamburger.classList.remove('is-opened-navi');
+      menu.classList.remove('is-active');
+      toggleMenu.classList.remove('is-active');
       for (var i = 0; i < gNavItems.length; i++) {
         gNavItems[i].classList.remove('is-opened');
       }

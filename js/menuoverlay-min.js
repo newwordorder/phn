@@ -119,6 +119,8 @@ function containsClass(classList, className) {
   var elmHamburger = document.querySelector('.hamburger');
   var gNavItems = document.querySelectorAll('.global-menu__item');
   var elmOverlay = document.querySelector('.shape-overlays');
+  var menu = document.querySelector('.menu');
+  var toggleMenu = document.querySelector('.toggle-menu');
   var overlay = new ShapeOverlays(elmOverlay);
   elmHamburger.addEventListener('click', function () {
     elmHamburger.classList.toggle("is-active");
@@ -131,12 +133,16 @@ function containsClass(classList, className) {
 
     if (overlay.isOpened === true) {
       elmHamburger.classList.add('is-opened-navi');
+      menu.classList.add('is-active');
+      toggleMenu.classList.add('is-active');
 
       for (var i = 0; i < gNavItems.length; i++) {
         gNavItems[i].classList.add('is-opened');
       }
     } else {
       elmHamburger.classList.remove('is-opened-navi');
+      menu.classList.remove('is-active');
+      toggleMenu.classList.remove('is-active');
 
       for (var i = 0; i < gNavItems.length; i++) {
         gNavItems[i].classList.remove('is-opened');
