@@ -19,8 +19,7 @@ if( get_row_layout() == 'image' ):
     $alt = $image['alt'];
 
    ?>
-
-  <img class="" src="<?php echo $url; ?>" alt="<?php echo $alt; ?>"/>
+      <img class="w-100" src="<?php echo $url; ?>" alt="<?php echo $alt; ?>"/>
   <?php endif; ?>
 
 <?php else: ?>
