@@ -16166,46 +16166,6 @@ hr.short {
     pointer-events: all; }
     .menu__card:hover .overlay {
       opacity: 0.4; }
-    .menu__card:hover .menu__card--after :nth-child(1) {
-      -webkit-transform: translate(-250%, 20%);
-              transform: translate(-250%, 20%); }
-    .menu__card:hover .menu__card--after :nth-child(2) {
-      -webkit-transform: translate(0%, -160%);
-              transform: translate(0%, -160%); }
-    .menu__card:hover .menu__card--after :nth-child(3) {
-      -webkit-transform: translate(-40%, 20%);
-              transform: translate(-40%, 20%); }
-    .menu__card--after {
-      position: absolute;
-      width: calc(100% - 2rem);
-      height: calc(100% - 2rem);
-      left: 1rem;
-      top: 1rem;
-      z-index: -2; }
-      .menu__card--after span {
-        border-radius: 100%;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transition: all 600ms cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-      .menu__card--after :nth-child(1) {
-        background-color: #00BBC3;
-        -webkit-transform: translate(0%, 0%);
-                transform: translate(0%, 0%);
-        width: 4em;
-        height: 4em; }
-      .menu__card--after :nth-child(2) {
-        background-color: #F78D2D;
-        -webkit-transform: translate(0%, 0%);
-                transform: translate(0%, 0%);
-        width: 6em;
-        height: 6em; }
-      .menu__card--after :nth-child(3) {
-        background-color: #003E6A;
-        -webkit-transform: translate(0%, 0%);
-                transform: translate(0%, 0%);
-        width: 8em;
-        height: 8em; }
   .menu .overlay {
     background-color: #000;
     opacity: 0.2;

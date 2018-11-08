@@ -95,11 +95,7 @@ $container = get_theme_mod( 'understrap_container_type' );
 									<div class="background-image-holder menu__image">
 										<img src="<?php echo $image['url'] ;?>" />
 									</div>
-									<div class="menu__card--after">
-										<span></span>
-										<span></span>
-										<span></span>
-									</div>
+							
 									</a>
 								</div>
 
