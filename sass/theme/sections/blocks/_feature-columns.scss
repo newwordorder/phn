@@ -50,3 +50,20 @@
 .overlapped__text{
   padding:0rem 8rem 4rem 2rem;
 }
+@include media-breakpoint-down(sm) {
+
+  .overlapped{
+    margin-left:0;
+    .overlapped__text{
+      padding:0rem;
+    }
+  }
+  
+  .overlapped--large{
+    margin-top:0rem;
+  }
+  
+  .overlapped__text{
+    padding:0rem ;
+  }
+}

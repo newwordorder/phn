@@ -59,6 +59,12 @@
   .logo {
     margin-bottom: 0;
     z-index:3;
+    &--white{
+      display:none;
+      &.active{
+        display:block;
+      }
+    }
   }
 
  
@@ -139,15 +145,27 @@
 }
 
 .menu{
-  height: 100%;
   width: 100%;
-  position: fixed;
-  z-index: 100;
+  position: absolute;
+  z-index: 14;
   opacity:0;
   display:none;
   transition:400ms ease-in-out;
   transition-delay:0ms;
   pointer-events:none;
+  padding-top:8rem;
+  padding-bottom:8rem;
+
+  .container{
+    min-height:100%;
+  }
+
+  &__grid{
+    min-height:100%;
+    ._col{
+      min-height:16rem;
+    }
+  }
 
   &.is-active{
     display:block;
@@ -246,6 +264,10 @@
     }
     @include media-breakpoint-down(sm) {
         display: block;
+    }
+
+    &.is-opened-navi{
+      z-index:24;
     }
 
     &.is-opened-navi .line {

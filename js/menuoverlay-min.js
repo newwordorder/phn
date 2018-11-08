@@ -120,10 +120,14 @@ function containsClass(classList, className) {
   var gNavItems = document.querySelectorAll('.global-menu__item');
   var elmOverlay = document.querySelector('.shape-overlays');
   var menu = document.querySelector('.menu');
+  var logo = document.querySelector('.logo');
+  var logoDark = document.querySelector('.logo--white');
   var toggleMenu = document.querySelector('.toggle-menu');
   var overlay = new ShapeOverlays(elmOverlay);
+  var scrollpoint = $(window).scrollTop();
   elmHamburger.addEventListener('click', function () {
     elmHamburger.classList.toggle("is-active");
+    var sections = Array.from(document.querySelectorAll('section'));
 
     if (overlay.isAnimating) {
       return false;
@@ -132,17 +136,33 @@ function containsClass(classList, className) {
     overlay.toggle();
 
     if (overlay.isOpened === true) {
+      scrollpoint = $(window).scrollTop();
       elmHamburger.classList.add('is-opened-navi');
       menu.classList.add('is-active');
       toggleMenu.classList.add('is-active');
+      logo.classList.add('hidden');
+      logoDark.classList.add('active');
 
       for (var i = 0; i < gNavItems.length; i++) {
         gNavItems[i].classList.add('is-opened');
       }
+
+      window.setTimeout(function () {
+        window.scrollTo(0, 0);
+        sections.map(function (x) {
+          return x.classList.add('hidden');
+        });
+      }, 600);
     } else {
       elmHamburger.classList.remove('is-opened-navi');
       menu.classList.remove('is-active');
       toggleMenu.classList.remove('is-active');
+      sections.map(function (x) {
+        return x.classList.remove('hidden');
+      });
+      logo.classList.remove('hidden');
+      logoDark.classList.remove('active');
+      $(window).scrollTop(scrollpoint);
 
       for (var i = 0; i < gNavItems.length; i++) {
         gNavItems[i].classList.remove('is-opened');

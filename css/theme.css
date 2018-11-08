@@ -16078,6 +16078,10 @@ hr.short {
 #header .logo {
   margin-bottom: 0;
   z-index: 3; }
+  #header .logo--white {
+    display: none; }
+    #header .logo--white.active {
+      display: block; }
 
 .header__logo {
   display: block;
@@ -16140,15 +16144,22 @@ hr.short {
   /* margins */ }
 
 .menu {
-  height: 100%;
   width: 100%;
-  position: fixed;
-  z-index: 100;
+  position: absolute;
+  z-index: 14;
   opacity: 0;
   display: none;
   transition: 400ms ease-in-out;
   transition-delay: 0ms;
-  pointer-events: none; }
+  pointer-events: none;
+  padding-top: 8rem;
+  padding-bottom: 8rem; }
+  .menu .container {
+    min-height: 100%; }
+  .menu__grid {
+    min-height: 100%; }
+    .menu__grid ._col {
+      min-height: 16rem; }
   .menu.is-active {
     display: block;
     opacity: 1;
@@ -16224,6 +16235,8 @@ hr.short {
   @media (max-width: 767.98px) {
     .toggle-menu {
       display: block; } }
+  .toggle-menu.is-opened-navi {
+    z-index: 24; }
   .toggle-menu.is-opened-navi .line {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg);
@@ -16381,6 +16394,16 @@ hr.short {
 
 .overlapped__text {
   padding: 0rem 8rem 4rem 2rem; }
+
+@media (max-width: 767.98px) {
+  .overlapped {
+    margin-left: 0; }
+    .overlapped .overlapped__text {
+      padding: 0rem; }
+  .overlapped--large {
+    margin-top: 0rem; }
+  .overlapped__text {
+    padding: 0rem; } }
 
 .feature-tile {
   position: relative; }
@@ -16894,6 +16917,9 @@ section.bg-effect--ken-burns {
 
 .counter__text {
   padding-left: 4rem; }
+
+.hidden {
+  display: none; }
 
 /*
 * Use existing Bootstrap 4 classes and

@@ -85,29 +85,49 @@ function containsClass(classList, className){
   const gNavItems = document.querySelectorAll('.global-menu__item');
   const elmOverlay = document.querySelector('.shape-overlays');
   const menu = document.querySelector('.menu');
+  const logo = document.querySelector('.logo');
+  const logoDark = document.querySelector('.logo--white');
+
   const toggleMenu = document.querySelector('.toggle-menu');
   const overlay = new ShapeOverlays(elmOverlay);
+  let scrollpoint = $(window).scrollTop();
 
   elmHamburger.addEventListener('click', () => {
 
-    elmHamburger.classList.toggle("is-active");
+    elmHamburger.classList.toggle("is-active");  
+    const sections = Array.from(document.querySelectorAll('section'));
+
 
     if (overlay.isAnimating) {
       return false;
     }
     overlay.toggle();
     if (overlay.isOpened === true) {
+      scrollpoint = $(window).scrollTop();
+
       elmHamburger.classList.add('is-opened-navi');
       menu.classList.add('is-active');
       toggleMenu.classList.add('is-active');
+      logo.classList.add('hidden');
+      logoDark.classList.add('active');
+
 
       for (var i = 0; i < gNavItems.length; i++) {
         gNavItems[i].classList.add('is-opened');
       }
+
+      window.setTimeout(() => {window.scrollTo(0,0); sections.map(x => x.classList.add('hidden'))}, 600);
+
     } else {
       elmHamburger.classList.remove('is-opened-navi');
       menu.classList.remove('is-active');
       toggleMenu.classList.remove('is-active');
+      sections.map(x => x.classList.remove('hidden'));
+      logo.classList.remove('hidden');
+      logoDark.classList.remove('active');
+
+      $(window).scrollTop(scrollpoint)
+
       for (var i = 0; i < gNavItems.length; i++) {
         gNavItems[i].classList.remove('is-opened');
       }
