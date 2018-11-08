@@ -16078,6 +16078,10 @@ hr.short {
 #header .logo {
   margin-bottom: 0;
   z-index: 3; }
+  #header .logo--white {
+    display: none; }
+    #header .logo--white.active {
+      display: block; }
 
 .header__logo {
   display: block;
@@ -16140,15 +16144,22 @@ hr.short {
   /* margins */ }
 
 .menu {
-  height: 100%;
   width: 100%;
-  position: fixed;
-  z-index: 100;
+  position: absolute;
+  z-index: 14;
   opacity: 0;
   display: none;
   transition: 400ms ease-in-out;
   transition-delay: 0ms;
-  pointer-events: none; }
+  pointer-events: none;
+  padding-top: 8rem;
+  padding-bottom: 8rem; }
+  .menu .container {
+    min-height: 100%; }
+  .menu__grid {
+    min-height: 100%; }
+    .menu__grid ._col {
+      min-height: 16rem; }
   .menu.is-active {
     display: block;
     opacity: 1;
@@ -16166,46 +16177,6 @@ hr.short {
     pointer-events: all; }
     .menu__card:hover .overlay {
       opacity: 0.4; }
-    .menu__card:hover .menu__card--after :nth-child(1) {
-      -webkit-transform: translate(-250%, 20%);
-              transform: translate(-250%, 20%); }
-    .menu__card:hover .menu__card--after :nth-child(2) {
-      -webkit-transform: translate(0%, -160%);
-              transform: translate(0%, -160%); }
-    .menu__card:hover .menu__card--after :nth-child(3) {
-      -webkit-transform: translate(-40%, 20%);
-              transform: translate(-40%, 20%); }
-    .menu__card--after {
-      position: absolute;
-      width: calc(100% - 2rem);
-      height: calc(100% - 2rem);
-      left: 1rem;
-      top: 1rem;
-      z-index: -2; }
-      .menu__card--after span {
-        border-radius: 100%;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transition: all 600ms cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-      .menu__card--after :nth-child(1) {
-        background-color: #00BBC3;
-        -webkit-transform: translate(0%, 0%);
-                transform: translate(0%, 0%);
-        width: 4em;
-        height: 4em; }
-      .menu__card--after :nth-child(2) {
-        background-color: #F78D2D;
-        -webkit-transform: translate(0%, 0%);
-                transform: translate(0%, 0%);
-        width: 6em;
-        height: 6em; }
-      .menu__card--after :nth-child(3) {
-        background-color: #003E6A;
-        -webkit-transform: translate(0%, 0%);
-                transform: translate(0%, 0%);
-        width: 8em;
-        height: 8em; }
   .menu .overlay {
     background-color: #000;
     opacity: 0.2;
@@ -16264,6 +16235,8 @@ hr.short {
   @media (max-width: 767.98px) {
     .toggle-menu {
       display: block; } }
+  .toggle-menu.is-opened-navi {
+    z-index: 24; }
   .toggle-menu.is-opened-navi .line {
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg);
@@ -16421,6 +16394,16 @@ hr.short {
 
 .overlapped__text {
   padding: 0rem 8rem 4rem 2rem; }
+
+@media (max-width: 767.98px) {
+  .overlapped {
+    margin-left: 0; }
+    .overlapped .overlapped__text {
+      padding: 0rem; }
+  .overlapped--large {
+    margin-top: 0rem; }
+  .overlapped__text {
+    padding: 0rem; } }
 
 .feature-tile {
   position: relative; }
@@ -16934,6 +16917,9 @@ section.bg-effect--ken-burns {
 
 .counter__text {
   padding-left: 4rem; }
+
+.hidden {
+  display: none; }
 
 /*
 * Use existing Bootstrap 4 classes and
