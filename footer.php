@@ -25,11 +25,8 @@
 </footer>
 
 
-		
+<button onclick="topFunction()" id="topBtn" title="Go to top"><i class="fas fa-arrow-up"></i></button>		
 
-<a class="back-to-top  inner-link " href="#header">
-	<i class="far fa-arrow-up"></i>
-</a>
 
 
 <?php wp_footer(); ?>
@@ -43,6 +40,7 @@
 <script src="<?php echo get_template_directory_uri(); ?>/js/smooth-scroll.min.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/ytplayer.min.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/aos.js"></script>
+<script src="<?php echo get_template_directory_uri(); ?>/js/theme.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/countUp.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/scripts-min.js"></script>
 <script src="<?php echo get_template_directory_uri(); ?>/js/easings-min.js"></script>
