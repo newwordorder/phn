@@ -34,3 +34,19 @@
     width: 70px;
   }
 }
+
+
+.overlapped{
+  margin-left:-7rem;
+  .overlapped__text{
+    padding:0rem 4rem 4rem 6rem;
+  }
+}
+
+.overlapped--large{
+  margin-top:4rem;
+}
+
+.overlapped__text{
+  padding:0rem 8rem 4rem 2rem;
+}

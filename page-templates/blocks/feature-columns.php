@@ -7,11 +7,14 @@ if( get_row_layout() == 'feature_columns' ):
   $columns = get_sub_field('feature_columns_columns_per_row');
   $boxed = get_sub_field('feature_columns_boxed');
   $centered = get_sub_field('feature_columns_centered');
+  $overlap = get_sub_field('feature_columns_overlap');
 
 ?>
 
 
-  <?php if( have_rows('feature_columns_column') ): ?>
+  <?php if( have_rows('feature_columns_column') ): 
+    if(!$overlap):
+    ?>    
     <div class="container space-below--<?php echo $spaceBelow ?>">
       <div class="row">
         <?php while( have_rows('feature_columns_column') ): the_row();
@@ -69,6 +72,65 @@ if( get_row_layout() == 'feature_columns' ):
         <?php endwhile; ?>
       </div>
     </div>
+    <?php else: ?>
+
+    <div class="container space-below--<?php echo $spaceBelow ?>">
+      <div class="row">
+        <?php while( have_rows('feature_columns_column') ): the_row();
+          $text = get_sub_field('text_block');
+          $image = get_sub_field('image');
+          $icon = get_sub_field('icon');
+        ?>
+
+        <div class="col-md-<?php if(get_row_index() === 1): echo '7 overlapped--large'; else: echo '6 overlapped'; endif; ?> feature-column">
+
+          <div class="<?php if( $boxed == 'yes' ): ?>feature-column--boxed<?php endif; ?> <?php if( $centered == 'yes' ): ?>text-center<?php endif; ?>">
+
+            <?php if( $type == 'image' ):
+              if( !empty($image) ):
+
+                // vars
+                $url = $image['url'];
+                $alt = $image['alt'];
+
+                $size = '600x400';
+                $thumb = $image['sizes'][ $size ];
+                $width = $image['sizes'][ $size . '-width' ];
+                $height = $image['sizes'][ $size . '-height' ];
+
+                ?>
+                <img class="feature-column__image" src="<?php echo $thumb; ?>" alt="<?php echo $alt; ?>"/>
+                <?php if( $boxed == 'yes' ): ?><div class="feature-column--boxed__inner"><?php endif; ?>
+              <?php endif; ?>
+            <?php endif; ?>
+
+            <?php if( $type == 'icon' ):if( !empty($icon) ):
+
+              // vars
+              $url = $icon['url'];
+              $alt = $icon['alt'];
+
+              ?>
+              <?php if( $boxed == 'yes' ): ?><div class="feature-column--boxed__inner"><?php endif; ?>
+                <img class="feature-column__icon" src="<?php echo $url; ?>" alt="<?php echo $alt; ?>"/>
+              <?php endif; ?>
+            <?php endif; ?>
+
+            <?php if( $boxed == 'yes' && $type == 'none' ): ?><div class="feature-column--boxed__inner"><?php endif; ?>
+              <div class='overlapped__text'">
+              <?php echo $text ?>
+              </div>
+              <?php get_template_part( 'page-templates/blocks/block-partials/buttons' ); ?>
+
+              <?php if( $boxed == 'yes' ): ?></div><?php endif; ?>
+
+            </div>
+          </div>
+        <?php endwhile; ?>
+      </div>
+    </div>
+    <?php endif; ?>
   <?php endif; ?>
+
 
 <?php endif; ?>
