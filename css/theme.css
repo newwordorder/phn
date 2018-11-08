@@ -16364,6 +16364,40 @@ hr.short {
             transform: scale(1);
     opacity: 0; } }
 
+#topBtn {
+  display: none;
+  /* Hidden by default */
+  position: fixed;
+  /* Fixed/sticky position */
+  bottom: 2rem;
+  /* Place the button at the bottom of the page */
+  right: 2rem;
+  /* Place the button 30px from the right */
+  z-index: 1020;
+  /* Make sure it does not overlap */
+  border: 0px;
+  /* Remove borders */
+  outline: none;
+  /* Remove outline */
+  background-color: #00BBC3;
+  /* Set a background color */
+  color: #fff;
+  /* Text color */
+  cursor: pointer;
+  /* Add a mouse pointer on hover */
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  /* Rounded corners */
+  font-size: 18px;
+  /* Increase font size */
+  transition: 0.2s;
+  box-shadow: 0px 6px 20px 0px rgba(0, 0, 0, 0.2); }
+
+#topBtn:hover {
+  background-color: #008a90;
+  color: #fff; }
+
 .feature-column {
   margin: 15px 0; }
   .feature-column--boxed {
