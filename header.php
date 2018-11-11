@@ -23,10 +23,10 @@ $container = get_theme_mod( 'understrap_container_type' );
 	<link href="https://fonts.googleapis.com/css?family=Frank+Ruhl+Libre:400,700|Libre+Franklin:400,700" rel="stylesheet">
 	<?php wp_head(); ?>
 
+
 </head>
 
 <body <?php body_class(); ?>>
-
 
 
 	<!-- ******************* The Navbar Area ******************* -->
