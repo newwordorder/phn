@@ -15,7 +15,7 @@ function () {
     this.elm = elm;
     this.path = elm.querySelectorAll('path');
     this.numPoints = 4;
-    this.duration = 800;
+    this.duration = 600;
     this.delayPointsArray = [];
     this.delayPointsMax = 120;
     this.delayPerPath = 20;
@@ -152,7 +152,7 @@ function containsClass(classList, className) {
         sections.map(function (x) {
           return x.classList.add('hidden');
         });
-      }, 600);
+      }, 800);
     } else {
       elmHamburger.classList.remove('is-opened-navi');
       menu.classList.remove('is-active');

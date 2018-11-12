@@ -3,7 +3,7 @@ class ShapeOverlays {
     this.elm = elm;
     this.path = elm.querySelectorAll('path');
     this.numPoints = 4;
-    this.duration = 800;
+    this.duration = 600;
     this.delayPointsArray = [];
     this.delayPointsMax = 120;
     this.delayPerPath = 20;
@@ -116,7 +116,7 @@ function containsClass(classList, className){
         gNavItems[i].classList.add('is-opened');
       }
 
-      window.setTimeout(() => {window.scrollTo(0,0); sections.map(x => x.classList.add('hidden'))}, 600);
+      window.setTimeout(() => {window.scrollTo(0,0); sections.map(x => x.classList.add('hidden'))}, 800);
 
     } else {
       elmHamburger.classList.remove('is-opened-navi');
