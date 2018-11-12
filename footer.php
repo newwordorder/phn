@@ -21,6 +21,11 @@
 						</a>
 					</div>
 			</div>
+			<div class="row">
+				<div class="col-sm-12 text-center">
+					<a target="_blank" href="www.brisbanenorthphn.org.au">Website</a> | <a target="_blank" href="https://www.facebook.com/BrisbaneNorthPHN/">Facebook</a> | <a target="_blank" href="https://twitter.com/BrisNorthPHN">Twitter</a> | <a target="_blank" href="https://www.youtube.com/user/MetroNorthBrisbaneML">Youtube</a>
+				</div>
+			</div>
 		</div>
 </footer>
 
