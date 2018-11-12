@@ -2472,14 +2472,15 @@ mr = (function (mr, $, window, document){
                 cellAlign: 'left',
                 wrapAround: true,
                 pageDots: false,
-                prevNextButtons: false,
+                prevNextButtons: true,
                 autoPlay: true,
                 draggable: (childnum < 2 ? false: true),
                 imagesLoaded: true,
                 accessibility: true,
                 rightToLeft: false,
                 initialIndex: 0,
-                freeScroll: false
+                freeScroll: false,
+                arrowshape: 'm11.295 4.705c-.3894628.3894628-.3897454 1.02081956-.0006314 1.41063087l4.8756314 4.88436913h-11.17c-.55228475 0-1 .4477153-1 1 0 .5522847.44771525 1 1 1h11.17l-4.8756314 4.8843691c-.389114.3898113-.3888314 1.0211681.0006314 1.4106309.3893607.3893607 1.0206393.3893607 1.41 0l7.295-7.295-7.295-7.295c-.3893607-.38936075-1.0206393-.38936075-1.41 0z',
             };
 
             // Attribute Overrides - options that are overridden by data attributes on the slider element

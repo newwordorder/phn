@@ -16955,6 +16955,47 @@ section.bg-effect--ken-burns {
 .hidden {
   display: none; }
 
+/* smaller, dark, rounded square */
+.flickity-button {
+  background: #00BBC3;
+  border-radius: 100%; }
+
+.flickity-button:hover {
+  background: #003E6A; }
+
+.flickity-prev-next-button {
+  position: absolute;
+  border: none;
+  width: 45px;
+  height: 45px;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 5px;
+  background: #00BBC3;
+  border-radius: 100%; }
+  .flickity-prev-next-button:hover {
+    background: #003E6A; }
+
+/* icon color */
+.flickity-button-icon {
+  fill: white; }
+
+/* position outside */
+.flickity-prev-next-button.previous {
+  right: 60px;
+  left: unset; }
+  .flickity-prev-next-button.previous:before {
+    display: none; }
+
+.flickity-prev-next-button.next {
+  right: 5px; }
+  .flickity-prev-next-button.next:before {
+    display: none; }
+
+.flickity-prev-next-button svg {
+  display: block;
+  fill: #fff !important; }
+
 /*
 * Use existing Bootstrap 4 classes and
 * variables to extend - override CF7 style
