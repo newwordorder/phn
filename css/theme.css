@@ -12592,13 +12592,13 @@ p .material-icons:first-child {
 .tooltip {
   position: relative;
   top: 3px;
-  display: inline-block;
   width: 1.23809524em;
   height: 1.23809524em;
   border-radius: 50%;
   background: #252525;
   text-align: center;
-  cursor: pointer; }
+  cursor: pointer;
+  display: none; }
 
 .tooltip .tooltip__anchor {
   color: #fff;
@@ -16037,6 +16037,9 @@ hr.short {
   background: #00BBC3;
   border: none; }
 
+li {
+  margin-left: 1rem; }
+
 #header {
   background: transparent;
   padding: 0;
@@ -16466,7 +16469,7 @@ hr.short {
 
 .floating__circles {
   position: absolute;
-  z-index: 2 !important; }
+  z-index: 0 !important; }
   .floating__circles * {
     border-radius: 100%;
     position: absolute; }
